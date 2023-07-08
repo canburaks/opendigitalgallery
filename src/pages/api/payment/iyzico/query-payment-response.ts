@@ -3,7 +3,7 @@ import { IYZICO_LOCAL_STORAGE_TOKEN } from '@/constants';
 import { OrderQueryApiResponse } from '@/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { iyzipay } from '@/data/iyzicoServer';
-import { loggerServer as logger } from '@/utils/logger/server';
+// import { loggerServer as logger } from '@/utils/logger/server';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<OrderQueryApiResponse>) {
   const bodyData = JSON.parse(req.body);
@@ -19,9 +19,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<OrderQ
       token,
     },
     function (err: any, result: OrderQueryApiResponse) {
-      logger.info(`order query result: ${JSON.stringify(result)}`);
+      console.log(`order query result: ${JSON.stringify(result)}`);
       if (err) {
-        logger.error({ error: err });
+        console.error({ error: err });
         res.status(500).json({ message: err.message });
       } else {
         res.status(200).json(result);

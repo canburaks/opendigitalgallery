@@ -1,0 +1,86 @@
+{
+  "menu": {
+    "home": {
+      "title": "Home",
+      "description": ""
+    },
+    "about": {
+      "title": "About us",
+      "description": ""
+    },
+    "products": {
+      "title": "Ürünler",
+      "description": ""
+    },
+    "blog": {
+      "title": "Blog",
+      "description": ""
+    }
+  },
+  "pages": {
+    "text-wishlist": "Kaydet",
+    "add-to-cart": "Sepete ekle",
+    "calculated-checkout": "Toplam",
+    "product-information": "Ürün Bilgisi",
+    "product-description": "Ürün Açıklaması",
+    "product-additional-details": "Ürün Detayları",
+    "product-size": "Boyutlar",
+    "product-frame-selection": "Çerçeve Seçimi",
+    "error": "Hata"
+  },
+  "blog": {
+    "meta-title": "Galeri Duvarı - Open Digital Gallery",
+    "meta-description": "Galeri Duvarı, Open Digital Gallery'nin blog sayfasıdır. Burada Open Digital Gallery ile ilgili haberleri, duyuruları ve daha fazlasını bulabilirsiniz.",
+    "title": "Galeri Duvarı",
+    "description": "Galeri Duvarı, Open Digital Gallery'nin blog sayfasıdır."
+  },
+  "orders":{
+    "order": "Sipariş",
+    "order-number": "Sipariş Numarası",
+    "order-date": "Sipariş Tarihi",
+    "order-status": "Sipariş Durumu",
+    "order-total": "Toplam",
+    "order-details": "Sipariş Detayları",
+    "order-shipping": "Kargo Bilgileri",
+    "order-successful": "İşlem Başarılı",
+    "order-successful-message": "Siparişi başarıyla aldık. Teşekkür ederiz.",
+    "order-failed-message": "Ödeme işlemi başarısız oldu. Lütfen tekrar deneyiniz.",
+    "order-tracking-number": "Sipariş takip numarası"
+  },
+  "paymentErrors": {
+    "MISCALCULATED_SUM": "Hesaplanan tutar ile ödenen tutar uyuşmuyor",
+    "NOT_SUFFICIENT_FUNDS": "Kart limiti yetersiz, yetersiz bakiye",
+    "DO_NOT_HONOUR": "İşlem onaylanmadı",
+    "INVALID_TRANSACTION": "Geçersiz işlem",
+    "LOST_CARD": "Kayıp kart, karta el koyunuz",
+    "STOLEN_CARD": "Çalıntı kart, karta el koyunuz",
+    "EXPIRED_CARD": "Vadesi dolmuş kart",
+    "INVALID_CVC2": "CVC2 bilgisi hatalı",
+    "NOT_PERMITTED_TO_CARDHOLDER": "Kart sahibi bu işlemi yapamaz",
+    "NOT_PERMITTED_TO_TERMINAL": "Terminalin bu işlemi yapmaya yetkisi yok",
+    "FRAUD_SUSPECT": "Dolandırıcılık şüphesi",
+    "RESTRICTED_BY_LAW": "Kartınız e-ticaret işlemlerine kapalıdır. Bankanızı arayınız.",
+    "CARD_NOT_PERMITTED": "Kart, işleme izin vermedi",
+    "UNKNOWN": "Ödeme işlemi esnasında genel bir hata oluştu",
+    "INVALID_CVC2_LENGTH": "CVC uzunluğu geçersiz",
+    "REFER_TO_CARD_ISSUER": "Bankanızdan onay alınız",
+    "INVALID_MERCHANT_OR_SP": "Üye işyeri kategori kodu hatalı",
+    "BLOCKED_CARD": "Bloke statülü kart",
+    "INVALID_CAVV": "Hatalı CAVV bilgisi",
+    "INVALID_ECI": "Hatalı ECI bilgisi",
+    "BIN_NOT_FOUND": "BIN bulunamadı",
+    "COMMUNICATION_OR_SYSTEM_ERROR": "İletişim veya sistem hatası",
+    "INVALID_CARD_NUMBER": "Geçersiz kart numarası",
+    "NO_SUCH_ISSUER": "Bankası bulunamadı",
+    "DEBIT_CARDS_REQUIRES_3DS": "Banka kartları sadece 3D Secure işleminde kullanılabilir",
+    "REQUEST_TIMEOUT": "Bankaya gönderilen istek zaman aşımına uğradı",
+    "NOT_PERMITTED_TO_INSTALLMENT": "Terminal taksitli işleme kapalı",
+    "REQUIRES_DAY_END": "Gün sonu yapılmalı",
+    "RESTRICTED_CARD": "Kısıtlı kart",
+    "EXCEEDS_ALLOWABLE_PIN_TRIES": "İzin verilen PIN giriş sayısı aşılmış",
+    "INVALID_PIN": "Geçersiz PIN",
+    "ISSUER_OR_SWITCH_INOPERATIVE": "Banka veya terminal işlem yapamıyor",
+    "INVALID_EXPIRE_YEAR_MONTH": "Son kullanma tarihi geçersiz",
+    "INVALID_AMOUNT": "Geçersiz tutar"
+  }
+}

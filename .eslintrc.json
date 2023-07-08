@@ -1,0 +1,50 @@
+{
+  // keep prettier at the end always
+  "extends": [
+    "next/core-web-vitals",
+    "next",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "plugins": ["@typescript-eslint"],
+
+  "rules": {
+    // image opt feature warning from next.js
+    "@next/next/no-img-element": "off",
+
+    // If a variable is not reassigned, show warn to use const
+    "prefer-const": "warn",
+
+    // prevent ununsed variables
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-empty-interface": "off",
+
+    // Added this because of calling conditional hook issue, that we can only capture while deploying to vercel.
+    "react-hooks/rules-of-hooks": "warn",
+
+    "quotes": ["warn", "single"],
+    "semi": ["warn", "always"], // not sure about this rule, we can delete if we want.
+
+    // to sync contributors who use unix and window os,
+    // github check it already but here additonal guard
+    "linebreak-style": ["error", "unix"],
+
+    // prevent declarations after return statements
+    "no-unreachable": ["error"],
+
+    // Prevent any as a type
+    "@typescript-eslint/no-explicit-any": "warn",
+
+    // Kod sonuna konulan ! no-null assertionunu warn veriyordu kapattım. (default:warn)
+    "@typescript-eslint/no-non-null-assertion": "off",
+
+    // closed because of emtpy then functions
+    "@typescript-eslint/no-empty-function": ["off"],
+    "no-empty-function": "off",
+
+    // prevent ts comment as error : turned off
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-types": "off"
+  },
+  "ignorePatterns": [".next", ".eslintrc.json"]
+}

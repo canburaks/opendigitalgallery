@@ -8,7 +8,7 @@ import { IYZICO_LOCAL_STORAGE_TOKEN, IYZICO_QUERY_RESPONSE_ENDPOINT } from '@/co
 import { getUrl, parseOrderFromIyzicoResponse } from '@/utils';
 import { getSupabaseBrowserClient } from '@/data/supabaseClient';
 import { OrderCallbackView } from '@/views';
-import { loggerServer as logger } from '@/utils/logger/server';
+// import { loggerServer as logger } from '@/utils/logger/server';
 
 export default function CheckoutCallback(props: { token: string | undefined }) {
   return (
@@ -51,7 +51,7 @@ export const getServerSideProps = async ({
       body: JSON.stringify({ token }),
     }).then((res: Response) => res.json())
       .then((res: OrderQueryResponse | { [message: string]: string }) => {
-        logger.info(`api response order query response: ${JSON.stringify(res)}`);
+        console.log(`api response order query response: ${JSON.stringify(res)}`);
         /**
          * Save the returned data to Supabase
          * We redirect user to the corresponding checkout/token page.

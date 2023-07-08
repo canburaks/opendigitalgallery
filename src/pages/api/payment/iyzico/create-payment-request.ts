@@ -6,7 +6,7 @@ import requestIp from 'request-ip';
 import { isString } from 'lodash';
 import { iyzipay } from '@/data/iyzicoServer';
 import { serialize, CookieSerializeOptions } from 'cookie';
-import { loggerServer as logger } from '@/utils/logger/server';
+// import { loggerServer as logger } from '@/utils/logger/server';
 import { v5 as uuidv5 } from 'uuid';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<FormInitializeResponse>) {
@@ -42,7 +42,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<FormIn
     data,
     function (err: any, result: FormInitializeResponse) {
       if (err) {
-        logger.error('create payment request was resulted in error:', err);
+        console.error('create payment request was resulted in error:', err);
         res.status(400).json(result);
       } else {
         // Set cookie

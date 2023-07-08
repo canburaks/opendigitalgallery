@@ -22,7 +22,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<FormIn
 
   // set buyer ip address
   if (data.buyer) {
-    data.buyer.ip = requestIp.getClientIp(req) || getClientIP(req);
+    const userIp = requestIp.getClientIp(req) || getClientIP(req);
+    if (!userIp){
+      console.error('user ip address not found', userIp);
+      throw new Error(`user ip address not found: ${userIp}`)
+    } else {
+      data.buyer.ip = userIp;
+    }
   }
 
   // set conversation id

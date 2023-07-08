@@ -1,0 +1,88 @@
+{
+  "menu": {
+    "home": {
+      "title": "Home",
+      "description": ""
+    },
+    "about": {
+      "title": "About",
+      "description": ""
+    },
+    "products": {
+      "title": "Products",
+      "description": ""
+    },
+    "blog": {
+      "title": "Blog",
+      "description": ""
+    }
+  },
+  "pages": {
+    "text-wishlist": "Add to wishlist",
+    "add-to-cart": "Add to cart",
+    "calculated-checkout": "Calculated Checkout",
+    "product-information": "Product Information",
+    "product-description": "Description",
+    "product-additional-details": "Additional Details",
+    "product-size": "Dimensions",
+    "product-frame-selection": "Choose Frame",
+    "error": "Error"
+  },
+  "blog": {
+    "meta-title": "Blog: Gallery Wall - Open Digital Gallery",
+    "meta-description": "Gallery Wall is the blog of Open Digital Gallery. Visit us for indoor and outdoor art, photography, and more.",
+    "title": "Gallery Wall",
+    "description": "Artful Insights from the Gallery Wall of Open Digital Gallery."
+  },
+  "orders":{
+    "order": "Order",
+    "order-number": "Order Number",
+    "order-date": "Order placed",
+    "order-status": "Order Status",
+    "order-total": "Order total",
+    "order-details": "Order detils",
+    "order-shipping": "Shipping",
+    "order-successful": "Payment successful",
+    "order-successful-message": "We received your order. Thank you for shopping with us!",
+    "order-failed-message": "We couldn't process your order. Please try again later.",
+    "order-tracking-number": "Order tracking number"
+
+
+  },
+  "paymentErrors": {
+    "MISCALCULATED_SUM": "Miscalculated sum",
+    "NOT_SUFFICIENT_FUNDS": "Insufficient bqlance",
+    "DO_NOT_HONOUR": "Do not honour",
+    "INVALID_TRANSACTION": "Invalid transaction",
+    "LOST_CARD": "Lost card",
+    "STOLEN_CARD": "Stolen card",
+    "EXPIRED_CARD": "Expired card",
+    "INVALID_CVC2": "Invalid CVC2",
+    "NOT_PERMITTED_TO_CARDHOLDER": "Not permitted to cardholder",
+    "NOT_PERMITTED_TO_TERMINAL": "Not permitted to terminal",
+    "FRAUD_SUSPECT": "Fraud suspect",
+    "RESTRICTED_BY_LAW": "Restricted by law",
+    "CARD_NOT_PERMITTED": "Card not permitted",
+    "UNKNOWN": "Unknown error",
+    "INVALID_CVC2_LENGTH": "Invalid CVC2 length",
+    "REFER_TO_CARD_ISSUER": "Refer to card issuer",
+    "INVALID_MERCHANT_OR_SP": "Invalid merchant or service provider",
+    "BLOCKED_CARD": "Blocked card",
+    "INVALID_CAVV": "Invalid CAVV",
+    "INVALID_ECI": "Invalid ECI",
+    "BIN_NOT_FOUND": "BIN not found",
+    "COMMUNICATION_OR_SYSTEM_ERROR": "Communication or system error",
+    "INVALID_CARD_NUMBER": "Invalid card number",
+    "NO_SUCH_ISSUER": "No such issuer",
+    "DEBIT_CARDS_REQUIRES_3DS": "Debit cards requires 3DS",
+    "REQUEST_TIMEOUT": "Request timeout",
+    "NOT_PERMITTED_TO_INSTALLMENT": "Not permitted to installment",
+    "REQUIRES_DAY_END": "Requires day end",
+    "RESTRICTED_CARD": "Restricted card",
+    "EXCEEDS_ALLOWABLE_PIN_TRIES": "Exceeds allowable PIN tries",
+    "INVALID_PIN": "Invalid PIN",
+    "ISSUER_OR_SWITCH_INOPERATIVE": "Issuer or switch inoperative",
+    "INVALID_EXPIRE_YEAR_MONTH": "Invalid expire year month",
+    "INVALID_AMOUNT": "Invalid amount"
+  }
+}

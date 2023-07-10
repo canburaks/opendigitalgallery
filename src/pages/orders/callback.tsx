@@ -45,39 +45,39 @@ export const getServerSideProps = async ({
     //     return client.from('orders').upsert(orderData).select('*');
     //   }
     // };
-    return fetch(getUrl() + IYZICO_QUERY_RESPONSE_ENDPOINT, {
+    fetch(getUrl() + IYZICO_QUERY_RESPONSE_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify({ token }),
     }).then((res: Response) => res.json())
-      .then((res: OrderQueryApiResponse | { [message: string]: string }) => {
-        console.log(`api response order query response: ${JSON.stringify(res)}`);
-        /**
-         * Save the returned data to Supabase
-         * We redirect user to the corresponding checkout/token page.
-         */
-        return {
-          props: {
-            token: token,
-            ...(serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-          },
-        }
-        // return setOrderResponse(token, res)!
-        //   .then((orderSetResponse) => {
-        //     console.log("orderSetResponse", orderSetResponse);
-        //   })
-      })
-      .catch(async (e) => {
-        // console.error('Callback page server props token error:', e);
-        console.log("callback page server props token error: ", e);
-      })
-      .finally(() => {
-        return {
-          props: {
-            token: token,
-            ...(serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-          },
-        };
-      })
+    // .then((res: OrderQueryApiResponse | { [message: string]: string }) => {
+    //   console.log(`api response order query response: ${JSON.stringify(res)}`);
+    //   /**
+    //    * Save the returned data to Supabase
+    //    * We redirect user to the corresponding checkout/token page.
+    //    */
+    //   return {
+    //     props: {
+    //       token: token,
+    //       ...(serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+    //     },
+    //   }
+    //   // return setOrderResponse(token, res)!
+    //   //   .then((orderSetResponse) => {
+    //   //     console.log("orderSetResponse", orderSetResponse);
+    //   //   })
+    // })
+    // .catch(async (e) => {
+    //   // console.error('Callback page server props token error:', e);
+    //   console.log("callback page server props token error: ", e);
+    // })
+    // .finally(() => {
+    // })
+    return {
+      props: {
+        token: token,
+        ...(serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+      },
+    };
   }
   return {
     token: undefined,

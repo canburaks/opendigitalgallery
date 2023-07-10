@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { IYZICO_LOCAL_STORAGE_TOKEN, PAGES } from '@/constants';
-import { FormInitializeRequest, FormInitializeResponse, PaymentGroup } from '@/types';
+import { FormInitializeRequest, FormInitializeResponse, PaymentGroup, OrderStatusEnum } from '@/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import requestIp from 'request-ip';
 import { isString } from 'lodash';
@@ -8,11 +8,11 @@ import { iyzipay } from '@/data/iyzicoServer';
 import { serialize, CookieSerializeOptions } from 'cookie';
 // import { loggerServer as logger } from '@/utils/logger/server';
 import { v5 as uuidv5 } from 'uuid';
-// import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<FormInitializeResponse>) {
   const bodyData = JSON.parse(req.body);
-  // const supabase = createServerSupabaseClient({ req, res });
+  const supabase = createServerSupabaseClient({ req, res });
 
   // const { price, paidPrice, currency, locale, shippingAddress, billingAddress, buyer, basketItems } = req.body;
   const data: Partial<FormInitializeRequest> = {
@@ -50,20 +50,21 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<FormIn
           path: PAGES.ORDERS.path || '/',
           maxAge: 3600,
         });
-        // const orderSetResponse = supabase
-        //   .from('orders')
-        //   .update({
-        //     payment_provider_response: {"status": "server"},
-        //     payment_provider_token: result.token,
-        //     // total_price: typeof result.price === 'string' ? parseFloat(result.price) : result.price,
-        //   })
-        //   .eq('payment_provider_token', result.token)
-        //   .select('*');
-        res.status(200).json(result);
-        // orderSetResponse.then((response) => {
-        //   console.log('order set response: ', orderSetResponse);
-
-        // })
+        // console.log("status", OrderStatusEnum.PaymentAwaiting)
+        const orderSetResponse = supabase
+          .from('orders')
+          .insert({
+            order_status_id: OrderStatusEnum.PaymentAwaiting,
+            payment_provider_response: result,
+            payment_provider_token: result.token,
+            total_price: typeof data.price === 'string' ? parseFloat(data.price) : data.price,
+          })
+          .select('*');
+        // console.log('order set response1: ', orderSetResponse);
+        orderSetResponse.then((orderSetRes) => {
+          console.log('order set response2: ', orderSetRes);
+          res.status(200).json(result);
+        });
       }
     }
   );

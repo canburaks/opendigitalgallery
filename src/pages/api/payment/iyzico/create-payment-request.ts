@@ -8,9 +8,11 @@ import { iyzipay } from '@/data/iyzicoServer';
 import { serialize, CookieSerializeOptions } from 'cookie';
 // import { loggerServer as logger } from '@/utils/logger/server';
 import { v5 as uuidv5 } from 'uuid';
+// import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<FormInitializeResponse>) {
   const bodyData = JSON.parse(req.body);
+  // const supabase = createServerSupabaseClient({ req, res });
 
   // const { price, paidPrice, currency, locale, shippingAddress, billingAddress, buyer, basketItems } = req.body;
   const data: Partial<FormInitializeRequest> = {
@@ -23,9 +25,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<FormIn
   // set buyer ip address
   if (data.buyer) {
     const userIp = requestIp.getClientIp(req) || getClientIP(req);
-    if (!userIp){
+    if (!userIp) {
       console.error('user ip address not found', userIp);
-      throw new Error(`user ip address not found: ${userIp}`)
+      throw new Error(`user ip address not found: ${userIp}`);
     } else {
       data.buyer.ip = userIp;
     }
@@ -35,8 +37,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<FormIn
   const namespace = process.env.CONVERSATION_UUID_NAMESPACE_UUID!;
   const uuid = uuidv5('conversation', namespace);
   data.conversationId = uuid;
-
-
 
   return iyzipay.checkoutFormInitialize.create(
     data,
@@ -50,7 +50,20 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<FormIn
           path: PAGES.ORDERS.path || '/',
           maxAge: 3600,
         });
+        // const orderSetResponse = supabase
+        //   .from('orders')
+        //   .update({
+        //     payment_provider_response: {"status": "server"},
+        //     payment_provider_token: result.token,
+        //     // total_price: typeof result.price === 'string' ? parseFloat(result.price) : result.price,
+        //   })
+        //   .eq('payment_provider_token', result.token)
+        //   .select('*');
         res.status(200).json(result);
+        // orderSetResponse.then((response) => {
+        //   console.log('order set response: ', orderSetResponse);
+
+        // })
       }
     }
   );

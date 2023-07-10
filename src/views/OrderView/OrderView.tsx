@@ -12,15 +12,18 @@ export function OrderView() {
   const urlToken = asPath.replace(`${PAGES.ORDERS.path}/`, '');
 
   const { data, isLoading } = useOrders(urlToken);
+  // console.log("data", data)
   const paymentProviderData = useMemo(
-    () =>
-      data &&
-      Array.isArray(data?.data) &&
-      typeof data.data[0].payment_provider_response === 'string'
-        ? JSON.parse(data?.data[0].payment_provider_response)
-        : null,
+    () => {
+      if (data && data.data && Array.isArray(data?.data)) {
+        return typeof data.data[0].payment_provider_response === 'string'
+          ? JSON.parse(data?.data[0].payment_provider_response)
+          : data?.data[0].payment_provider_response
+      }
+    },
     [data]
   );
+  // console.log("paymentProviderData", paymentProviderData)
   // const isOrderExist = paymentProviderData && paymentProviderData?.status === OrderResponseStatusEnum.SUCCESS;
 
   return (

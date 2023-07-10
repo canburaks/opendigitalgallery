@@ -161,11 +161,12 @@ export interface CheckoutPaymentRequest {
  *  ORDER  QUERY
  */
 export enum OrderStatusEnum {
-  Unsuccessful = 0,
+  PaymentAwaiting = 0,
   Ordered = 1,
   Shipped = 2,
   Delivered = 3,
   Canceled = 4,
+  UnsuccessfulPayment = 5,
 }
 export enum OrderResponseStatusEnum {
   SUCCESS = 'success',

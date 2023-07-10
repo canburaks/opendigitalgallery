@@ -9,7 +9,6 @@ import { getUrl, parseOrderFromIyzicoResponse } from '@/utils';
 import { getSupabaseBrowserClient } from '@/data/supabaseClient';
 import { OrderCallbackView } from '@/views';
 // import { loggerServer as logger } from '@/utils/logger/server';
-
 export default function CheckoutCallback(props: { token: string | undefined }) {
   return (
     <>
@@ -39,43 +38,46 @@ export const getServerSideProps = async ({
 
   if (token) {
     // Save the returned data to Supabase
-    const setOrderResponse = async (token: string, orderResponse: OrderQueryApiResponse) => {
+    const setOrderResponse = (token: string, orderResponse: OrderQueryApiResponse) => {
       const orderData = parseOrderFromIyzicoResponse(orderResponse);
       if (orderData) {
         const client = getSupabaseBrowserClient();
-        const result = await client.from('orders').upsert(orderData).select('*');
-        return result
+        return client.from('orders').upsert(orderData).select('*');
       }
     };
     return fetch(getUrl() + IYZICO_QUERY_RESPONSE_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify({ token }),
     }).then((res: Response) => res.json())
-      .then(async (res: OrderQueryApiResponse | { [message: string]: string }) => {
+      .then((res: OrderQueryApiResponse | { [message: string]: string }) => {
         // console.log(`api response order query response: ${JSON.stringify(res)}`);
         /**
          * Save the returned data to Supabase
          * We redirect user to the corresponding checkout/token page.
          */
-          const orderSetResponse = await setOrderResponse(res.token, res);
-          const jsonOrderSetResponse = await orderSetResponse;
-          console.log(jsonOrderSetResponse);
-          return {
-            props: {
-              token: token,
-              ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-            },
-        }
+        return setOrderResponse(res.token, res)!
+          .then((orderSetResponse) => {
+            console.log("orderSetResponse", orderSetResponse);
+            return {
+              props: {
+                token: token,
+                ...(serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+              },
+            }
+          })
       })
       .catch(async (e) => {
-        console.error('Callback page server props token error:', e);
-        return {
-          props: {
-            token: token,
-            ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-          },
-        };
-      });
+        // console.error('Callback page server props token error:', e);
+        console.log("callback page server props token error: ", e);
+      })
+      // .finally(() => {
+      //   return {
+      //     props: {
+      //       token: token,
+      //       ...(serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+      //     },
+      //   };
+      // })
   }
   return {
     token: undefined,

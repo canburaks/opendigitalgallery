@@ -16,6 +16,8 @@ export function AddToCartButton({
   priceId,
   productPrice,
   framePrice,
+  shipping_cost,
+  currency,
 }: {
   productTitle: string;
   productId: number;
@@ -28,6 +30,8 @@ export function AddToCartButton({
   priceId: number | undefined;
   productPrice: number;
   framePrice: number;
+  shipping_cost: number;
+  currency: string;
 }) {
   const { addToCart /*removeFromCart*/ } = useCartStore();
 
@@ -44,8 +48,19 @@ export function AddToCartButton({
       priceId: priceId || -1,
       productPrice: productPrice,
       price: productPrice,
+      shipping_cost,
+      currency,
     }),
-    [productTitle, productId, productOptionId, productImageUrl, frameId, priceId, productPrice]
+    [
+      productTitle,
+      productId,
+      productOptionId,
+      productImageUrl,
+      frameId,
+      priceId,
+      productPrice,
+      shipping_cost,
+    ]
   );
   const cartFrame: CartProduct = useMemo(
     () => ({
@@ -59,8 +74,10 @@ export function AddToCartButton({
       priceId: priceId || -1,
       framePrice,
       price: framePrice,
+      shipping_cost,
+      currency,
     }),
-    [frameTitle, frameId, productOptionId, frameImageUrl, priceId, framePrice]
+    [frameTitle, frameId, productOptionId, frameImageUrl, priceId, framePrice, shipping_cost]
   );
 
   // Increase the quantity of the product in the cart

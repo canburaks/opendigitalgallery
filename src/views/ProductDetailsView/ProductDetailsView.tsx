@@ -23,7 +23,6 @@ export const ProductDetailsView: React.FC = () => {
   // short circuit if no product
   const product: ProductDetails | undefined =
     useProductDataFromQuery(asPath.split('/').pop() ?? '') || {};
-
   const images = product.images || [];
   const options = useMemo(() => product.options || [], [product?.options]);
   const optionIds = useMemo(() => options.map((o) => o.product_option_id), [options]);
@@ -41,6 +40,8 @@ export const ProductDetailsView: React.FC = () => {
   const selectedOption = useMemo(() => {
     return options.find((o: MergedProductOption) => o.product_option_id === activeProductOptionId);
   }, [activeProductOptionId, options]);
+
+  console.log('selectedOption', selectedOption);
 
   return (
     <Container maxWidth="lg" className="flex flex-row mt-16">
@@ -141,6 +142,8 @@ export const ProductDetailsView: React.FC = () => {
                       activeProductOptionId={activeProductOptionId}
                       productId={product.product_id}
                       productImageUrl={product.default_image_url || PRODUCT_IMAGE_PLACEHOLDER}
+                      shipping_cost={selectedOption.shipping_cost}
+                      currency={selectedOption.currency}
                     />
                   )}
                 </div>

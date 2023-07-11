@@ -61,7 +61,7 @@ export const AddressForm: FC<AddressFormProps> = ({
   }
 
   const initialAddress = {
-    street: address?.street || '',
+    address_detail: address?.address_detail || '',
     city: address?.city || '',
     zip: address?.zip || '',
     country_id: address?.country_id.toString() || '',
@@ -143,7 +143,14 @@ export const AddressForm: FC<AddressFormProps> = ({
               />
               <FieldInput fullWidth label="City" name="city" className="mb-4" />
               <FieldInput fullWidth label="Zip Code" name="zip" className="mb-4" />
-              <FieldInput fullWidth label="Street" name="street" className="mb-4" />
+              <FieldInput
+                multiline
+                rows={2}
+                fullWidth
+                label="Address Detail"
+                name="address_detail"
+                className="mb-4"
+              />
 
               <ErrorText error={error} />
               <div className="mt-10 flex justify-center gap-4">

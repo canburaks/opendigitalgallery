@@ -5,5 +5,5 @@ export const addressSchema = yup.object({
   country_id: yup.string().required().label('Country'),
   zip: yup.number().required().label('Zip'),
   city: yup.string().required().label('City'),
-  street: yup.string().required().label('Street'),
+  address_detail: yup.string().required().label('Address Detail'),
 });

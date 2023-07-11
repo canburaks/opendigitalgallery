@@ -7,7 +7,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import React, { forwardRef, useMemo } from 'react';
 
 export interface CheckoutAddressFormType {
-  street: string;
+  address_detail: string;
   city: string;
   zip: string;
   country_id: string;
@@ -43,12 +43,11 @@ export const CheckoutAddressForm = forwardRef<RefType>((props, ref) => {
   const address = addressData && addressData.data && addressData?.data[0];
 
   const initialAddress = {
-    street: address?.street || '',
+    address_detail: address?.address_detail || '',
     city: address?.city || '',
     zip: address?.zip || '',
     country_id: address?.country_id.toString() || '',
   };
-
   return (
     <Formik
       innerRef={ref}
@@ -63,7 +62,7 @@ export const CheckoutAddressForm = forwardRef<RefType>((props, ref) => {
             <FieldSelect options={countriesSelect} name="country_id" label="Country" />
             <FieldInput fullWidth label="City" name="city" />
             <FieldInput fullWidth label="Zip Code" name="zip" />
-            <FieldInput fullWidth label="Street" name="street" />
+            <FieldInput multiline rows={2} fullWidth label="Address Detail" name="address_detail" />
           </Form>
         );
       }}

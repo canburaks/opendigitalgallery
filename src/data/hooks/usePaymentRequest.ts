@@ -31,7 +31,7 @@ export const usePaymentRequestData = ({ formValues }: Props) => {
       contactName: formValues?.firstName ? `${formValues?.firstName} ${formValues?.lastName}` : '',
       city: formValues?.city || '',
       country: countryName || '',
-      address: `${formValues?.street} ${formValues?.city} ${formValues?.zip}`,
+      address: `${formValues?.address_detail} ${formValues?.city} ${formValues?.zip}`,
       zipCode: formValues?.zip,
     };
   }, [formValues, countryName]);

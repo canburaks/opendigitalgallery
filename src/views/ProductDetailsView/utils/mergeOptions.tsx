@@ -39,6 +39,7 @@ export function mergeOptions(
         currency: countryOption?.currency,
         option_name: defaultOption.description,
         option_value: defaultOption.value,
+        shipping_cost: countryOption.shipping_cost,
       });
     }
   });

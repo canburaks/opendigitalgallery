@@ -44,6 +44,7 @@ export const NO_FRAME_PRODUCT: Partial<ProductDetails> = {
       price: 0,
       option_name: 'No frame',
       option_value: 'No frame',
+      shipping_cost: 10,
     },
     {
       country_id: -1,
@@ -54,6 +55,7 @@ export const NO_FRAME_PRODUCT: Partial<ProductDetails> = {
       price: 0,
       option_name: 'No frame',
       option_value: 'No frame',
+      shipping_cost: 10,
     },
     {
       country_id: -1,
@@ -64,6 +66,7 @@ export const NO_FRAME_PRODUCT: Partial<ProductDetails> = {
       price: 0,
       option_name: 'No frame',
       option_value: 'No frame',
+      shipping_cost: 10,
     },
     {
       country_id: -1,
@@ -74,6 +77,7 @@ export const NO_FRAME_PRODUCT: Partial<ProductDetails> = {
       price: 0,
       option_name: 'No frame',
       option_value: 'No frame',
+      shipping_cost: 10,
     },
   ],
 };

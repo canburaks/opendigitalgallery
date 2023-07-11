@@ -48,7 +48,7 @@ export const CheckoutAddressForm = forwardRef<RefType>((props, ref) => {
     zip: address?.zip || '',
     country_id: address?.country_id.toString() || '',
   };
-
+  console.log('');
   return (
     <Formik
       innerRef={ref}

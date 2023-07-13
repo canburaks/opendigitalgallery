@@ -14,6 +14,7 @@ export interface MergedProductOption {
   option_name: string;
   option_value: string;
   option_description?: string;
+  shipping_cost: number;
 }
 
 /*
@@ -34,6 +35,7 @@ export type CartProduct = {
   quantity: number;
   productType: ProductType;
   priceId: number;
+  currency: string;
   productPrice?: number; // product price
   framePrice?: number; // frame price
   price: number; // general price
@@ -47,6 +49,7 @@ export type CartProduct = {
   productHandle?: string;
   frameImageUrl?: string;
   frameHandle?: string;
+  shipping_cost: number;
 };
 
 /*

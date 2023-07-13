@@ -14,6 +14,8 @@ type Props = {
   productId: number;
   productPrice: number;
   priceId: number | undefined;
+  shipping_cost: number;
+  currency: string;
 };
 
 function classNames(...classes: string[]) {
@@ -143,6 +145,8 @@ export function FrameWidget(props: Props) {
           framePrice={selectedFrameOption.price}
           frameImageUrl={selectedFrame.default_image_url || FRAME_IMAGE_PLACEHOLDER}
           text={t(TRX.PRODUCT_DETAILS.ADD_TO_CART)}
+          shipping_cost={props.shipping_cost}
+          currency={props.currency}
         />
       )}
     </>

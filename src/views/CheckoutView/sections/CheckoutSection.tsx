@@ -7,7 +7,7 @@ import { CheckoutContactForm, CheckoutContactFormType } from '../forms/CheckoutC
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { CheckoutAddressForm, CheckoutAddressFormType } from '../forms/CheckoutAddressForm';
 import { FormikProps } from 'formik';
-import { CheckoutDeliveryForm } from '../forms/CheckoutDeliveryForm';
+import { CheckoutShippingForm } from '../forms/CheckoutShippingForm';
 import { CheckoutPaymentForm } from '../forms/CheckoutPaymentForm';
 import { BreadcumbsUI } from '../components/BreadcumbsUI';
 import { Button as MyButton } from '@/components';
@@ -126,7 +126,7 @@ export const CheckoutSection = () => {
                 <CheckoutAddressForm ref={addressFormRef} />
               </SwiperSlide>
               <SwiperSlide>
-                <CheckoutDeliveryForm />
+                <CheckoutShippingForm />
               </SwiperSlide>
               <SwiperSlide>
                 <CheckoutPaymentForm />

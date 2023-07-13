@@ -8,7 +8,7 @@ interface BreadcumbsUIProps {
   activeIndex: number | null;
 }
 
-const formList = ['Contact', 'Address', 'Delivery', 'Payment'];
+const formList = ['Contact', 'Address', 'Shipping', 'Payment'];
 export const BreadcumbsUI: FC<BreadcumbsUIProps> = ({ activeIndex }) => {
   if (activeIndex === null) {
     return null;

@@ -120,5 +120,3 @@ const redirectUri = process.env.INSTAGRAM_APP_REDIRECT_URI!;
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 export const instagramClient = new Instagram(appId, redirectUri);
-
-https://www.instagram.com/oauth/authorize?client_id=667608588430433&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fpages%2Finstaprint-auth&scope=user_profile%2Cuser_media&response_type=code&logger_id=71c50dc8-8755-44e7-9eaa-929345371b68

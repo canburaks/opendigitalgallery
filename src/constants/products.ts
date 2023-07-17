@@ -28,6 +28,7 @@ export const PRODUCT_OPTION_TYPE = {
 export enum ProductType {
   POSTER = 1,
   FRAME = 2,
+  INSTAPRINT = 3
 }
 
 // If user doesn't want any frame, this is the default frame

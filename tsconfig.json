@@ -19,10 +19,12 @@
       "@/*": ["./src/*"],
       "@/styles/*": ["./src/styles/*"],
       "@/components/*": ["./src/components/*"],
+      "@/constants/*": ["./src/constants/*"],
       "@/views/*": ["./src/views/*"],
       "@/data/*": ["./src/data/*"],
       "@/types/*": ["./src/types/*"],
-      "@/utils/*": ["./src/utils/*"]
+      "@/utils/*": ["./src/utils/*"],
+      "@/public/*": ["./public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/views/UpdatePasswordView"],

@@ -5,7 +5,7 @@ const nextConfig = {
   reactStrictMode: true,
   i18n,
   images: {
-    domains: ['verxgygbyoarytwtzexz.supabase.co', 'cms.opendigitalgallery.com', 'i0.wp.com'],
+    domains: ['verxgygbyoarytwtzexz.supabase.co', '*.opendigitalgallery.com', 'i0.wp.com'],
   },
 };
 

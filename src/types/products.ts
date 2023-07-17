@@ -30,15 +30,15 @@ export type CartProduct = {
   /* NECESSARY INFORMATIONS FOR BACKEND*/
   productTitle: string;
   productId: string | number;
-  productOptionId: string | number;
+  productOptionId?: string | number;
   frameId?: string | number; // there is no need to frame option id, because it will be the same productOptionId
   quantity: number;
   productType: ProductType;
-  priceId: number;
-  currency: string;
+  priceId?: number;
+  currency?: string;
   productPrice?: number; // product price
   framePrice?: number; // frame price
-  price: number; // general price
+  price?: number; // general price
   image?: {
     url: string;
     alt: string;
@@ -49,7 +49,14 @@ export type CartProduct = {
   productHandle?: string;
   frameImageUrl?: string;
   frameHandle?: string;
-  shipping_cost: number;
+  shipping_cost?: number;
+
+  // OPTIONAL INSTAPRINT RELATED PROPERTIES
+  instaprint?: {
+    mediaId?: string | null;
+    mat?: string | boolean;
+    frame?: string | boolean;
+  };
 };
 
 /*

@@ -135,5 +135,11 @@
     "ISSUER_OR_SWITCH_INOPERATIVE": "Issuer or switch inoperative",
     "INVALID_EXPIRE_YEAR_MONTH": "Invalid expire year month",
     "INVALID_AMOUNT": "Invalid amount"
+  },
+  "frames":{
+    "noframe": "No Frame",
+    "natural": "Natural",
+    "darkbrown": "Dark Brown",
+    "black": "Black"
   }
 }

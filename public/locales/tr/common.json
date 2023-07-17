@@ -135,5 +135,12 @@
     "ISSUER_OR_SWITCH_INOPERATIVE": "Banka veya terminal işlem yapamıyor",
     "INVALID_EXPIRE_YEAR_MONTH": "Son kullanma tarihi geçersiz",
     "INVALID_AMOUNT": "Geçersiz tutar"
+  },
+  "frames":{
+    "noframe": "Çerçevesiz",
+    "natural": "Naturel",
+    "darkbrown": "Koyu Kahverengi",
+    "black": "Siyah"
   }
+
 }

@@ -13,16 +13,13 @@ export function OrderView() {
 
   const { data, isLoading } = useOrders(urlToken);
   // console.log("data", data)
-  const paymentProviderData = useMemo(
-    () => {
-      if (data && data.data && Array.isArray(data?.data)) {
-        return typeof data.data[0].payment_provider_response === 'string'
-          ? JSON.parse(data?.data[0].payment_provider_response)
-          : data?.data[0].payment_provider_response
-      }
-    },
-    [data]
-  );
+  const paymentProviderData = useMemo(() => {
+    if (data && data.data && Array.isArray(data?.data)) {
+      return typeof data.data[0].payment_provider_response === 'string'
+        ? JSON.parse(data?.data[0].payment_provider_response)
+        : data?.data[0].payment_provider_response;
+    }
+  }, [data]);
   // console.log("paymentProviderData", paymentProviderData)
   // const isOrderExist = paymentProviderData && paymentProviderData?.status === OrderResponseStatusEnum.SUCCESS;
 

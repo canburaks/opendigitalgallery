@@ -82,6 +82,8 @@ export const OrderSuccess = (props: Props) => {
                   <div className="sm:flex lg:col-span-7">
                     <div className="aspect-w-1 aspect-h-1 w-full flex-shrink-0 overflow-hidden rounded-lg sm:aspect-none sm:h-40 sm:w-40">
                       <ImageWithFallback
+                        width={90}
+                        height={120}
                         src={p.default_image_url || PRODUCT_IMAGE_PLACEHOLDER || ''}
                         alt={p.default_image_alt || p.title || ''}
                         className="h-full w-full object-cover object-center sm:h-full sm:w-full"

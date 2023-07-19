@@ -9,13 +9,18 @@ import { useRouter } from 'next/router';
 import CloseIcon from '@mui/icons-material/Close';
 import { useProductOptions } from '@/data/hooks/useProductOptions';
 import { useProduct } from '@/data/hooks/useProduct';
+import { useProductPrices } from '@/data/hooks/useProductPrices';
 
 export const CartPopup = () => {
   const [showCart, setShowCart] = useState(false);
   const router = useRouter();
   const { data: productOptions } = useProductOptions();
   const { lastAddedProduct, removeLastAddedProduct, store } = useCartStore();
-
+  const { data: productPriceOptions } = useProductPrices(
+    lastAddedProduct?.productId,
+    Boolean(lastAddedProduct?.productId)
+  );
+  const productPriceInfo = Array.isArray(productPriceOptions) && productPriceOptions[0];
   const product = useProduct(
     lastAddedProduct?.productId || '',
     Boolean(lastAddedProduct?.productId)
@@ -75,7 +80,9 @@ export const CartPopup = () => {
                   Size:
                   {
                     productOptions?.find(
-                      (item) => item.product_option_id === lastAddedProduct?.productOptionId
+                      (item) =>
+                        item.product_option_id ===
+                        (productPriceInfo && productPriceInfo.product_option_id)
                     )?.value
                   }
                 </BodyS>

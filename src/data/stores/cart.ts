@@ -32,7 +32,7 @@ export const useCartStore = create<UseCartStore>((set, get) => ({
    * ---------------------------------------------------------------------------------
    * ---------------------------------------------------------------------------------
    * */
-  addToCart: (product: CartProduct, openCartPopup) => {
+  addToCart: async (product: CartProduct, openCartPopup) => {
     const existingProduct: CartProduct | undefined = get().store.find(
       (p) => p.productId === product.productId
     );
@@ -71,7 +71,7 @@ export const useCartStore = create<UseCartStore>((set, get) => ({
   removeFromCart: (product: Partial<CartProduct>) => {
     // check the existence of the product in the cart
     return set((state: UseCartStore) => {
-      let result: CartProduct[] = [];
+      const result: CartProduct[] = [];
       state.store.forEach((item) => {
         if (item.productId !== product.productId) {
           result.push(item);

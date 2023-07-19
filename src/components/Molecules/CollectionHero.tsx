@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { BodyL, Headline, MyLink } from '../Atoms';
+import { ImageWithFallback } from '../Atoms';
 
 interface CollectionHeroProps {
   name: string;
@@ -27,7 +28,7 @@ export const CollectionHero: FC<CollectionHeroProps> = ({
 
       {/* Image */}
       <div className="flex-1 flex justify-center">
-        <img
+        <ImageWithFallback
           src={imgPath}
           alt="product"
           className=" max-w-full  group-hover:scale-105 duration-1000"

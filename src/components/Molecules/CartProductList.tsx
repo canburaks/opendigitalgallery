@@ -2,7 +2,7 @@ import { useProductPricesByIDs } from '@/data/hooks';
 import { useProductOptions } from '@/data/hooks/useProductOptions';
 import { useCartStore } from '@/data/stores';
 import React, { FC } from 'react';
-import { BodyS, Counter } from '../Atoms';
+import { BodyS, Counter, ImageWithFallback } from '../Atoms';
 import { IconButton } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import cx from 'classnames';
@@ -38,7 +38,7 @@ export const CartProductList: FC<CartProductListProps> = ({ layout = 'horizontal
           return (
             <div key={`${product.productId}-${product.productOptionId}`}>
               <div className="flex gap-8 items-center w-full">
-                <img
+                <ImageWithFallback
                   src={product.productImageUrl || ''}
                   alt={product.productTitle || ''}
                   className="flex-[1] w-24"

@@ -41,8 +41,6 @@ export const ProductDetailsView: React.FC = () => {
     return options.find((o: MergedProductOption) => o.product_option_id === activeProductOptionId);
   }, [activeProductOptionId, options]);
 
-  console.log('selectedOption', selectedOption);
-
   return (
     <Container maxWidth="lg" className="flex flex-row mt-16">
       <div className="bg-white">

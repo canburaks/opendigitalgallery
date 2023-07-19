@@ -1,4 +1,3 @@
-import { ProductType } from '@/constants';
 /*
  * MERGED PRODUCT OPTION
  * This is the interface for the merged product option.
@@ -28,28 +27,9 @@ export interface MergedProductOption {
  * */
 export type CartProduct = {
   /* NECESSARY INFORMATIONS FOR BACKEND*/
-  productTitle: string;
-  productId: string | number;
-  productOptionId: string | number;
-  frameId?: string | number; // there is no need to frame option id, because it will be the same productOptionId
-  quantity: number;
-  productType: ProductType;
+  productId: number;
   priceId: number;
-  currency: string;
-  productPrice?: number; // product price
-  framePrice?: number; // frame price
-  price: number; // general price
-  image?: {
-    url: string;
-    alt: string;
-  };
-
-  /* EXTRA INFORMATION IF FRONTEND REQUIRES */
-  productImageUrl?: string;
-  productHandle?: string;
-  frameImageUrl?: string;
-  frameHandle?: string;
-  shipping_cost: number;
+  quantity: number;
 };
 
 /*

@@ -1,6 +1,6 @@
 import { Grow, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { BodyS, LinkComponent } from '../Atoms';
+import { BodyS, ImageWithFallback, LinkComponent } from '../Atoms';
 import CheckIcon from '@mui/icons-material/Check';
 import { Button as MyButton } from '../Atoms';
 import { useCartStore } from '@/data/stores';
@@ -62,9 +62,10 @@ export const CartPopup = () => {
         </div>
         {product.data && product.data.data && (
           <div className="flex w-full flex-col">
-            <div className="flex gap-4">
-              <img
-                className="w-30"
+            <div className="flex gap-4 mb-4 mt-4">
+              <ImageWithFallback
+                width={90}
+                height={120}
                 src={product.data?.data[0].default_image_url || ''}
                 alt={product.data?.data[0].default_image_alt || ''}
               />

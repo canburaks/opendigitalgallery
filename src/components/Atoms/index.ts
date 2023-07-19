@@ -9,3 +9,4 @@ export * from './LoadingDialog';
 export * from './LinkComponent';
 export * from './Counter';
 export * from './Loading';
+export * from './ImageWithFallback';

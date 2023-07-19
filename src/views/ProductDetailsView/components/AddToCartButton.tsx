@@ -60,6 +60,7 @@ export function AddToCartButton({
       priceId,
       productPrice,
       shipping_cost,
+      currency,
     ]
   );
   const cartFrame: CartProduct = useMemo(
@@ -77,7 +78,16 @@ export function AddToCartButton({
       shipping_cost,
       currency,
     }),
-    [frameTitle, frameId, productOptionId, frameImageUrl, priceId, framePrice, shipping_cost]
+    [
+      frameTitle,
+      frameId,
+      productOptionId,
+      frameImageUrl,
+      priceId,
+      framePrice,
+      shipping_cost,
+      currency,
+    ]
   );
 
   // Increase the quantity of the product in the cart

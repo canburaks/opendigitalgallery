@@ -1,5 +1,5 @@
 import React from 'react';
-import { LinkComponent } from '@/components';
+import { ImageWithFallback, LinkComponent } from '@/components';
 import { PostType } from '@/types';
 import { motion } from 'framer-motion';
 
@@ -27,9 +27,9 @@ export function PostCard({ post }: Props) {
       onHoverEnd={notHovering}
       className="post-card overflow-x-hidden relative group"
     >
-      <img
-        src={post?.featuredImage?.node?.sourceUrl}
-        alt={post?.featuredImage?.node?.altText}
+      <ImageWithFallback
+        src={post?.featuredImage?.node?.sourceUrl || ''}
+        alt={post?.featuredImage?.node?.altText || ''}
         className="min-w-full h-80 z-0"
       />
 

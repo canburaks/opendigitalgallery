@@ -2,7 +2,7 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { A11y, Autoplay, Keyboard, Pagination, Parallax, Scrollbar } from 'swiper';
 import { PostPreview } from '@/types';
-import { LinkComponent } from '@/components';
+import { ImageWithFallback, LinkComponent } from '@/components';
 
 type Props = {
   posts: PostPreview[];
@@ -29,11 +29,11 @@ export function PostCarousel({ posts }: Props) {
       <Swiper {...swiperParameters}>
         {posts.map((post: PostPreview, ix: number) => (
           <SwiperSlide key={post.title.replaceAll(' ', '-' + +ix)}>
-            <img
+            <ImageWithFallback
               className="swiper-slide-image mix-blend-overlay"
               data-swiper-parallax="42%"
-              alt={post?.featuredImage?.node?.altText}
-              src={post?.featuredImage?.node?.sourceUrl}
+              alt={post?.featuredImage?.node?.altText || ''}
+              src={post?.featuredImage?.node?.sourceUrl || ''}
             />
             <div className="swiper-slide-content">
               <LinkComponent href={`/posts/${post.slug}`} className="z-10">

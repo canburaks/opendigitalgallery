@@ -1,25 +1,25 @@
 import { motion } from "framer-motion"
-import { SegmentedControl } from "@/components"
+import { SegmentedControl, BodyXS } from "@/components";
 
 type Props = {
-    value: string | number | boolean,
+    value: boolean | string,
     title: string,
     description: string,
-    handler: (val: string | number | boolean) => void
+    handler: (val: boolean | string) => void
 }
 
 export const MatSelection = ({ value, handler, title, description }: Props) => {
-
     return (
-        <motion.div className="w-full flex flex-col mt-2">
-            <h3 className="flex flex-row text-lg font-bold">{title}</h3>
-            <p className="opacity-70 py-0">{description}</p>
+        <motion.div className="w-full flex flex-col mb-6">
+            <h4 className="flex flex-row text-base font-bold">{title}</h4>
+            <BodyXS className="mb-1 text-gray-700">{description}</BodyXS>
             <SegmentedControl
                 data={[
-                    { label: 'Yes', value: 'true' },
-                    { label: 'No', value: 'false' },
+                    { label: 'Yes', value: "true" },
+                    { label: 'No', value: "" },
                 ]}
                 value={value}
+                // @ts-ignore
                 onChange={handler}
             />
         </motion.div>)

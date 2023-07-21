@@ -67,8 +67,8 @@ export const TRX = {
       'instaprint.app.selection.variations2.description',
     APP_MODAL_SELECTION_VARIATION2_FOOTNOTE: 'instaprint.app.selection.variations2.footnote',
     APP_MODAL_SIZE: 'instaprint.app.selection.size',
-    APP_MODAL_PLACEHOLDER: 'instaprint.app.modal.selection.placeholder',
-    APP_MODAL_QUANTITY: 'instaprint.app.modal.selection.quantity',
+    APP_MODAL_PLACEHOLDER: 'instaprint.app.selection.placeholder',
+    APP_MODAL_QUANTITY: 'instaprint.app.selection.quantity',
     APP_MODAL_SELECTED: 'instaprint.app.modal.selected',
     APP_MODAL_CANCEL: 'instaprint.app.modal.cancel',
   },
@@ -110,8 +110,8 @@ export const TRX = {
   },
   FRAMES: {
     NO_FRAME: 'frames.noframe',
-    NATURAL: 'frames.natural',
-    DARK_BROWN: 'frames.darkbrown',
     BLACK: 'frames.black',
+    DARK_BROWN: 'frames.darkbrown',
+    NATURAL: 'frames.natural',
   },
 };

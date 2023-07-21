@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useEffect, useCallback, useMemo, useRef } from "react"
 import { UseInstaprintStore, useCartStore } from "@/data/stores";
 import { motion, AnimatePresence } from "framer-motion"
 import useDimensions from "react-cool-dimensions";
-import type { IGMedia, CartProduct } from "@/types";
-import { IG_USER_USER_MEDIA_LOCAL_STORAGE_KEY, TRX, INSTAPRINT_PRODUCT_PLACEHOLDER } from "@/constants";
+import type { IGMedia, CartProduct, FrameOptionsSelectUnionType } from "@/types";
+import { IG_USER_USER_MEDIA_LOCAL_STORAGE_KEY, TRX, INSTAPRINT_PRODUCT_PLACEHOLDER, InstaprintFrameOptionsEnum } from "@/constants";
 import { useTranslation } from 'next-i18next';
-import { MatSelection, FrameSelection } from "./index";
+import { MatSelection, FrameSelection, QuantitySelection, MediaWrapper } from "./index";
 
 
 export const InstaSelection = () => {
@@ -35,10 +35,10 @@ export const InstaSelection = () => {
 
   const cartItems = useCartStore(state => state.store);
   const setCartItems = useCartStore(state => state.addToCart);
-  console.log("\n\ninsta selection---\npage", page)
-  console.log("selection", selections)
-  console.log("media", media)
-  console.log("cartItems", cartItems)
+  // console.log("\n\ninsta selection---\npage", page)
+  // console.log("selection", selections)
+  // console.log("media", media)
+  // console.log("cartItems", cartItems)
 
   if (page !== 2) return <div></div>
 
@@ -65,6 +65,7 @@ export const InstaSelection = () => {
 
 const InstaSelectionItem = ({ selectedId, order }: { selectedId: string, order: number }) => {
   const { t } = useTranslation("common");
+  const imageRef = useRef<HTMLImageElement>(null);
 
   const medias: IGMedia[] = UseInstaprintStore(state => state?.media);
   const currentMedia: IGMedia = medias.find(m => m.id === selectedId)!;
@@ -75,7 +76,7 @@ const InstaSelectionItem = ({ selectedId, order }: { selectedId: string, order: 
       ...INSTAPRINT_PRODUCT_PLACEHOLDER.instaprint,
     }
   });
-  console.log("media-single", currentMedia)
+  // console.log("media-single", currentMedia)
 
   // const cartItems = useCartStore(store => store.store);
   // const setCartItems = useCartStore(state => state.addToCart);
@@ -92,9 +93,9 @@ const InstaSelectionItem = ({ selectedId, order }: { selectedId: string, order: 
 
 
   // Handlers
-  const quantityHandler = (value: number) => setCurrentProduct({ ...currentProduct, quantity: value });
-  const matHandler = (value: string | number | boolean) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, mat: value } });
-  const frameHandler = (value: string | number | boolean) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, frame: value } });
+  const quantityHandler = (value: number | string) => setCurrentProduct({ ...currentProduct, quantity: typeof value === "string" ? parseInt(value) : value });
+  const matHandler = (value: boolean|string) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, mat: value } });
+  const frameHandler = (value: InstaprintFrameOptionsEnum) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, frame: value } });
 
 
 
@@ -105,15 +106,21 @@ const InstaSelectionItem = ({ selectedId, order }: { selectedId: string, order: 
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
-
+  // console.log("current product", currentProduct)
 
   return (
     <div
-      className="relative min-h-[400px] h-auto flex justify-start  items-stretch my-4 p-4 border border-gray-200 border-solid rounded-lg shadow-lg"
+      className="relative min-h-[400px] h-auto flex justify-start  items-start my-4 p-4 border border-gray-100 border-solid rounded-lg shadow-md"
       key={selectedId}
     >
       <div className="absolute top-0 left-0 right-0 bottom-0 bg-[rgba(255,255,255,0.85)] backdrop-blur-lg z-0 min-h-full w-full rounded-lg"></div>
-      <div className="relative flex flex-col flex-grow justify-start items-start p-4 z-10 min-h-full pr-8 !w-full" >
+      <div className="relative flex flex-col justify-start items-start p-4 z-10 min-h-full pr-8 w-1/2 md:w-2/5" >
+        <QuantitySelection
+          title={(t(TRX.INSTAPRINT.APP_MODAL_QUANTITY) as string)}
+          description={(t(TRX.INSTAPRINT.APP_MODAL_PLACEHOLDER) as string)}
+          handler={quantityHandler}
+          value={(currentProduct.quantity).toString()}
+        />
         <MatSelection
           value={currentProduct?.instaprint?.mat!}
           handler={matHandler}
@@ -121,6 +128,7 @@ const InstaSelectionItem = ({ selectedId, order }: { selectedId: string, order: 
           description={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION1_DESCRIPTION)}
         />
         <FrameSelection
+          // @ts-ignore
           value={currentProduct?.instaprint?.frame!}
           handler={frameHandler}
           title={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION2_TITLE)}
@@ -131,37 +139,12 @@ const InstaSelectionItem = ({ selectedId, order }: { selectedId: string, order: 
         </div>
       </div>
 
-      <div className="flex flex-col w-auto relative z-10">
-        <motion.div
-          style={{
+      <div className="flex flex-col items-center justify-center flex-grow w-1/2 md:w-3/5 relative z-10">
+        <MediaWrapper
+          imageSrc={currentMedia.media_url}
+          mat={currentProduct?.instaprint?.mat!}
+          frame={currentProduct?.instaprint?.frame!}
 
-            padding: currentProduct?.instaprint?.mat === "true" ? "15px" : "0px",
-            border: currentProduct?.instaprint?.mat === "true" ? "1px solid rgba(0,0,0,0.5)" : "1px solid rgba(0,0,0,0)",
-            margin: currentProduct?.instaprint?.mat === "true" ? "0px" : "15px",
-            marginBottom: 32
-          }}
-
-          transition={{ duration: 0.3, ease: "linear", borderColor: { duration: 0.5 } }}
-
-        >
-          <motion.img
-            style={{
-              width: 200,
-              height: 200,
-              border: currentProduct?.instaprint?.mat === "false" ? "1px solid rgba(0,0,0,0.5)" : "1px solid rgba(0,0,0,0)",
-            }}
-            transition={{ duration: 0.3, ease: "linear" }}
-            src={currentMedia.media_url}
-            alt="selected media"
-          />
-        </motion.div>
-        <input
-          label={t(TRX.INSTAPRINT.APP_MODAL_QUANTITY)}
-          placeholder={t(TRX.INSTAPRINT.APP_MODAL_PLACEHOLDER)}
-          onChange={e => quantityHandler(parseInt(e.target.value))}
-          value={currentProduct?.quantity}
-          max={5}
-          min={1}
         />
 
       </div>

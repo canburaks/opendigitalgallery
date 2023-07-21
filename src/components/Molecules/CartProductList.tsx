@@ -15,20 +15,22 @@ interface CartProductListProps {
 }
 
 export const CartProductList: FC<CartProductListProps> = ({ layout = 'horizontal', className }) => {
-  const { store, addToCart, removeFromCart, removeCartPermanently } = useCartStore();
-  const productIDs = store.map((item) => +item.productId);
+  const cartStore = useCartStore((state) => state);
+  const productIDs = cartStore?.store?.map((item) => +item.productId);
   const productOptions = useProductOptions();
-  const productPrices = useProductPricesByIDs(productIDs);
+  const productPrices = useProductPricesByIDs(productIDs || [], Boolean(productIDs));
   const { data: products } = useProductsByIDs({
-    productIDs,
+    productIDs: productIDs || [],
   });
 
   return (
     <div className={cx('flex flex-col gap-8', className)}>
-      {store &&
-        store.length > 0 &&
-        store.map((product) => {
-          const storeItem = store.find((storeItem) => storeItem.productId === product.productId);
+      {cartStore &&
+        cartStore.store.length > 0 &&
+        cartStore.store.map((product) => {
+          const storeItem = cartStore.store.find(
+            (storeItem) => storeItem.productId === product.productId
+          );
           const productPriceOptions = productPrices?.data?.find(
             (priceOptions) => priceOptions.product_id === product.productId
           );
@@ -69,12 +71,12 @@ export const CartProductList: FC<CartProductListProps> = ({ layout = 'horizontal
                     quantity={storeItem?.quantity || 0}
                     onIncrease={() => {
                       if (storeItem) {
-                        addToCart(product);
+                        cartStore.addToCart(product);
                       }
                     }}
                     onReduce={() => {
                       if (storeItem) {
-                        removeFromCart(product);
+                        cartStore.removeFromCart(product);
                       }
                     }}
                   />
@@ -82,7 +84,7 @@ export const CartProductList: FC<CartProductListProps> = ({ layout = 'horizontal
                     className="ml-2"
                     onClick={() => {
                       if (storeItem) {
-                        removeCartPermanently(product);
+                        cartStore.removeCartPermanently(product);
                       }
                     }}
                   >
@@ -106,12 +108,12 @@ export const CartProductList: FC<CartProductListProps> = ({ layout = 'horizontal
                   quantity={storeItem?.quantity || 0}
                   onIncrease={() => {
                     if (storeItem) {
-                      addToCart(storeItem);
+                      cartStore.addToCart(storeItem);
                     }
                   }}
                   onReduce={() => {
                     if (storeItem) {
-                      removeFromCart(storeItem);
+                      cartStore.removeFromCart(storeItem);
                     }
                   }}
                 />
@@ -119,7 +121,7 @@ export const CartProductList: FC<CartProductListProps> = ({ layout = 'horizontal
                   className="ml-2"
                   onClick={() => {
                     if (storeItem) {
-                      removeCartPermanently(storeItem);
+                      cartStore.removeCartPermanently(storeItem);
                     }
                   }}
                 >

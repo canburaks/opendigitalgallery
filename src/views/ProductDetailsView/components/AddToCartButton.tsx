@@ -33,7 +33,7 @@ export function AddToCartButton({
   shipping_cost: number;
   currency: string;
 }) {
-  const { addToCart /*removeFromCart*/ } = useCartStore();
+  const addToCart = useCartStore((state) => state.addToCart);
 
   // Cart Product to either add or remove from cart
   const cartProduct: CartProduct = useMemo(
@@ -93,11 +93,11 @@ export function AddToCartButton({
   // Increase the quantity of the product in the cart
   function addToCartMutation(e: MouseEvent): void {
     e.preventDefault();
-    if (frameId !== NO_FRAME_PRODUCT.product_id) {
+    if (frameId !== NO_FRAME_PRODUCT.product_id && addToCart) {
       addToCart(cartFrame, false);
       addToCart(cartProduct, true);
     } else {
-      addToCart(cartProduct, true);
+      addToCart && addToCart(cartProduct, true);
     }
   }
 

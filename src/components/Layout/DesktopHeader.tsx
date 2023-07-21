@@ -34,8 +34,7 @@ export const DesktopHeader: FC<DesktopHeaderProps> = ({ className }) => {
   const [artPrintAnchor, setArtPrintAnchor] = useState<null | HTMLElement>(null);
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null);
   const [openSearchBox, setOpenSearchBox] = useState(false);
-  const { store } = useCartStore();
-
+  const store = useCartStore((state) => state.store);
   const supabase = useSupabaseClient();
   const { user } = useUser();
   const { data: collectionsData } = useCollections();
@@ -103,7 +102,7 @@ export const DesktopHeader: FC<DesktopHeaderProps> = ({ className }) => {
             </Link>
           )}
           <LinkComponent href="/cart" id="cartIcon">
-            <Badge badgeContent={store.length} color="success">
+            <Badge badgeContent={store ? store.length : 0} color="success">
               <ShoppingCartOutlinedIcon className="mt-[6px]" />
             </Badge>
           </LinkComponent>

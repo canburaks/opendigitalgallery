@@ -7,7 +7,7 @@ import { getSupabaseBrowserClient } from '../supabaseClient';
 type GetProductsByIDsQueries<F extends keyof Product> = {
   select?: F[];
   limit?: number;
-  productIDs: number[] | string[];
+  productIDs: number[];
 };
 
 type Res<F extends keyof Product> = PostgrestResponse<Pick<Product, F>>;
@@ -24,6 +24,8 @@ const getProductsByIDs = async <F extends keyof Product>({
     .select(fields)
     .in('product_id', productIDs)
     .limit(limit || Infinity);
+
+  console.log('res', res);
   return res as Promise<Res<F>>;
 };
 
@@ -31,9 +33,8 @@ export const useProductsByIDs = <F extends keyof Product>(
   queries: GetProductsByIDsQueries<F>,
   enabled?: boolean
 ) => {
-  const { data, isLoading } = useQuery([queryKeys.postersByIDs], () => getProductsByIDs(queries), {
+  const { data, isLoading } = useQuery([queryKeys.products], () => getProductsByIDs(queries), {
     enabled: enabled === undefined ? true : enabled,
   });
-
   return { data: data, isLoading };
 };

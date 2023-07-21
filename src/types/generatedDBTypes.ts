@@ -61,3 +61,9 @@ export type OrderInsertType = Database['public']['Tables']['orders']['Insert'];
 export type OrderResponseType = Awaited<ReturnType<typeof getOrders>>;
 export type OrderResponseSuccess = OrderResponseType['data'];
 export type OrderResponseError = OrderResponseType['error'];
+
+// Table: Cart
+export type Cart = Database['public']['Tables']['carts']['Row'];
+
+// Table: Cart Details
+export type CartDetail = Database['public']['Tables']['cart_details']['Row'];

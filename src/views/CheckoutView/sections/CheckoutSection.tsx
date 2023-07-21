@@ -66,7 +66,6 @@ export const CheckoutSection = () => {
       openModal();
     }
   };
-  console.log('formValues', formValues);
 
   const onPrev = () => {
     if (activeIndex === 0) {
@@ -74,7 +73,6 @@ export const CheckoutSection = () => {
     }
     swiperRef.current.slidePrev();
   };
-  console.log('activeIndex', activeIndex);
 
   return (
     <div>

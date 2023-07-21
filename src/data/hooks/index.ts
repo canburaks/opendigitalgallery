@@ -18,3 +18,4 @@ export * from './usePaymentRequest';
 export * from './useOrders';
 export * from './useProductsByIDs';
 export * from './useCountry';
+export * from './usePricesByIDs';

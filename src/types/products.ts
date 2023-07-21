@@ -1,4 +1,4 @@
-import { ProductType } from '@/constants';
+import { ProductType, InstaprintFrameOptionsEnum } from '@/constants';
 /*
  * MERGED PRODUCT OPTION
  * This is the interface for the merged product option.
@@ -26,6 +26,9 @@ export interface MergedProductOption {
  * @quantity: The quantity of the product
  *
  * */
+
+export type FrameOptionsSelectUnionType = keyof typeof InstaprintFrameOptionsEnum
+
 export type CartProduct = {
   /* NECESSARY INFORMATIONS FOR BACKEND*/
   productTitle: string;
@@ -53,9 +56,9 @@ export type CartProduct = {
 
   // OPTIONAL INSTAPRINT RELATED PROPERTIES
   instaprint?: {
-    mediaId?: string | null;
-    mat?: string | boolean;
-    frame?: string | boolean;
+    mediaId?: string;
+    mat?: boolean | string; // 1: true, 0: false
+    frame?: InstaprintFrameOptionsEnum;
   };
 };
 

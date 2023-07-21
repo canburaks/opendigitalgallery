@@ -1,25 +1,28 @@
 import { motion } from "framer-motion";
-import { SegmentedControl } from "@/components";
-import { TRX } from "@/constants";
+import { SegmentedControl, BodyXS } from "@/components";
+import { TRX, InstaprintFrameOptionsEnum } from "@/constants";
 import { useTranslation } from 'next-i18next';
+import { init } from "@sentry/nextjs";
 
 type Props = {
-    value: string | number | boolean,
+    value: InstaprintFrameOptionsEnum,
     title: string,
     description: string,
-    handler: (val: string | number | boolean) => void
+    handler: (val: InstaprintFrameOptionsEnum) => void
 }
 
 export const FrameSelection = ({ value, handler, title, description }: Props) => {
     const { t } = useTranslation("common");
-
+    // @ts-ignore
+    const data = Object.keys(TRX.FRAMES).map((key:string, i) => ({ label: t(TRX.FRAMES[key]), value: InstaprintFrameOptionsEnum[key] }));
     return (
-        <motion.div className="w-full flex flex-col  mt-8">
-            <h3 className="flex flex-row text-lg font-bold">{title}</h3>
-            <p className="opacity-70 py-0">{description}</p>
+        <motion.div className="w-full flex flex-col mb-6">
+            <h4 className="flex flex-row text-base font-bold">{title}</h4>
+            <BodyXS className="mb-1 text-gray-700">{description}</BodyXS>
             <SegmentedControl
-                data={Object.keys(TRX.FRAMES).map((key:string, i) => ({ label: t(TRX.FRAMES[key]), value: key }))}
+                data={data}
                 value={value}
+                // @ts-ignore
                 onChange={handler}
             />
         </motion.div>

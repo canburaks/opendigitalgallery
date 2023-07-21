@@ -31,8 +31,8 @@ export const FeatureSection = ({ title, subtitle, description, authUrl, image }:
               alt="Print your Instagram photos"
             />
           </div>
-          <Headline className="mt-12 font-bold !text-gray-900 text-center">{title}</Headline>
-          <BodyX className="mt-6 font-medium !text-gray-700 text-center">{description}</BodyX>
+          <Headline className="mt-12 font-bold !text-gray-900 text-center tracking-tight">{title}</Headline>
+          <BodyX className="mt-6 font-medium !text-gray-700 text-center font-normal tracking-tight">{description}</BodyX>
           <div className="mt-4">
             <motion.a
               href={authUrl}
@@ -40,13 +40,14 @@ export const FeatureSection = ({ title, subtitle, description, authUrl, image }:
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.9 }}
               transition={{ duration: 0.2, ease: "linear" }}
-              className="inline-flex intense-shadow items-center bg-[#721cff] px-6 !py-2 mt-8 font-semibold !text-white bg-primary rounded-lg lg:mt-16 overflow-hidden" role="button">
+              style={{ width: 225, height: 63 }}
+              className="inline-flex intense-shadow items-center justify-between uppercase bg-[#000] px-6 !py-2 mt-8 font-semibold !text-white bg-primary rounded-lg lg:mt-16 overflow-hidden" role="button">
 
               <div className="absolute inset-y-0 left-0 flex items-center pl-4">
 
               </div>
-              Get started now
-              <svg className="w-12 h-6 ml-8 -mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              Get started
+              <svg className="w-10 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </motion.a>

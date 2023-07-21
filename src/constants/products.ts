@@ -30,6 +30,14 @@ export enum ProductType {
   FRAME = 2,
   INSTAPRINT = 3
 }
+export enum InstaprintFrameOptionsEnum {
+  NO_FRAME = "NO_FRAME",
+  BLACK = "BLACK",
+  DARK_BROWN = "DARK_BROWN", 
+  NATURAL = "NATURAL"
+}
+
+export const ProductBulkPurchaseLimits = [1, 2, 3, 4];
 
 // If user doesn't want any frame, this is the default frame
 export const NO_FRAME_PRODUCT: Partial<ProductDetails> = {
@@ -82,3 +90,4 @@ export const NO_FRAME_PRODUCT: Partial<ProductDetails> = {
     },
   ],
 };
+

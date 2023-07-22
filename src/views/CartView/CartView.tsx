@@ -16,25 +16,27 @@ import { useProductsByIDs } from '@/data/hooks/useProductsByIDs';
 import { useMediaQuery } from '@mui/material';
 
 export const CartView = () => {
-  const { store } = useCartStore();
-  const isCartEmpty = store.length === 0;
-  const productIDs = store.map((item) => +item.productId);
+  const store = useCartStore((state) => state.store);
+  const isCartEmpty = store && store.length === 0;
+  const productIDs = store && store.map((item) => +item.productId);
   const break800 = useMediaQuery('(max-width:800px)');
 
   const products = useProductsByIDs(
     {
-      productIDs: productIDs,
+      productIDs: productIDs || [],
       select: ['title', 'product_id', 'handle', 'default_image_alt', 'default_image_url'],
     },
-    productIDs.length > 0
+    productIDs && productIDs.length > 0
   );
 
-  const productPrices = useProductPricesByIDs(productIDs);
+  const productPrices = useProductPricesByIDs(productIDs || [], Boolean(productIDs));
 
-  const sumPrice = store.reduce((acc, item) => {
-    const priceData = productPrices.data?.find((price) => price.price_id === item.priceId);
-    return acc + (priceData?.price || 0) * item.quantity;
-  }, 0);
+  const sumPrice =
+    store &&
+    store.reduce((acc, item) => {
+      const priceData = productPrices.data?.find((price) => price.price_id === item.priceId);
+      return acc + (priceData?.price || 0) * item.quantity;
+    }, 0);
 
   if (products.data?.error) {
     return <div>Something went wrong</div>;

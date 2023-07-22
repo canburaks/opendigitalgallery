@@ -39,7 +39,7 @@ export const MobileHeader: FC<MobileHeaderProps> = ({ className }) => {
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null);
   const [collapseCollection, setCollapseCollection] = useState(false);
   const [collapseArtPrints, setCollapseArtPrints] = useState(false);
-  const { store } = useCartStore();
+  const store = useCartStore((state) => state.store);
   const [openSearchBox, setOpenSearchBox] = useState(false);
   const { data: collectionsData } = useCollections();
   const router = useRouter();
@@ -133,7 +133,7 @@ export const MobileHeader: FC<MobileHeaderProps> = ({ className }) => {
             </Drawer>
           </div>
           <LinkComponent href="/cart" id="cartIcon">
-            <Badge badgeContent={store.length} color="success">
+            <Badge badgeContent={store && store.length} color="success">
               <ShoppingCartOutlinedIcon className="w-6" />
             </Badge>
           </LinkComponent>

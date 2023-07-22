@@ -18,4 +18,5 @@ export const queryKeys = {
   searchPosters: 'searchPosters',
   postersByIDs: 'postersByIDs',
   ordersByToken: 'ordersByToken',
+  prices: 'prices',
 };

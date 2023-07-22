@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react"
 import { UseInstaprintStore } from "@/data/stores";
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import useDimensions from "react-cool-dimensions";
 import type { IGMedia } from "@/types";
 import { IG_USER_USER_MEDIA_LOCAL_STORAGE_KEY, TRX } from "@/constants";
@@ -22,20 +22,20 @@ export const InstaFeed = () => {
 }
 
 const MediaGrid = () => {
-	const { observe, unobserve, width, height, entry } = useDimensions({
-		onResize: ({ observe, unobserve, width, height, entry }) => {
-			// Triggered whenever the size of the target is changed...
+	const { observe, width} = useDimensions({
+		// onResize: ({ observe, width}) => {
+		// 	// Triggered whenever the size of the target is changed...
 
-			unobserve(); // To stop observing the current target element
-			observe(); // To re-start observing the current target element
-		},
+		// 	unobserve(); // To stop observing the current target element
+		// 	observe(); // To re-start observing the current target element
+		// },
 	});
-	console.log("width", width)
+	// console.log("width", width)
 	const media = UseInstaprintStore(state => state.media);
 	const setMedia = UseInstaprintStore(state => state.setMedia);
 
 	// const toggleSelection = UseInstaprintStore(state => state.toggleSelection);
-	console.log("media", media)
+	// console.log("media", media)
 
 	useEffect(() => {
 		if (media.length === 0) {
@@ -98,7 +98,7 @@ const variants = {
 }
 const SelectedLabel = ({ id }: { id: string }) => {
 	const { t } = useTranslation("common");
-	const [hover, setHover] = useState(false)
+	// const [hover, setHover] = useState(false)
 	const selections = UseInstaprintStore(state => state.selections);
 	const toggleSelection = UseInstaprintStore(state => state.toggleSelection);
 	const toggle = useCallback(() => toggleSelection(id), [id])
@@ -138,16 +138,16 @@ const SelectedLabel = ({ id }: { id: string }) => {
 }
 
 
-const SelectionLabelButton = () => (
-	<motion.div>
+// const SelectionLabelButton = () => (
+// 	<motion.div>
 
-		<motion.button>
+// 		<motion.button>
 
-		</motion.button>
-	</motion.div>
-)
+// 		</motion.button>
+// 	</motion.div>
+// )
 
-export const TickIcon = ({ size = 28, color = "#000", active = false }: { size?: number, color?: string, active: boolean }) => (
+export const TickIcon = ({ size = 28, active = false }: { size?: number, active: boolean }) => (
 	<svg
 		className="transition-all duration-300 ease-linear z-10"
 		viewBox="0 0 24 24" fill={"#000"}

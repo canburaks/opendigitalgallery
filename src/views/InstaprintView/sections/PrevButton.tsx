@@ -1,10 +1,11 @@
 import { useTranslation } from 'next-i18next';
-import { useState, useEffect, useMemo, memo } from "react"
-import { UseInstaprintStore, useCartStore } from "@/data/stores";
-import { PRODUCT_IMAGE_PLACEHOLDER, TRX, PAGES, ProductType } from '@/constants';
-import type { CartProduct, IGMedia } from "@/types";
-import { motion, AnimatePresence } from "framer-motion"
+import { memo } from "react"
+import { UseInstaprintStore } from "@/data/stores";
+import { TRX } from '@/constants';
+// import type { CartProduct, IGMedia } from "@/types";
+import { motion } from "framer-motion"
 
+// @ts-ignore
 export const PrevButton = memo(() => {
     const { t } = useTranslation("common");
     const page = UseInstaprintStore(state => state.page);
@@ -26,7 +27,7 @@ export const PrevButton = memo(() => {
     )
 })
 
-export const ArrowLeftIcon = ({ size = 24, color = "#000" }: { size?: number, color?: string }) => (
+export const ArrowLeftIcon = ({ size = 24 }: { size?: number }) => (
     <svg
       className="transition-all duration-300 ease-linear"
       viewBox="0 0 24 24" fill={"#000"}

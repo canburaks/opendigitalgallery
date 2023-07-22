@@ -1,12 +1,7 @@
 import React from 'react';
 import {
-    Body2X,
+
     BodyX,
-    Body,
-    BodyL,
-    BodyS,
-    Button,
-    CartProductList,
     HeadlineX,
     SectionContainer,
 } from '@/components';

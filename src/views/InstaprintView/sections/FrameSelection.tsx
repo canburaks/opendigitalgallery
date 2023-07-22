@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { SegmentedControl, BodyXS } from "@/components";
 import { TRX, InstaprintFrameOptionsEnum } from "@/constants";
 import { useTranslation } from 'next-i18next';
-import { init } from "@sentry/nextjs";
 
 type Props = {
     value: InstaprintFrameOptionsEnum,

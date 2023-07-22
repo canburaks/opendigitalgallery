@@ -1,18 +1,18 @@
-import { useEffect, useState, useMemo, useCallback, useRef, SyntheticEvent } from "react";
-import { UseInstaprintStore } from "@/data/stores";
-import { motion, AnimatePresence } from "framer-motion"
-import Image from "next/image";
+import { useState, useMemo, SyntheticEvent } from "react";
+// import { UseInstaprintStore } from "@/data/stores";
+import { motion } from "framer-motion"
+// import Image from "next/image";
 import {
     InstaprintFrameOptionsEnum,
-    UNIT_WIDTH_CM,
     FRAME_THICKNESS,
     PRINT_WIDTH_CM,
     PRINT_HEIGHT_CM,
-    PRINT_HEIGHT_CM2,
-    MAT_THICKNESS
+    MAT_THICKNESS,
+    // PRINT_HEIGHT_CM2,
+    // UNIT_WIDTH_CM,
 
 } from "@/constants";
-import type { FrameOptionsSelectUnionType } from "@/types";
+// import type { FrameOptionsSelectUnionType } from "@/types";
 import useDimensions from "react-cool-dimensions";
 
 const BLACK = "/images/instaprint/frame-texture/black-wood-texture.avif"

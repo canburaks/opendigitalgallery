@@ -16,7 +16,7 @@ export const QuantitySelection = ({ value, handler, title, description }: Props)
             <BodyXS className="mb-1 text-gray-700">{description}</BodyXS>
             <SegmentedControl
                 data={ProductBulkPurchaseLimits.map(limit => ({ label: limit.toString(), value: limit.toString() }))}
-                value={"1"}
+                value={value.toString()}
                 // @ts-ignore
                 onChange={handler}
             />

@@ -7,18 +7,19 @@ import { LocaleType } from '@/types';
 import { PAGES } from '@/constants';
 // import { InstaprintLandingPageView } from '@/views';
 import { useRouter } from 'next/router';
-import { instagramClient } from "@/data/instagramClient";
+import { Instagram } from "@/data/instagramClient";
 import { Loading } from '@/components';
 // import { I18N, LOCALES_LIST } from '@/constants';
 // import { getProductDetailByHandle } from '@/data/hooks/useProductDetailByHandle';
 // import { getProductOptions } from '@/data/hooks/useProductOptions';
 // import { getFrames } from '@/data/hooks';
 
-export default function InstaPrintAuthPage() {
+export default function InstaPrintAuthPage(props:any) {
     const router = useRouter();
     const { query } = router;
     const { code } = query;
     console.log('code', code);
+    const instagramClient = new Instagram(props.instaprintAppId, props.instaprintRedirectUri);
 
     async function getInstagramData() {
         if (code && typeof code === "string") {
@@ -61,9 +62,12 @@ export default function InstaPrintAuthPage() {
 }
 
 export const getStaticProps = async ({ locale }: { locale: LocaleType }) => {
-
+    const appId = process.env.INSTAGRAM_APP_ID!;
+    const redirectUri = process.env.INSTAGRAM_APP_REDIRECT_URI!;
     return {
         props: {
+            instaprintAppId: appId,
+            instaprintRedirectUri: redirectUri,
             ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
         },
     };

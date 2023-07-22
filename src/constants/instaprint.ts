@@ -8,14 +8,15 @@ export const IG_USER_ACCESS_TOKEN_LOCAL_STORAGE_KEY = 'instaUserAccessToken';
 export const IG_USER_USER_MEDIA_LOCAL_STORAGE_KEY = 'instaUserMediaData';
 
 export const INSTAPRINT_PRODUCT_PLACEHOLDER: CartProduct = {
-  productTitle: 'Instaprint',
+  // productTitle: 'Instaprint',
   productId: INSTAPRINT_PRODUCT_ID,
+  priceId: -1,
   quantity: 1,
-  productType: ProductType.INSTAPRINT,
-  instaprint: {
-    mat: "",
-    frame: InstaprintFrameOptionsEnum.NO_FRAME,
-  },
+  // productType: ProductType.INSTAPRINT,
+  // instaprint: {
+  //   mat: "",
+  //   frame: InstaprintFrameOptionsEnum.NO_FRAME,
+  // },
 };
 
 // SIZING

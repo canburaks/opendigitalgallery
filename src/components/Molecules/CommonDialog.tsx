@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import React, { PropsWithChildren } from 'react';
 import { TransitionProps } from '@mui/material/transitions';
+import { ImageWithFallback } from '../Atoms';
 
 type Props = {
   title?: string;
@@ -57,7 +58,7 @@ export const CommonDialog: React.FC<PropsWithChildren<Props>> = ({
         {closeIcon && (
           <div className="mb-5">
             <Button className="absolute right-3 top-3" onClick={onClose}>
-              <img src="/icons/closePurpleIcon.svg" alt="close icon" />
+              <ImageWithFallback src="/icons/closePurpleIcon.svg" alt="close icon" />
             </Button>
           </div>
         )}

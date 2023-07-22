@@ -3,6 +3,7 @@ import { PRODUCT_IMAGE_PLACEHOLDER, TRX, PAGES } from '@/constants';
 import { ItemTransaction, OrderQueryResponse, Product, TransactionItemProduct } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { useProductsByIDs } from '@/data/hooks';
+import { ImageWithFallback } from '@/components';
 
 type Props = {
   data: OrderQueryResponse;
@@ -28,7 +29,7 @@ export const OrderSuccess = (props: Props) => {
     const transactionItem =
       transactionItems.find((it: ItemTransaction) => it.itemId.split('-')[1] === pid.toString()) ||
       {};
-    return {...transactionItem, ...product};
+    return { ...transactionItem, ...product };
   });
 
   // Date
@@ -80,9 +81,11 @@ export const OrderSuccess = (props: Props) => {
                 <div className="py-3 px-4 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-4">
                   <div className="sm:flex lg:col-span-7">
                     <div className="aspect-w-1 aspect-h-1 w-full flex-shrink-0 overflow-hidden rounded-lg sm:aspect-none sm:h-40 sm:w-40">
-                      <img
-                        src={p.default_image_url || PRODUCT_IMAGE_PLACEHOLDER}
-                        alt={p.default_image_alt || p.title}
+                      <ImageWithFallback
+                        width={90}
+                        height={120}
+                        src={p.default_image_url || PRODUCT_IMAGE_PLACEHOLDER || ''}
+                        alt={p.default_image_alt || p.title || ''}
                         className="h-full w-full object-cover object-center sm:h-full sm:w-full"
                       />
                     </div>

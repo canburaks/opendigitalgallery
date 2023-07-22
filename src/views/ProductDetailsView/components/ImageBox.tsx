@@ -7,6 +7,7 @@ import {
 import { Tab } from '@headlessui/react';
 import { ProductImage } from '@/types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ImageWithFallback } from '@/components';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -32,13 +33,11 @@ const ImageBoxComponent = ({ productId, images, defaultAltText }: Props) => (
               <>
                 <span className="sr-only"> {image.alt} </span>
                 <span className="absolute inset-0 overflow-hidden rounded-sm">
-                  <img
+                  <ImageWithFallback
+                    width={PRODUCT_THUMB_IMAGE_WIDTH}
+                    height={PRODUCT_THUMB_IMAGE_WIDTH / PRODUCT_IMAGE_RATIO}
                     src={image.url}
                     alt={image.alt || `${defaultAltText} ${ix + 1}`}
-                    style={{
-                      width: PRODUCT_THUMB_IMAGE_WIDTH,
-                      height: PRODUCT_THUMB_IMAGE_WIDTH / PRODUCT_IMAGE_RATIO,
-                    }}
                     className="h-full object-cover object-center"
                   />
                 </span>

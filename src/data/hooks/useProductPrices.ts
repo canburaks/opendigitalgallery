@@ -6,7 +6,7 @@ export interface ProductPriceInputs {
   productID: number;
 }
 
-export const getProductPrices = async (productID: number) => {
+export const getProductPrices = async (productID?: number) => {
   const locales = getLocaleValues();
   const client = getSupabaseBrowserClient();
   return client
@@ -17,7 +17,7 @@ export const getProductPrices = async (productID: number) => {
     .eq('prices.country_id', locales.code);
 };
 
-export const useProductPrices = (productID: number, enabled?: boolean) => {
+export const useProductPrices = (productID?: number, enabled?: boolean) => {
   const { data, isLoading } = useQuery(
     [queryKeys.productPrices, productID],
     () => getProductPrices(productID),
@@ -25,5 +25,5 @@ export const useProductPrices = (productID: number, enabled?: boolean) => {
       enabled: enabled === undefined ? true : enabled,
     }
   );
-  return { data: data, isLoading };
+  return { data: data?.data, isLoading };
 };

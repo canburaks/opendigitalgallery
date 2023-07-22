@@ -3,7 +3,7 @@ import { Body, BodyL } from '../Atoms/Typographies';
 import { LinkComponent } from '../Atoms/LinkComponent';
 import { Price, Product } from '@/types';
 import { getLocaleValues } from '@/constants';
-import Image from 'next/image';
+import { ImageWithFallback } from '../Atoms';
 
 type ProductCard = {
   prices: Price[];
@@ -25,14 +25,14 @@ export const ProductCard: FC<ProductCard> = ({
       <>
         {/* Images */}
         <div className="relative break1000:h-[350px] break650:h-[300px] h-[200px]  overflow-hidden border-1 border-solid border-gray-100 ">
-          <Image
+          <ImageWithFallback
             src={default_image_url || ''}
             alt={default_image_alt || ''}
             sizes="(max-width: 400px) 150px, (max-width: 650px) 200px, 300px"
             fill
             className="w-full object-contain group-hover:h-0 group-hover:opacity-0"
           />
-          <Image
+          <ImageWithFallback
             src={default_image_url || ''}
             alt={default_image_alt || ''}
             sizes="(max-width: 400px) 150px, (max-width: 650px) 200px, 300px"

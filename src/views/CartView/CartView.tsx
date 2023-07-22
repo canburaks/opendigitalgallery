@@ -32,9 +32,7 @@ export const CartView = () => {
   const productPrices = useProductPricesByIDs(productIDs);
 
   const sumPrice = store.reduce((acc, item) => {
-    const priceData = productPrices.data?.find(
-      (price) => price.product_option_id === item.productOptionId
-    );
+    const priceData = productPrices.data?.find((price) => price.price_id === item.priceId);
     return acc + (priceData?.price || 0) * item.quantity;
   }, 0);
 

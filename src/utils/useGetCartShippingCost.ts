@@ -1,5 +1,7 @@
 import { ProductType } from '@/constants';
+import { useProductPricesByIDs, useProductsByIDs } from '@/data/hooks';
 import { useCartStore } from '@/data/stores';
+import { Price, Product } from '@/types';
 import { useMemo, useState } from 'react';
 
 // ***** SHIPPIN COST ALGORITHM *****
@@ -17,39 +19,82 @@ type ShippingCost = {
   error: string;
 };
 
+type ProductDataPriceType = {
+  [key: number]: {
+    productData?: Product;
+    priceData?: Price;
+  };
+};
+
 export const useGetCartShippingCost = (): ShippingCost => {
   const { store } = useCartStore();
+  const productIDs = useMemo(() => store.map((product) => product.productId), [store]);
+  const { data: products } = useProductsByIDs({
+    productIDs,
+  });
+  const { data: productPrices } = useProductPricesByIDs(productIDs);
+
+  const productDataPriceMerge = useMemo(() => {
+    const list: ProductDataPriceType = {};
+
+    productIDs.forEach((id) => {
+      const product = products?.data?.find((i) => i.product_id === id);
+      const price = productPrices?.find((i) => i.product_id === id);
+      list[id] = {
+        priceData: price,
+        productData: product,
+      };
+    });
+
+    return list;
+  }, [productIDs, products?.data, productPrices]);
+
   const [sum, setSum] = useState(0);
   const [currency, setCurrency] = useState('');
   const [error, setError] = useState('');
 
   useMemo(() => {
     // Error Check
-    const currencyList = store.map((product) => product.currency);
-    const currencyIsSame = currencyList.every((currency) => currency === currencyList[0]);
+    const currencyList = productPrices?.map((product) => product.currency);
+    const currencyIsSame = currencyList?.every((currency) => currency === currencyList[0]);
     if (!currencyIsSame) {
       setError('Something went wrong. Please try again later.');
       return;
     }
 
     // Set currency
-    setCurrency(currencyList[0]);
+    if (currencyList && currencyList?.length > 0) {
+      setCurrency(currencyList[0]);
+    }
 
     // Helper : filter by product types
-    const frames = store.filter((product) => product.productType === ProductType.FRAME);
-    const posters = store.filter((product) => product.productType === ProductType.POSTER);
+    const frames = Object.values(productDataPriceMerge).filter(
+      (item) => item.productData?.product_type_id === ProductType.FRAME
+    );
+    const posters = Object.values(productDataPriceMerge).filter(
+      (item) => item.productData?.product_type_id === ProductType.POSTER
+    );
 
     // Helper : case checkers
-    const isOnlyFrame = store.every((product) => product.productType === ProductType.FRAME);
-    const isOnlyPoster = store.every((product) => product.productType === ProductType.POSTER);
-    const isMixed = !isOnlyFrame && !isOnlyPoster;
+    const isOnlyFrame = products?.data?.every(
+      (product) => product.product_type_id === ProductType.FRAME
+    );
+    const isOnlyPoster = products?.data?.every(
+      (product) => product.product_type_id === ProductType.POSTER
+    );
+    const isMixed = !isOnlyFrame && !isOnlyPoster && frames && posters;
     const mixedBothSameAmount = isMixed && frames.length === posters.length;
     const mixedMorePosters = isMixed && frames.length < posters.length;
     const mixedMoreFrames = isMixed && frames.length > posters.length;
 
     // Helper : sums
-    const frameSum = frames.reduce((acc, curr) => acc + +curr.shipping_cost, 0);
-    const storeSum = store.reduce((acc, curr) => acc + +curr.shipping_cost, 0);
+    const frameSum = frames
+      ? frames.reduce((acc, curr) => acc + (curr.priceData?.shipping_cost || 0), 0)
+      : 0;
+    const storeSum = Object.values(productDataPriceMerge).reduce(
+      (acc, curr) => acc + (curr.priceData?.shipping_cost || 0),
+      0
+    );
 
     // Case : Only Frames
     if (isOnlyFrame) {
@@ -68,7 +113,7 @@ export const useGetCartShippingCost = (): ShippingCost => {
     // Case: Mixed - more posters than frames
     if (mixedMorePosters) {
       const extraPosters = posters.length - frames.length;
-      const posterSum = extraPosters * posters[0].shipping_cost;
+      const posterSum = extraPosters * (posters[0].priceData?.shipping_cost || 0);
       setSum(frameSum + posterSum);
     }
 
@@ -76,7 +121,7 @@ export const useGetCartShippingCost = (): ShippingCost => {
     if (mixedMoreFrames) {
       setSum(frameSum);
     }
-  }, [store]);
+  }, [productDataPriceMerge, productPrices, products?.data]);
 
   return {
     sum,

@@ -1,10 +1,12 @@
 import { useTranslation } from 'next-i18next';
-import { useState, useEffect, useMemo, memo } from "react"
+import { useMemo, memo } from "react"
 import { UseInstaprintStore, useCartStore } from "@/data/stores";
-import { PRODUCT_IMAGE_PLACEHOLDER, TRX, PAGES, ProductType } from '@/constants';
+import { TRX, ProductType } from '@/constants';
 import type { CartProduct, IGMedia } from "@/types";
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 
+
+// @ts-ignore
 export const NextButton = memo(() => {
     const { t } = useTranslation("common");
     const store = useCartStore((state) => state.store);
@@ -20,8 +22,8 @@ export const NextButton = memo(() => {
         if (page === 1) {
             return selections.length === 0;
         } else if (2) {
-            const nonMats = store.filter((ci: CartProduct) => ci?.properties?.mat !== null)
-            const nonFrames = store.filter((ci: CartProduct) => ci?.properties?.frame !== null)
+            const nonMats = store.filter((ci: CartProduct) => ci?.instaprint?.mat !== null)
+            const nonFrames = store.filter((ci: CartProduct) => ci?.instaprint?.frame !== null)
             return nonMats.length !== selections.length || nonFrames.length !== selections.length
         } else if (page === 3) {
         }
@@ -59,10 +61,10 @@ export const NextButton = memo(() => {
                         url: selectedMedia.media_url,
                         alt: selectedMedia.caption
                     })),
-                    properties: {
-                        mat: null,
-                        frame: null,
-                    }
+                    // instaprint: {
+                    //     mat: null,
+                    //     frame: null,
+                    // }
                 })
             }
         })
@@ -86,7 +88,7 @@ export const NextButton = memo(() => {
     )
 })
 
-const ArrowRightIcon = ({ size = 24, color = "#000" }: { size?: number, color?: string }) => (
+const ArrowRightIcon = ({ size = 24  }: { size?: number }) => (
     <svg
       className="transition-all duration-300 ease-linear"
       viewBox="0 0 24 24" fill={"#000"}

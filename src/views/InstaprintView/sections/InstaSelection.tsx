@@ -1,22 +1,22 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from "react"
-import { UseInstaprintStore, useCartStore } from "@/data/stores";
-import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react"
+import { UseInstaprintStore } from "@/data/stores";
+import { motion } from "framer-motion"
 import useDimensions from "react-cool-dimensions";
-import type { IGMedia, CartProduct, FrameOptionsSelectUnionType } from "@/types";
-import { IG_USER_USER_MEDIA_LOCAL_STORAGE_KEY, TRX, INSTAPRINT_PRODUCT_PLACEHOLDER, InstaprintFrameOptionsEnum } from "@/constants";
+import type { IGMedia, CartProduct } from "@/types";
+import { TRX, INSTAPRINT_PRODUCT_PLACEHOLDER, InstaprintFrameOptionsEnum } from "@/constants";
 import { useTranslation } from 'next-i18next';
 import { MatSelection, FrameSelection, QuantitySelection, MediaWrapper } from "./index";
 
 
 export const InstaSelection = () => {
 
-  const { observe, unobserve, width, height, entry } = useDimensions({
-    onResize: ({ observe, unobserve, width, height, entry }) => {
-      // Triggered whenever the size of the target is changed...
+  const { observe } = useDimensions({
+    // onResize: ({ observe }) => {
+    //   // // Triggered whenever the size of the target is changed...
 
-      unobserve(); // To stop observing the current target element
-      observe(); // To re-start observing the current target element
-    },
+    //   // unobserve(); // To stop observing the current target element
+    //   // observe(); // To re-start observing the current target element
+    // },
   });
   // const dynamicProductData = useDynamicProductData();
   // const inputData = useMemo(() => {
@@ -27,14 +27,14 @@ export const InstaSelection = () => {
   // }, [dynamicProductData])
   const page = UseInstaprintStore(state => state.page);
 
-  const media = UseInstaprintStore(state => state.media);
+  // const media = UseInstaprintStore(state => state.media);
   const selections = UseInstaprintStore(state => state.selections);
-  const toggleMedia = UseInstaprintStore(state => state.toggleSelection);
+  // const toggleMedia = UseInstaprintStore(state => state.toggleSelection);
 
-  const initialData = useMemo(() => selections.map(s => ({ id: s, })), [selections])
+  // const initialData = useMemo(() => selections.map(s => ({ id: s, })), [selections])
 
-  const cartItems = useCartStore(state => state.store);
-  const setCartItems = useCartStore(state => state.addToCart);
+  // const cartItems = useCartStore(state => state.store);
+  // const setCartItems = useCartStore(state => state.addToCart);
   // console.log("\n\ninsta selection---\npage", page)
   // console.log("selection", selections)
   // console.log("media", media)
@@ -54,7 +54,7 @@ export const InstaSelection = () => {
         <InstaSelectionItem
           key={selectedId + index}
           selectedId={selectedId}
-          order={index}
+          //order={index}
         // dynamicProductData={[]}
         />
 
@@ -63,9 +63,13 @@ export const InstaSelection = () => {
   )
 }
 
-const InstaSelectionItem = ({ selectedId, order }: { selectedId: string, order: number }) => {
+const InstaSelectionItem = ({ selectedId, 
+//  order
+ }: { selectedId: string, 
+  //order: number
+ }) => {
   const { t } = useTranslation("common");
-  const imageRef = useRef<HTMLImageElement>(null);
+  // const imageRef = useRef<HTMLImageElement>(null);
 
   const medias: IGMedia[] = UseInstaprintStore(state => state?.media);
   const currentMedia: IGMedia = medias.find(m => m.id === selectedId)!;
@@ -102,9 +106,9 @@ const InstaSelectionItem = ({ selectedId, order }: { selectedId: string, order: 
 
 
   // STEPPER
-  const [active, setActive] = useState(0);
-  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
-  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+  // const [active, setActive] = useState(0);
+  // const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
+  // const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   // console.log("current product", currentProduct)
 

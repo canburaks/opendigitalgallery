@@ -4,8 +4,9 @@ import { CheckoutSection } from './sections/CheckoutSection';
 import { useCartStore } from '@/data/stores';
 
 export function CheckoutView() {
-  const { store } = useCartStore();
-  const isCartEmpty = store.length === 0;
+  const store = useCartStore((state) => state.store);
+
+  const isCartEmpty = store && store.length === 0;
 
   return (
     <SectionContainer>

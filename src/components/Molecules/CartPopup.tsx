@@ -15,7 +15,7 @@ export const CartPopup = () => {
   const [showCart, setShowCart] = useState(false);
   const router = useRouter();
   const { data: productOptions } = useProductOptions();
-  const { lastAddedProduct, removeLastAddedProduct, store } = useCartStore();
+  const { lastAddedProduct, removeLastAddedProduct, store } = useCartStore((state) => state);
   const { data: productPriceOptions } = useProductPrices(
     lastAddedProduct?.productId,
     Boolean(lastAddedProduct?.productId)

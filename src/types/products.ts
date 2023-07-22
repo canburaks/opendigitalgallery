@@ -1,5 +1,4 @@
 import { ProductType, InstaprintFrameOptionsEnum } from '@/constants';
-
 /*
  * MERGED PRODUCT OPTION
  * This is the interface for the merged product option.
@@ -32,35 +31,9 @@ export type FrameOptionsSelectUnionType = keyof typeof InstaprintFrameOptionsEnu
 
 export type CartProduct = {
   /* NECESSARY INFORMATIONS FOR BACKEND*/
-  productTitle: string;
-  productId: string | number;
-  productOptionId?: string | number;
-  frameId?: string | number; // there is no need to frame option id, because it will be the same productOptionId
+  productId: number;
+  priceId: number;
   quantity: number;
-  productType: ProductType;
-  priceId?: number;
-  currency?: string;
-  productPrice?: number; // product price
-  framePrice?: number; // frame price
-  price?: number; // general price
-  image?: {
-    url: string;
-    alt: string;
-  };
-
-  /* EXTRA INFORMATION IF FRONTEND REQUIRES */
-  productImageUrl?: string;
-  productHandle?: string;
-  frameImageUrl?: string;
-  frameHandle?: string;
-  shipping_cost?: number;
-
-  // OPTIONAL INSTAPRINT RELATED PROPERTIES
-  instaprint?: {
-    mediaId?: string;
-    mat?: boolean | string; // 1: true, 0: false
-    frame?: InstaprintFrameOptionsEnum;
-  };
 };
 
 /*

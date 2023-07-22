@@ -20,18 +20,18 @@ export const usePaymentRequestData = ({ formValues }: Props) => {
   const { data: countries } = useCountries({ select: ['country_id', 'name'] });
   const router = useRouter();
   const store = useCartStore((state) => state.store);
-  const productIDs = store.map((product) => product.productId);
+
+  const productIDs = store?.map((product) => product.productId);
   const { data: products } = useProductsByIDs({
-    productIDs,
+    productIDs: productIDs || [],
   });
-  const productPrices = useProductPricesByIDs(productIDs);
+  const productPrices = useProductPricesByIDs(productIDs || []);
   const setPaymentRequestData = usePaymentStore((state) => state.setPaymentRequestData);
 
   const countryName = useMemo(
     () => getCountryName(formValues?.country_id, countries?.data || []),
     [countries?.data, formValues?.country_id]
   );
-  //console.log('countryName', countryName);
 
   const shippingAddress = useMemo<PaymentAddress>(() => {
     return {
@@ -43,8 +43,8 @@ export const usePaymentRequestData = ({ formValues }: Props) => {
     };
   }, [formValues, countryName]);
 
-  const basketItems: BasketItem[] = useMemo(() => {
-    return store.map((product) => {
+  const basketItems: BasketItem[] | undefined = useMemo(() => {
+    return store?.map((product) => {
       const productItem = products?.data?.find(
         (productI) => productI.product_id === product.productId
       );
@@ -68,7 +68,7 @@ export const usePaymentRequestData = ({ formValues }: Props) => {
     });
   }, [productPrices?.data, products?.data, store]);
   const price = useMemo(() => {
-    return basketItems.reduce((acc, curr) => acc + parseInt(curr.price), 0);
+    return basketItems?.reduce((acc, curr) => acc + parseInt(curr.price), 0);
   }, [basketItems]);
 
   const paymentRequestData = useMemo(
@@ -77,8 +77,8 @@ export const usePaymentRequestData = ({ formValues }: Props) => {
       currency: I18N[router.locale || LocaleEnum.EN].currency,
       //conversationId: // this will setted in api/create-payment-request
       basketId: 'B67832',
-      price: price.toString(),
-      paidPrice: price.toString(),
+      price: price ? price.toString() : '0',
+      paidPrice: price ? price.toString() : '0',
       shippingAddress,
       billingAddress: shippingAddress,
       basketItems,

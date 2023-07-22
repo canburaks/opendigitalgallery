@@ -1,5 +1,5 @@
 import { ProductType } from '@/constants';
-import { useProductPricesByIDs, useProductsByIDs } from '@/data/hooks';
+import { usePricesByIDs, useProductsByIDs } from '@/data/hooks';
 import { useCartStore } from '@/data/stores';
 import { Price, Product } from '@/types';
 import { useMemo, useState } from 'react';
@@ -27,24 +27,31 @@ type ProductDataPriceType = {
 };
 
 export const useGetCartShippingCost = (): ShippingCost => {
-  const { store } = useCartStore();
-  const productIDs = useMemo(() => store.map((product) => product.productId), [store]);
-  const { data: products } = useProductsByIDs({
-    productIDs,
-  });
-  const { data: productPrices } = useProductPricesByIDs(productIDs);
+  const store = useCartStore((state) => state.store);
+  const productIDs = useMemo(() => store && store.map((product) => product.productId), [store]);
+
+  const { data: products } = useProductsByIDs(
+    {
+      productIDs: productIDs || [],
+    },
+    productIDs && productIDs?.length > 0
+  );
+
+  const priceIDs = useMemo(() => store && store.map((product) => product.priceId), [store]);
+  const { data: productPrices } = usePricesByIDs(priceIDs || []);
 
   const productDataPriceMerge = useMemo(() => {
     const list: ProductDataPriceType = {};
 
-    productIDs.forEach((id) => {
-      const product = products?.data?.find((i) => i.product_id === id);
-      const price = productPrices?.find((i) => i.product_id === id);
-      list[id] = {
-        priceData: price,
-        productData: product,
-      };
-    });
+    productIDs &&
+      productIDs.forEach((id) => {
+        const product = products?.data?.find((i) => i.product_id === id);
+        const price = productPrices?.find((i) => i.product_id === id);
+        list[id] = {
+          priceData: price,
+          productData: product,
+        };
+      });
 
     return list;
   }, [productIDs, products?.data, productPrices]);
@@ -54,6 +61,7 @@ export const useGetCartShippingCost = (): ShippingCost => {
   const [error, setError] = useState('');
 
   useMemo(() => {
+    setError('');
     // Error Check
     const currencyList = productPrices?.map((product) => product.currency);
     const currencyIsSame = currencyList?.every((currency) => currency === currencyList[0]);
@@ -91,11 +99,11 @@ export const useGetCartShippingCost = (): ShippingCost => {
     const frameSum = frames
       ? frames.reduce((acc, curr) => acc + (curr.priceData?.shipping_cost || 0), 0)
       : 0;
+
     const storeSum = Object.values(productDataPriceMerge).reduce(
       (acc, curr) => acc + (curr.priceData?.shipping_cost || 0),
       0
     );
-
     // Case : Only Frames
     if (isOnlyFrame) {
       setSum(frameSum);

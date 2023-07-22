@@ -74,14 +74,14 @@ export enum ItemType {
   VIRTUAL = 'VIRTUAL',
 }
 
-export interface BasketItem {
+export type BasketItem = {
   id: string;
   name: string;
   category1: string;
   category2?: string;
   itemType: ItemType;
   price: string;
-}
+};
 
 /* -----------  RESPONSE ----------------- */
 export interface FormInitializeResponse {

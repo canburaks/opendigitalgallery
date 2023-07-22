@@ -13,7 +13,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import muiTheme from '../styles/muiTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 import createEmotionCache from '../styles/emotionCache';
-import { Layout } from '@/components';
+import { ByPassHydration, Layout } from '@/components';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../../next-i18next.config';
 import { queryStaleDuration } from '@/constants';
@@ -57,9 +57,11 @@ function App(props: MyAppProps) {
             <ThemeProvider theme={muiTheme}>
               <CssBaseline />
               <main className={poppins.className}>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+                <ByPassHydration>
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </ByPassHydration>
               </main>
               <ReactQueryDevtools initialIsOpen={false} />
             </ThemeProvider>

@@ -32,7 +32,6 @@ export const useUser = () => {
         }
       }
     );
-    console.log('test: too much fetch auth listener ');
 
     return () => {
       authListener.subscription.unsubscribe();

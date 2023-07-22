@@ -1,6 +1,5 @@
 import cn from 'classnames';
-import Image from 'next/image';
-import { LinkComponent } from '@/components';
+import { ImageWithFallback, LinkComponent } from '@/components';
 
 interface Props {
   title: string;
@@ -14,7 +13,7 @@ interface Props {
 
 export function CoverImage({ title, coverImage, slug }: Props) {
   const image = (
-    <Image
+    <ImageWithFallback
       width={2000}
       height={1000}
       alt={`Cover Image for ${title}`}

@@ -1,6 +1,6 @@
 import { Grow, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { BodyS, LinkComponent } from '../Atoms';
+import { BodyS, ImageWithFallback, LinkComponent } from '../Atoms';
 import CheckIcon from '@mui/icons-material/Check';
 import { Button as MyButton } from '../Atoms';
 import { useCartStore } from '@/data/stores';
@@ -9,13 +9,18 @@ import { useRouter } from 'next/router';
 import CloseIcon from '@mui/icons-material/Close';
 import { useProductOptions } from '@/data/hooks/useProductOptions';
 import { useProduct } from '@/data/hooks/useProduct';
+import { useProductPrices } from '@/data/hooks/useProductPrices';
 
 export const CartPopup = () => {
   const [showCart, setShowCart] = useState(false);
   const router = useRouter();
   const { data: productOptions } = useProductOptions();
   const { lastAddedProduct, removeLastAddedProduct, store } = useCartStore();
-
+  const { data: productPriceOptions } = useProductPrices(
+    lastAddedProduct?.productId,
+    Boolean(lastAddedProduct?.productId)
+  );
+  const productPriceInfo = Array.isArray(productPriceOptions) && productPriceOptions[0];
   const product = useProduct(
     lastAddedProduct?.productId || '',
     Boolean(lastAddedProduct?.productId)
@@ -62,9 +67,10 @@ export const CartPopup = () => {
         </div>
         {product.data && product.data.data && (
           <div className="flex w-full flex-col">
-            <div className="flex gap-4">
-              <img
-                className="w-30"
+            <div className="flex gap-4 mb-4 mt-4">
+              <ImageWithFallback
+                width={90}
+                height={120}
                 src={product.data?.data[0].default_image_url || ''}
                 alt={product.data?.data[0].default_image_alt || ''}
               />
@@ -74,7 +80,9 @@ export const CartPopup = () => {
                   Size:
                   {
                     productOptions?.find(
-                      (item) => item.product_option_id === lastAddedProduct?.productOptionId
+                      (item) =>
+                        item.product_option_id ===
+                        (productPriceInfo && productPriceInfo.product_option_id)
                     )?.value
                   }
                 </BodyS>

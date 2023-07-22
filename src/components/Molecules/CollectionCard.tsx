@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { BodyL } from '../Atoms/Typographies';
 import { Collection } from '@/types';
-import { LinkComponent } from '../Atoms';
-import Image from 'next/image';
+import { ImageWithFallback, LinkComponent } from '../Atoms';
 
 export const CollectionCard: FC<Collection> = ({
   default_image_alt,
@@ -13,7 +12,7 @@ export const CollectionCard: FC<Collection> = ({
     <LinkComponent className="w-full group">
       <div className="border-1 border-solid border-gray-100">
         <div className="w-full relative h-[300px] break500:h-[500px] break1000:h-[800px] overflow-hidden mb-2  ">
-          <Image
+          <ImageWithFallback
             src={default_image_url || ''}
             alt={default_image_alt || ''}
             sizes="800px"

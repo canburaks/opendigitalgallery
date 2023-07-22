@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import { Country, LocaleEnum } from '@/types';
 import { isArray } from 'lodash';
 import { getUnifiedProductId } from '@/utils';
+import { useProductsByIDs } from './useProductsByIDs';
+import { useProductPricesByIDs } from './useProductPricesByIDs';
 
 /**
  * This hook is responsible for preparing the data for the payment request.
@@ -18,6 +20,11 @@ export const usePaymentRequestData = ({ formValues }: Props) => {
   const { data: countries } = useCountries({ select: ['country_id', 'name'] });
   const router = useRouter();
   const store = useCartStore((state) => state.store);
+  const productIDs = store.map((product) => product.productId);
+  const { data: products } = useProductsByIDs({
+    productIDs,
+  });
+  const productPrices = useProductPricesByIDs(productIDs);
   const setPaymentRequestData = usePaymentStore((state) => state.setPaymentRequestData);
 
   const countryName = useMemo(
@@ -37,14 +44,29 @@ export const usePaymentRequestData = ({ formValues }: Props) => {
   }, [formValues, countryName]);
 
   const basketItems: BasketItem[] = useMemo(() => {
-    return store.map((product) => ({
-      id: getUnifiedProductId(product.productType, product.productId, product.productOptionId),
-      name: product.productTitle,
-      category1: (product.productType === ProductType.FRAME ? 'Frame' : 'Print').toUpperCase(),
-      itemType: ItemType.PHYSICAL,
-      price: product.price.toString(),
-    }));
-  }, [store]);
+    return store.map((product) => {
+      const productItem = products?.data?.find(
+        (productI) => productI.product_id === product.productId
+      );
+      const productPriceOption = productPrices?.data?.find(
+        (productI) => productI.product_id === product.productId
+      );
+      return {
+        id: getUnifiedProductId(
+          productItem?.product_type_id || '',
+          product.productId,
+          productPriceOption?.product_option_id || ''
+        ),
+        name: productItem?.title || '',
+        category1: (productItem?.product_type_id === ProductType.FRAME
+          ? 'Frame'
+          : 'Print'
+        ).toUpperCase(),
+        itemType: ItemType.PHYSICAL,
+        price: productPriceOption?.price.toString() || '',
+      };
+    });
+  }, [productPrices?.data, products?.data, store]);
   const price = useMemo(() => {
     return basketItems.reduce((acc, curr) => acc + parseInt(curr.price), 0);
   }, [basketItems]);

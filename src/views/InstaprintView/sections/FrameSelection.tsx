@@ -13,7 +13,7 @@ type Props = {
 export const FrameSelection = ({ value, handler, title, description }: Props) => {
     const { t } = useTranslation("common");
     // @ts-ignore
-    const data = Object.keys(TRX.FRAMES).map((key:string, i) => ({ label: t(TRX.FRAMES[key]), value: InstaprintFrameOptionsEnum[key] }));
+    const data = Object.keys(TRX.FRAMES).map((key:string) => ({ label: t(TRX.FRAMES[key]), value: InstaprintFrameOptionsEnum[key] }));
     return (
         <motion.div className="w-full flex flex-col mb-6">
             <h4 className="flex flex-row text-base font-bold">{title}</h4>

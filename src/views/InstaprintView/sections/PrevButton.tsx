@@ -6,7 +6,7 @@ import { TRX } from '@/constants';
 import { motion } from "framer-motion"
 
 // @ts-ignore
-export const PrevButton = memo(() => {
+export const PrevButton = memo(function PrevButton(){
     const { t } = useTranslation("common");
     const page = UseInstaprintStore(state => state.page);
     const prevPage = UseInstaprintStore(state => state.prevPage);

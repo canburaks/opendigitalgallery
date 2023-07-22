@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useEffect, useCallback } from "react"
 import { UseInstaprintStore } from "@/data/stores";
 import { motion } from "framer-motion"
 import useDimensions from "react-cool-dimensions";

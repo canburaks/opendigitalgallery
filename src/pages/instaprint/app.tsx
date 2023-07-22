@@ -1,21 +1,21 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { CartView } from '@/views';
+import { useEffect } from 'react';
+// import { CartView } from '@/views';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '@/../next-i18next.config';
-import { LocaleType, IGMedia } from '@/types';
-import { PAGES } from '@/constants';
+import { LocaleType } from '@/types';
+// import { PAGES } from '@/constants';
 import { InstaprintAppView } from '@/views';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { instagramClient } from "@/data/instagramClient";
 import { useTranslation } from 'next-i18next';
-import { TRX, IG_USER_USER_MEDIA_LOCAL_STORAGE_KEY, IG_USER_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
+import { TRX, IG_USER_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
 import { UseInstaprintStore } from '@/data/stores';
 
-export default function InstaPrintAppPage(props: any) {
+export default function InstaPrintAppPage() {
     const { t } = useTranslation("common");
-    const router = useRouter();
-    const [page, setPage] = useState<number>(1);
+    // const router = useRouter();
+    // const [page, setPage] = useState<number>(1);
     const setMedia = UseInstaprintStore(state => state.setMedia);
 
     useEffect(() => {

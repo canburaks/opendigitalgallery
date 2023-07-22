@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { CartView } from '@/views';
+// import { CartView } from '@/views';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '@/../next-i18next.config';
 import { LocaleType } from '@/types';
 import { PAGES } from '@/constants';
-import { InstaprintLandingPageView } from '@/views';
+// import { InstaprintLandingPageView } from '@/views';
 import { useRouter } from 'next/router';
 import { instagramClient } from "@/data/instagramClient";
 import { Loading } from '@/components';
@@ -14,7 +14,7 @@ import { Loading } from '@/components';
 // import { getProductOptions } from '@/data/hooks/useProductOptions';
 // import { getFrames } from '@/data/hooks';
 
-export default function InstaPrintAuthPage(props: any) {
+export default function InstaPrintAuthPage() {
     const router = useRouter();
     const { query } = router;
     const { code } = query;

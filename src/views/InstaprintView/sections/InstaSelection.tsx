@@ -54,7 +54,7 @@ export const InstaSelection = () => {
         <InstaSelectionItem
           key={selectedId + index}
           selectedId={selectedId}
-          //order={index}
+        //order={index}
         // dynamicProductData={[]}
         />
 
@@ -63,11 +63,12 @@ export const InstaSelection = () => {
   )
 }
 
-const InstaSelectionItem = ({ selectedId, 
-//  order
- }: { selectedId: string, 
+const InstaSelectionItem = ({ selectedId,
+  //  order
+}: {
+  selectedId: string,
   //order: number
- }) => {
+}) => {
   const { t } = useTranslation("common");
   // const imageRef = useRef<HTMLImageElement>(null);
 
@@ -98,7 +99,7 @@ const InstaSelectionItem = ({ selectedId,
 
   // Handlers
   const quantityHandler = (value: number | string) => setCurrentProduct({ ...currentProduct, quantity: typeof value === "string" ? parseInt(value) : value });
-  const matHandler = (value: boolean|string) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, mat: value } });
+  const matHandler = (value: boolean | string) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, mat: value } });
   const frameHandler = (value: InstaprintFrameOptionsEnum) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, frame: value } });
 
 
@@ -125,33 +126,34 @@ const InstaSelectionItem = ({ selectedId,
           handler={quantityHandler}
           value={(currentProduct.quantity).toString()}
         />
-        <MatSelection
-          value={currentProduct?.instaprint?.mat!}
-          handler={matHandler}
-          title={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION1_TITLE)}
-          description={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION1_DESCRIPTION)}
-        />
-        <FrameSelection
-          // @ts-ignore
-          value={currentProduct?.instaprint?.frame!}
-          handler={frameHandler}
-          title={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION2_TITLE)}
-          description={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION2_DESCRIPTION)}
-        />
+        {currentProduct?.instaprint?.mat !== undefined
+          && <MatSelection
+            value={currentProduct.instaprint.mat!}
+            handler={matHandler}
+            title={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION1_TITLE)}
+            description={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION1_DESCRIPTION)}
+          />}
+        {currentProduct?.instaprint?.frame !== undefined
+          && <FrameSelection
+            // @ts-ignore
+            value={currentProduct.instaprint.frame!}
+            handler={frameHandler}
+            title={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION2_TITLE)}
+            description={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION2_DESCRIPTION)}
+          />}
         <div className="rounded-lg w-[80%] p-2">
 
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center flex-grow w-1/2 md:w-3/5 relative z-10">
+      {currentProduct?.instaprint !== undefined && <div className="flex flex-col items-center justify-center flex-grow w-1/2 md:w-3/5 relative z-10">
         <MediaWrapper
           imageSrc={currentMedia.media_url}
-          mat={currentProduct?.instaprint?.mat!}
-          frame={currentProduct?.instaprint?.frame!}
-
+          mat={currentProduct.instaprint.mat!}
+          frame={currentProduct.instaprint.frame!}
         />
 
-      </div>
+      </div>}
 
     </div>
   )

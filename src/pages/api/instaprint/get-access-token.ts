@@ -3,8 +3,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type { InstagramTokenFunctionParams } from '@/types';
 import { instagramClient } from '@/data/instagramClient';
 
-const querystring = require('querystring');
-const { Curl } = require('node-libcurl');
+// @ts-ignore
+import querystring from 'querystring';
+// @ts-ignore
+import { Curl } from 'node-libcurl';
 
 type Data = {
   accessToken?: string;
@@ -36,7 +38,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
         const responseData = JSON.parse(data);
         if (statusCode !== 200) {
           throw new Error(responseData?.error_message || "Access Token couldn't be retrieved");
-            res.status(404).json({ error: responseData?.error_message || "Access Token couldn't be retrieved" });
+            // res.status(404).json({ error: responseData?.error_message || "Access Token couldn't be retrieved" });
         }
         console.log("data", data)
         return res.status(200).json(responseData);

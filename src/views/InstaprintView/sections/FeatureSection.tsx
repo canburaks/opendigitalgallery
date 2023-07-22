@@ -1,22 +1,11 @@
 import { motion } from 'framer-motion';
 import {
-  Body2X,
   BodyX,
-  Body,
-  BodyL,
-  BodyS,
-  Button,
-  CartProductList,
-  Divider,
-  HeadlineS,
-  Headline,
-  HeadlineX,
-  LinkComponent,
-  SectionContainer,
+  Headline
 } from '@/components';
 import Image, { StaticImageData } from 'next/image';
 
-export const FeatureSection = ({ title, subtitle, description, authUrl, image }: { title: string, subtitle: string, description: string, authUrl: string, image: StaticImageData }) => (
+export const FeatureSection = ({ title, description, authUrl, image }: { title: string, subtitle: string, description: string, authUrl: string, image: StaticImageData }) => (
   <section className="py-12 bg-white sm:py-16 lg:py-20">
     <div className="px-4 mx-auto max-w-8xl sm:px-6 lg:px-8">
       <div className="grid items-center max-w-8xl grid-cols-1 mx-auto gap-y-12 lg:grid-cols-1 gap-x-16 xl:gap-x-24">

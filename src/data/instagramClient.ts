@@ -117,6 +117,6 @@ class Instagram {
 
 const appId = process.env.INSTAGRAM_APP_ID!;
 const redirectUri = process.env.INSTAGRAM_APP_REDIRECT_URI!;
-const isDevelopment = process.env.NODE_ENV === 'development';
+// const isDevelopment = process.env.NODE_ENV === 'development';
 
 export const instagramClient = new Instagram(appId, redirectUri);

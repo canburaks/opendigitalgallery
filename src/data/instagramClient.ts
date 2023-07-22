@@ -5,7 +5,7 @@ import {
 } from '@/constants/instaprint';
 import type { IGMedia } from '@/types';
 
-class Instagram {
+export class Instagram {
   
   // constructor params 
   public appId: string;
@@ -33,10 +33,14 @@ class Instagram {
   public media: IGMedia[] = [];
 
   constructor(appId: number | string, redirectUri: string) {
+    if (!appId || !redirectUri) {
+      throw new Error('AppId and redirectUri are required');
+    }
     this.appId = appId?.toString() ?? "";
     this.redirectUri = redirectUri;
     this.authUrl = `${this.instagramApiBaseUrl}oauth/authorize?client_id=${appId}&redirect_uri=${redirectUri}&scope=${this.scope}&response_type=${this.responseType}`;
     this.tokenUrl = `${this.instagramApiBaseUrl}oauth/access_token`;
+    console.log("this", this)
   }
   public getUrl(): string | void {
     if (window?.location) {
@@ -119,4 +123,4 @@ const appId = process.env.INSTAGRAM_APP_ID!;
 const redirectUri = process.env.INSTAGRAM_APP_REDIRECT_URI!;
 // const isDevelopment = process.env.NODE_ENV === 'development';
 
-export const instagramClient = new Instagram(appId, redirectUri);
+// export const instagramClient = new Instagram(process.env.INSTAGRAM_APP_ID!, process.env.INSTAGRAM_APP_REDIRECT_URI!);

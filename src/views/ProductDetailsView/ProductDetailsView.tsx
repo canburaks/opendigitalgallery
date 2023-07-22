@@ -141,8 +141,8 @@ export const ProductDetailsView: React.FC = () => {
     e.preventDefault();
     if (posterCartProduct) {
       if (frameCartProduct && frameCartProduct.productId !== NO_FRAME_PRODUCT.product_id) {
-        addToCart(frameCartProduct, false);
-        addToCart(posterCartProduct, true);
+        addToCart( frameCartProduct as CartProduct, false);
+        addToCart(posterCartProduct as CartProduct, true);
       } else {
         addToCart(posterCartProduct, true);
       }

@@ -8,7 +8,7 @@ import {
 import { motion } from 'framer-motion';
 import { FeatureSection } from "./sections";
 import { useTranslation } from 'next-i18next';
-import { instagramClient } from '@/data/instagramClient';
+import { Instagram } from '@/data/instagramClient';
 import { TRX } from '@/constants';
 import Image from 'next/image';
 import heroPic1 from "../../../public/images/instaprint/instaprint-hero.webp"
@@ -34,7 +34,7 @@ const iconVariants = {
     }
 }
 
-export const InstaprintLandingPageView = () => {
+export const InstaprintLandingPageView = ({instaprintClient}:{instaprintClient: Instagram}) => {
     const { t } = useTranslation("common");
 
     return (
@@ -51,7 +51,7 @@ export const InstaprintLandingPageView = () => {
                                     whileHover={{ scale: 1.04 }}
                                     whileTap={{ scale: 0.9 }}
                                     transition={{ duration: 0.2, ease: "linear" }}
-                                    href={instagramClient.authUrl}
+                                    href={instaprintClient.authUrl}
                                     style={{ width: 225, height: 63 }}
                                     title=""
                                     className="inline-flex intense-shadow uppercase justify-between items-center bg-black px-6 !py-2 mt-8 font-semibold !text-white bg-primary rounded-lg lg:mt-16 overflow-hidden" role="button">
@@ -73,9 +73,9 @@ export const InstaprintLandingPageView = () => {
                                         duration: 6,
                                         ease: "easeInOut"
                                     }}
-                                    animate={{
-                                        opacity: [0, 1, 0],
-                                    }}
+                                    // animate={{
+                                    //     opacity: [0, 1],
+                                    // }}
                                     initial={{
                                         x: 250, y: -125, rotateZ: -155
                                     }}
@@ -83,7 +83,7 @@ export const InstaprintLandingPageView = () => {
                                     <motion.path variants={iconVariants}
                                         initial="hidden"
                                         animate={"visible"}
-                                        d="M0.913757 114.53C13.9807 116.216 32.3056 122.378 43.7012 113.083C51.0025 107.128 57.0714 99.6064 62.6869 92.0921C73.647 77.4257 81.4769 57.0014 83.9262 38.9656C86.7749 17.9886 65.2558 22.4197 58.3958 36.6239C48.6178 56.8698 53.4826 94.2165 79.0133 100.444C108.309 107.591 123.562 71.7844 130.096 49.9154C134.773 34.2631 153.849 -9.9389 143.644 2.81731C137.309 10.736 128.12 15.6577 122.008 23.6058C118.81 27.7641 121.911 27.9558 125.382 25.0963C131.067 20.4118 136.477 14.6482 140.667 8.60318C141.379 7.57589 145.275 0.763508 146.837 3.12604C151.902 10.7886 153.525 20.5514 158.568 28.4832" stroke="currentColor" stroke-width="2" stroke-linecap="round"></motion.path>
+                                        d="M0.913757 114.53C13.9807 116.216 32.3056 122.378 43.7012 113.083C51.0025 107.128 57.0714 99.6064 62.6869 92.0921C73.647 77.4257 81.4769 57.0014 83.9262 38.9656C86.7749 17.9886 65.2558 22.4197 58.3958 36.6239C48.6178 56.8698 53.4826 94.2165 79.0133 100.444C108.309 107.591 123.562 71.7844 130.096 49.9154C134.773 34.2631 153.849 -9.9389 143.644 2.81731C137.309 10.736 128.12 15.6577 122.008 23.6058C118.81 27.7641 121.911 27.9558 125.382 25.0963C131.067 20.4118 136.477 14.6482 140.667 8.60318C141.379 7.57589 145.275 0.763508 146.837 3.12604C151.902 10.7886 153.525 20.5514 158.568 28.4832" stroke="currentColor" strokeWidth="2" strokeLinecap="round"></motion.path>
                                     <motion.path variants={iconVariants}
                                         initial="hidden"
                                         animate={"visible"}
@@ -108,7 +108,7 @@ export const InstaprintLandingPageView = () => {
                         title={t(TRX.INSTAPRINT.SECTION1_TITLE)}
                         subtitle={t(TRX.COMMON.BRAND)}
                         description={t(TRX.INSTAPRINT.SECTION1_DESCRIPTION)}
-                        authUrl={instagramClient.authUrl}
+                        authUrl={instaprintClient.authUrl}
                         image={heroPic2}
                     />
                 </div>

@@ -33,6 +33,7 @@ interface MyAppProps extends AppProps {
 }
 
 function App(props: MyAppProps) {
+  console.log("props", process.env);
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   const [queryClient] = useState(

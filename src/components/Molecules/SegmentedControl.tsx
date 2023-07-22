@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { motion } from 'framer-motion';
 import useDimensions from "react-cool-dimensions";
 
@@ -84,7 +84,7 @@ export const SegmentedControl = (props: Props) => {
                 layout
                 transition={{ duration: 0.2, ease: "easeOut" }}
             >
-                {selectedData?.label!}
+                {selectedData && selectedData.label!}
             </motion.div>}
         </motion.div>
     )

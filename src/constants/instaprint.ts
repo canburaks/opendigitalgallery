@@ -1,6 +1,6 @@
 import { InstaprintFrameOptionsEnum } from '@/constants';
 import { ProductType } from './products';
-import { CartProduct, FrameOptionsSelectUnionType } from '../types';
+import { CartProduct } from '../types';
 
 export const INSTAPRINT_PRODUCT_ID = 216;
 export const IG_BACKEND_ACCESS_TOKEN_ENDPOINT = '/api/instaprint/get-access-token';

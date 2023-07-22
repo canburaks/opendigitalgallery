@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 
 
 // @ts-ignore
-export const NextButton = memo(() => {
+export const NextButton = memo(function NextButton() {
     const { t } = useTranslation("common");
     const store = useCartStore((state) => state.store);
     const addToCart = useCartStore((state) => state.addToCart);

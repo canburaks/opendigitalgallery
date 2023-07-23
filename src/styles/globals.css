@@ -25,6 +25,8 @@ img::after {
   max-width: 200px;
   max-height: 300px;
   z-index: 2;
+  max-width: 200px;
+  max-height: 300pc;
 }
 
 .PhoneInputInput {

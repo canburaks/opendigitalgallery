@@ -1,10 +1,15 @@
-import { CircularProgress } from '@mui/material';
-import React from 'react';
+import { CircularProgress, CircularProgressProps } from '@mui/material';
+import React, { FC } from 'react';
+import cx from 'classnames';
 
-export const Loading = () => {
+type LoadingProps = CircularProgressProps & {
+  className?: string;
+};
+
+export const Loading: FC<LoadingProps> = ({ className, ...rest }) => {
   return (
-    <div className="flex justify-center p-10">
-      <CircularProgress />
+    <div className={cx('flex justify-center p-10', className)}>
+      <CircularProgress {...rest} />
     </div>
   );
 };

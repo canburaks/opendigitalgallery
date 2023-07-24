@@ -96,6 +96,7 @@ export interface FormInitializeResponse {
   locale: string;
   systemTime: number;
   conversationId: string;
+  message?: string;
 }
 
 export interface PaymentDetailRequest {

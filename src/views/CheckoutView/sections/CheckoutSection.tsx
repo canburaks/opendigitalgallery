@@ -13,7 +13,6 @@ import { BreadcumbsUI } from '../components/BreadcumbsUI';
 import { Button as MyButton } from '@/components';
 import { usePaymentRequestData } from '@/data/hooks';
 import { PaymentModal } from '../components/PaymentModal';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 export type CheckoutFormValues = Partial<CheckoutContactFormType & CheckoutAddressFormType>;
 
@@ -29,7 +28,6 @@ export const CheckoutSection = () => {
   const setHiddenAuthUser = usePaymentStore((store) => store.setHiddenAuthUser);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const supabaseClient = useSupabaseClient();
 
   // This function prevents data loss during form transitions
   const formSetter = (newFormValues: CheckoutFormValues | null) => {
@@ -52,24 +50,9 @@ export const CheckoutSection = () => {
         if (isValid) {
           const values = contactFormRef.current.values;
           if (!user) {
-            const emailCheckRes = await supabaseClient
-              .from('users')
-              .select('*', { count: 'exact' })
-              .eq('email', values.email);
-
-            if (emailCheckRes.error) {
-              throw new Error('Something went wrong.');
-            }
-            if (emailCheckRes.count === 0) {
-              setHiddenAuthUser(values);
-            }
-            if (emailCheckRes && emailCheckRes.count && emailCheckRes.count > 0) {
-              throw new Error('You have an account, please sign in.');
-            }
-          } else {
-            setHiddenAuthUser(null);
+            // just get user info anyway if it is not our user, we will register it in create-payment-request api.
+            setHiddenAuthUser(values);
           }
-
           formSetter(values);
           swiperRef.current.slideNext();
         }

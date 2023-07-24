@@ -1,4 +1,5 @@
 import { FormInitializeRequest } from '@/types';
+import { CheckoutFormValues } from '@/views/CheckoutView/sections/CheckoutSection';
 import { create } from 'zustand';
 
 export const usePaymentStore = create<UsePaymentStore>((set) => ({
@@ -7,6 +8,7 @@ export const usePaymentStore = create<UsePaymentStore>((set) => ({
    * ---------------------------------------------------------------------------------
    * */
   paymentRequestData: null,
+  hiddenAuthUser: null,
 
   /* ---------------------------------------------------------------------------------
    *  STORE MUTATIONS
@@ -17,9 +19,13 @@ export const usePaymentStore = create<UsePaymentStore>((set) => ({
    * */
   setPaymentRequestData: (paymentRequestData: Partial<FormInitializeRequest>) =>
     set({ paymentRequestData }),
+
+  setHiddenAuthUser: (hiddenAuthUser: CheckoutFormValues | null) => set({ hiddenAuthUser }),
 }));
 
 interface UsePaymentStore {
   paymentRequestData: Partial<FormInitializeRequest> | null;
   setPaymentRequestData: (data: Partial<FormInitializeRequest>) => void;
+  hiddenAuthUser: null | CheckoutFormValues;
+  setHiddenAuthUser: (hiddenAuthUser: CheckoutFormValues | null) => void;
 }

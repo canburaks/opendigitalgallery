@@ -14,12 +14,15 @@ import { serialize, CookieSerializeOptions } from 'cookie';
 // import { loggerServer as logger } from '@/utils/logger/server';
 import { v5 as uuidv5 } from 'uuid';
 import { User, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { generatePassword } from '@/utils';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<FormInitializeResponse | { message: string }>
 ) {
-  const bodyData = JSON.parse(req.body.requestData);
+  const bodyData = JSON.parse(req.body);
+  const requestData = bodyData.requestData;
+  const hiddenAuthUser = bodyData.hiddenAuthUser;
   const supabase = createServerSupabaseClient({ req, res });
   let currentUser: null | User = null;
 
@@ -31,39 +34,54 @@ export default async function handler(
     currentUser = user;
   }
 
-  // // Case: If there is hidden auth user, start save here (coming from payment flow without login)
-  // if (!user && hiddenAuthUser) {
-  //   const signUpRes = await supabase.auth.signUp({
-  //     email: hiddenAuthUser.email,
-  //     password: generatePassword(),
-  //   });
-  //   if (signUpRes.error) {
-  //     return res.status(500).json({
-  //       message: signUpRes.error.message,
-  //     });
-  //   }
+  // Case: If there is hidden auth user, start save here (coming from payment flow without login)
+  if (!user && hiddenAuthUser) {
+    const emailCheckRes = await supabase
+      .from('users')
+      .select('*', { count: 'exact' })
+      .eq('email', hiddenAuthUser.email);
 
-  //   const userRes = await supabase.from('users').insert({
-  //     uid: signUpRes.data.user?.id,
-  //     email: hiddenAuthUser.email,
-  //     first_name: hiddenAuthUser.firstName,
-  //     last_name: hiddenAuthUser.lastName,
-  //   });
+    if (emailCheckRes.error) {
+      return res.status(500).json({
+        message: emailCheckRes.error.message,
+      });
+    }
+    // not registered
+    if (emailCheckRes.count === 0) {
+      const signUpRes = await supabase.auth.signUp({
+        email: hiddenAuthUser.email,
+        password: generatePassword(),
+      });
+      if (signUpRes.error) {
+        return res.status(500).json({
+          message: signUpRes.error.message,
+        });
+      }
 
-  //   if (userRes.error) {
-  //     return res.status(500).json({
-  //       message: userRes.error.message,
-  //     });
-  //   }
-  //   currentUser = signUpRes.data.user;
-  // }
+      const userRes = await supabase.from('users').insert({
+        uid: signUpRes.data.user?.id,
+        email: hiddenAuthUser.email,
+        first_name: hiddenAuthUser.firstName,
+        last_name: hiddenAuthUser.lastName,
+      });
+      if (userRes.error) {
+        return res.status(500).json({
+          message: userRes.error.message,
+        });
+      }
+
+      currentUser = signUpRes.data.user;
+    } else {
+      currentUser = emailCheckRes.data[0];
+    }
+  }
 
   // const { price, paidPrice, currency, locale, shippingAddress, billingAddress, buyer, basketItems } = req.body;
   const data: Partial<FormInitializeRequest> = {
     paymentGroup: PaymentGroup.LISTING!,
     callbackUrl: process.env.IYZICO_CALLBACK_URL!,
     enabledInstallments: [1],
-    ...(bodyData as Partial<FormInitializeRequest>),
+    ...(requestData as Partial<FormInitializeRequest>),
   };
 
   // set buyer ip address

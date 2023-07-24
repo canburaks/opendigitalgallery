@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
-import { LocaleType, MergedProductOption, ProductDetails, TranslatableFields, CartProduct } from '@/types';
+import { LocaleType, MergedProductOption, ProductDetails, TranslatableFields } from '@/types';
 import React, { useState, useMemo, MouseEvent } from 'react';
 import { RadioGroup } from '@headlessui/react';
-import { DEFAULT_LOCALE, PRODUCT_DIMENSION_UNIT, PRODUCT_IMAGE_PLACEHOLDER, NO_FRAME_PRODUCT, FRAME_IMAGE_PLACEHOLDER } from '@/constants';
+import { DEFAULT_LOCALE, PRODUCT_DIMENSION_UNIT, NO_FRAME_PRODUCT } from '@/constants';
 import { useTranslation } from 'next-i18next';
 import { Container } from '@mui/material';
 import {
@@ -26,14 +26,12 @@ export const ProductDetailsView: React.FC = () => {
 
   const addToCart = useCartStore((state) => state.addToCart);
 
-
   // short circuit if no product
   const product: ProductDetails | undefined =
     useProductDataFromQuery(asPath.split('/').pop() ?? '') || {};
   const images = product.images || [];
   const options = useMemo(() => product.options || [], [product?.options]);
   const optionIds = useMemo(() => options.map((o) => o.product_option_id), [options]);
-
 
   // Selected Size
   const [activeProductOptionId, setActiveProductionOptionId] = useState<number | undefined>(
@@ -42,7 +40,6 @@ export const ProductDetailsView: React.FC = () => {
   const selectedOption = useMemo(() => {
     return options.find((o: MergedProductOption) => o.product_option_id === activeProductOptionId);
   }, [activeProductOptionId, options]);
-
 
   // FRAMES DATA
   const framesData = useFrameDataFromQuery({ productOptionIds: optionIds });
@@ -69,7 +66,6 @@ export const ProductDetailsView: React.FC = () => {
     }
   }, [frames, selectedFrameId]);
 
-
   // THE PRODUCT OPTION of  FRAME PRODUCT: [1,2,3,4] --> 70x50, 50x40, 40x30, 30x21
   const selectedFrameOption: MergedProductOption = useMemo(() => {
     const defaultProduct = NO_FRAME_PRODUCT;
@@ -89,8 +85,6 @@ export const ProductDetailsView: React.FC = () => {
     return defaultProduct.options![0];
   }, [activeProductOptionId, selectedFrame]);
 
-
-
   // FRAMES HAS ONLY OPTION OF  SELECTED SIZE
   const framesByProductOptionId = useMemo(() => {
     return frames.map((frame) => {
@@ -105,7 +99,6 @@ export const ProductDetailsView: React.FC = () => {
     });
   }, [frames, selectedFrameOption.product_option_id]);
 
-
   // Translated Product
   const translatedProduct: TranslatableFields = getTranslatableProductData(
     product,
@@ -115,16 +108,15 @@ export const ProductDetailsView: React.FC = () => {
   // This will be passed to the add to cart button
   const frameCartProduct = useMemo(() => {
     if (selectedFrameOption.product_id === NO_FRAME_PRODUCT.product_id) {
-      return undefined
+      return undefined;
     } else {
       return {
         productId: selectedFrameOption.product_id,
         priceId: selectedFrameOption.price_id,
         quantity: 1,
-      }
+      };
     }
-  }, [selectedFrameOption])
-
+  }, [selectedFrameOption]);
 
   // This will be passed to the add to cart button
   const posterCartProduct = useMemo(() => {
@@ -133,9 +125,9 @@ export const ProductDetailsView: React.FC = () => {
         productId: selectedOption.product_id,
         priceId: selectedOption.price_id,
         quantity: 1,
-      }
+      };
     }
-  }, [selectedOption])
+  }, [selectedOption]);
 
   function addToCartMutation(e: MouseEvent): void {
     e.preventDefault();
@@ -253,7 +245,9 @@ export const ProductDetailsView: React.FC = () => {
                             className={({ active }) =>
                               classNames(
                                 active ? 'ring-2 ring-indigo-500' : '',
-                                selectedFrame?.product_id === frame?.product_id ? 'bg-indigo-100' : 'bg-white',
+                                selectedFrame?.product_id === frame?.product_id
+                                  ? 'bg-indigo-100'
+                                  : 'bg-white',
                                 'relative duration-300 ease-in-out transform-gpu block cursor-pointer rounded-lg border border-solid border-gray-300 p-4 focus:outline-none'
                               )
                             }
@@ -261,11 +255,17 @@ export const ProductDetailsView: React.FC = () => {
                             {({ checked }) => (
                               <>
                                 <div className="flex flex-col justify-between h-full">
-                                  <RadioGroup.Label as="p" className="text-xs font-medium text-gray-900">
+                                  <RadioGroup.Label
+                                    as="p"
+                                    className="text-xs font-medium text-gray-900"
+                                  >
                                     {frame.title}
                                   </RadioGroup.Label>
                                   {frame.options && frame.options.length > 0 && (
-                                    <RadioGroup.Description as="p" className="mt-1 text-xs text-gray-500">
+                                    <RadioGroup.Description
+                                      as="p"
+                                      className="mt-1 text-xs text-gray-500"
+                                    >
                                       {`+${frame?.options[0]?.price} ${frame?.options[0]?.currency}`}
                                     </RadioGroup.Description>
                                   )}

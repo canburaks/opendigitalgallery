@@ -1,19 +1,5 @@
 import React from 'react';
-import {
-    // Body2X,
-    // BodyX,
-    // Body,
-    // BodyL,
-    // BodyS,
-    // Button,
-    // CartProductList,
-    // Divider,
-    // HeadlineS,
-    // Headline,
-    // HeadlineX,
-    // LinkComponent,
-    SectionContainer,
-} from '@/components';
+import {SectionContainer,} from '@/components';
 // import { useProductPricesByIDs } from '@/data/hooks';
 // import { PRODUCT_IMAGE_PLACEHOLDER, TRX, PAGES, ProductType } from '@/constants';
 import { motion, AnimatePresence } from "framer-motion"
@@ -26,10 +12,10 @@ import { motion, AnimatePresence } from "framer-motion"
 // import { instagramClient } from '@/data/instagramClient';
 // import { IGMedia, CartProduct } from '@/types';
 // import { CheckCircle as TickIcon, ArrowCircleLeft as ArrowLeftIcon, ArrowCircleRight as ArrowRightIcon } from '@mui/icons-material';
-
 import { InstaFeed, NextButton, PrevButton, InstaSelection } from './sections';
+import { Instagram } from '@/data/instagramClient';
 
-export const InstaprintAppView = () => {
+export const InstaprintAppView = ({instagramClient}:{instagramClient: Instagram}) => {
 
     return (
         <SectionContainer>

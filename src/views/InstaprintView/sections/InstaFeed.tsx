@@ -53,7 +53,7 @@ const MediaGrid = () => {
 				{media?.map((m: IGMedia) => (
 					<div className="relative w-full h-auto cursor-pointer p-0"
 						// onClick={() => toggleSelection(m.id)}
-						key={m.id}
+						key={`${m.id}-media`}
 					>
 						<motion.div
 								style={{

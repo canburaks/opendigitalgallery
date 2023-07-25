@@ -8,7 +8,7 @@ import {
     PRINT_WIDTH_CM,
     PRINT_HEIGHT_CM,
     MAT_THICKNESS,
-    // PRINT_HEIGHT_CM2,
+    PRINT_HEIGHT_CM2,
     // UNIT_WIDTH_CM,
 
 } from "@/constants";
@@ -72,6 +72,10 @@ const FrameLayer = ({ frame, children }: { frame: InstaprintFrameOptionsEnum, ch
 
     const style = useMemo(() => ({
         position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         zIndex: 0,
         height: "auto",
         boxShadow: "6px 8px 16px -1px rgba(0, 0, 0, 0.3)",
@@ -93,12 +97,12 @@ const FrameLayer = ({ frame, children }: { frame: InstaprintFrameOptionsEnum, ch
 const matVariants = {
     hasMat: {
         width: PRINT_WIDTH_CM + 2 * MAT_THICKNESS,
-        height: PRINT_HEIGHT_CM + 2 * MAT_THICKNESS,
+        // height: PRINT_HEIGHT_CM2 + 2 * MAT_THICKNESS,
         padding: `${MAT_THICKNESS}px`
     },
     noMat: {
         width: PRINT_WIDTH_CM,
-        height: PRINT_HEIGHT_CM,
+        // height: PRINT_HEIGHT_CM,
         padding: `${0}px`
     }
 }
@@ -106,7 +110,12 @@ const MatLayer = ({ mat, children }: { mat: boolean | string, children: JSX.Elem
     const hasMat = useMemo(() => Boolean(mat) === true, [mat])
     const style = useMemo(() => ({
         position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         border: "0px solid transparent",
+        height:"auto",
         background: "#fff",
         zIndex: 1,
         // width: `${hasMat ? PRINT_WIDTH_CM + 2 * MAT_THICKNESS : PRINT_WIDTH_CM}px`,

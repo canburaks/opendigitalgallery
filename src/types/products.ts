@@ -34,6 +34,11 @@ export type CartProduct = {
   productId: number;
   priceId: number;
   quantity: number;
+  instaprint?: {
+    mediaId?: string;
+    mat?: string | boolean,
+    frame?: InstaprintFrameOptionsEnum,
+  }
 };
 
 /*

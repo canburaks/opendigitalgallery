@@ -7,13 +7,15 @@ import { LocaleType } from '@/types';
 // import { PAGES } from '@/constants';
 import { InstaprintAppView } from '@/views';
 // import { useRouter } from 'next/router';
-import { instagramClient } from "@/data/instagramClient";
+import { Instagram } from "@/data/instagramClient";
 import { useTranslation } from 'next-i18next';
 import { TRX, IG_USER_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
 import { UseInstaprintStore } from '@/data/stores';
 
-export default function InstaPrintAppPage() {
+export default function InstaPrintAppPage(props:any) {
     const { t } = useTranslation("common");
+    const instagramClient = new Instagram(props.instaprintAppId, props.instaprintRedirectUri);
+
     // const router = useRouter();
     // const [page, setPage] = useState<number>(1);
     const setMedia = UseInstaprintStore(state => state.setMedia);
@@ -46,16 +48,19 @@ export default function InstaPrintAppPage() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className='min-h-[80vh]'>
-                <InstaprintAppView  />
+                <InstaprintAppView instagramClient={instagramClient}  />
             </main>
         </>
     );
 }
 
 export const getStaticProps = async ({ locale }: { locale: LocaleType }) => {
-
+    const appId = process.env.INSTAGRAM_APP_ID!;
+    const redirectUri = process.env.INSTAGRAM_APP_REDIRECT_URI!;
     return {
         props: {
+            instaprintAppId: appId,
+            instaprintRedirectUri: redirectUri,
             ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
         },
     };

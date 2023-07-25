@@ -18,7 +18,6 @@ export default function InstaPrintAuthPage(props:any) {
     const router = useRouter();
     const { query } = router;
     const { code } = query;
-    console.log('code', code);
     const instagramClient = new Instagram(props.instaprintAppId, props.instaprintRedirectUri);
 
     async function getInstagramData() {

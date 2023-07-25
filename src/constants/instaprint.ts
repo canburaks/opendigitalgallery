@@ -12,16 +12,15 @@ export const INSTAPRINT_PRODUCT_PLACEHOLDER: CartProduct = {
   productId: INSTAPRINT_PRODUCT_ID,
   priceId: -1,
   quantity: 1,
-  // productType: ProductType.INSTAPRINT,
-  // instaprint: {
-  //   mat: "",
-  //   frame: InstaprintFrameOptionsEnum.NO_FRAME,
-  // },
+  instaprint: {
+    mat: "",
+    frame: InstaprintFrameOptionsEnum.NO_FRAME,
+  },
 };
 
 // SIZING
-export const UNIT_WIDTH_CM = 10;
-export const FRAME_THICKNESS = 2 * UNIT_WIDTH_CM;
+export const UNIT_WIDTH_CM = 10; // 1 unit width = 1 cm
+export const FRAME_THICKNESS = 1.5 * UNIT_WIDTH_CM;
 export const MAT_THICKNESS = 5 * UNIT_WIDTH_CM;
 export const PRINT_WIDTH_CM = 20 * UNIT_WIDTH_CM;
 export const PRINT_HEIGHT_CM = 20 * UNIT_WIDTH_CM;

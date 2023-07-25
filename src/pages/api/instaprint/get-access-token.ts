@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { InstagramTokenFunctionParams } from '@/types';
-import { instagramClient } from '@/data/instagramClient';
+import { Instagram } from '@/data/instagramClient';
 
 // @ts-ignore
 import querystring from 'querystring';
@@ -15,6 +15,10 @@ type Data = {
 };
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+  if (!process.env.INSTAGRAM_APP_REDIRECT_URI || !process.env.INSTAGRAM_APP_ID) {
+    throw new Error ('Instagram App ID or Redirect URI not found');
+  }
+  const instagramClient = new Instagram(process.env.INSTAGRAM_APP_ID, process.env.INSTAGRAM_APP_REDIRECT_URI);
   const { code } = req.body;
   if (!code) {
     return res.status(400).json({ error: 'No code provided' });

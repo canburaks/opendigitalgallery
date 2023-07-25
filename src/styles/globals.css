@@ -13,22 +13,6 @@ a {
   text-decoration: none;
 }
 
-/* For broken images */
-img::after {
-  content: '\1F4F7'" Aww snap, the image '" attr(alt) "' is broken"; /* To replace the ALT text */
-  position: absolute;
-  inset: 0; /* To display content in the center of the block */
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  background-color: #f1f5ff;
-  max-width: 200px;
-  max-height: 300px;
-  z-index: 2;
-  max-width: 200px;
-  max-height: 300pc;
-}
-
 .PhoneInputInput {
   border: 0px solid;
   height: 24px;

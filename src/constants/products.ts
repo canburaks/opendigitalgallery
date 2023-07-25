@@ -2,12 +2,11 @@ import { ProductDetails } from '@/types';
 
 export const PRODUCT_IMAGE_RATIO = 3 / 4; // w/h
 export const PRODUCT_MAIN_IMAGE_WIDTH = 400;
-export const PRODUCT_THUMB_IMAGE_WIDTH = 120;
-export const PRODUCT_THUMB_IMAGE_HEIGHT = 160;
+export const PRODUCT_THUMB_IMAGE_WIDTH = 80;
+export const PRODUCT_THUMB_IMAGE_HEIGHT = 120;
 export const PRODUCT_DIMENSION_UNIT = 'cm';
 // TODO: Change this placeholder image
-export const PRODUCT_IMAGE_PLACEHOLDER =
-  'https://verxgygbyoarytwtzexz.supabase.co/storage/v1/object/public/product-images-v2/a-lonely-astronaut-walking-down-the-street/a-lonely-astronaut-walking-down-the-street-1.jpg';
+export const PRODUCT_IMAGE_PLACEHOLDER = '/images/fallback-poster.avif';
 
 export const FRAME_IMAGE_PLACEHOLDER =
   'https://verxgygbyoarytwtzexz.supabase.co/storage/v1/object/public/product-images-v2/black-frame-wood/black-frame-wood-1.jpg';

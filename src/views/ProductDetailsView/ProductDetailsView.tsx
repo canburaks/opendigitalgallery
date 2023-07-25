@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
-import { LocaleType, MergedProductOption, ProductDetails, TranslatableFields, CartProduct } from '@/types';
+import { LocaleType, MergedProductOption, ProductDetails, TranslatableFields } from '@/types';
 import React, { useState, useMemo, MouseEvent } from 'react';
 import { RadioGroup } from '@headlessui/react';
-import { DEFAULT_LOCALE, PRODUCT_DIMENSION_UNIT, PRODUCT_IMAGE_PLACEHOLDER, NO_FRAME_PRODUCT, FRAME_IMAGE_PLACEHOLDER } from '@/constants';
+import { DEFAULT_LOCALE, PRODUCT_DIMENSION_UNIT, NO_FRAME_PRODUCT } from '@/constants';
 import { useTranslation } from 'next-i18next';
 import { Container } from '@mui/material';
 import {

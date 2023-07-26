@@ -6,6 +6,6 @@ export * from './NewsletterBanner';
 export * from './CommonDialog';
 export * from './FilterTab';
 export * from './CartPopup';
-export * from './ProductCart';
 export * from './SearchBox';
 export * from './CartProductList';
+export * from './OrderProductCard';

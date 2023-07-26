@@ -55,6 +55,7 @@ module.exports = {
         800: '#1e40af',
         900: '#1e3a8a',
       },
+      green: '#449e48',
       muiError: '#d32f2f',
       transparent: 'transparent',
     },

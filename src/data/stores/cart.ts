@@ -270,8 +270,6 @@ export const getInitialCartProducts = async () => {
     cartID = undefined;
   }
 
-  console.log('getInitial cartID', cartID);
-  console.log('getInitial products', products);
   return { products, cartID };
 };
 

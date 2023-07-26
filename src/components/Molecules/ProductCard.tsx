@@ -6,7 +6,10 @@ import { getLocaleValues } from '@/constants';
 import { ImageWithFallback } from '../Atoms';
 
 type ProductCard = {
-  prices: Price[];
+  prices?: Price[];
+  price?: number;
+  priceObj?: Price;
+  currency?: string;
 } & Partial<Product>;
 
 export const ProductCard: FC<ProductCard> = ({
@@ -15,6 +18,8 @@ export const ProductCard: FC<ProductCard> = ({
   default_image_alt,
   handle,
   title,
+  price,
+  priceObj,
 }) => {
   const minPrice =
     prices && prices.length > 0 ? Math.min(...prices.map((item) => item.price)) : null;
@@ -48,6 +53,16 @@ export const ProductCard: FC<ProductCard> = ({
         {minPrice && (
           <Body className="mt-1">
             Başlangıç Fiyatı: {minPrice} {currency}
+          </Body>
+        )}
+        {priceObj && (
+          <Body>
+            {priceObj.price} {priceObj.currency}
+          </Body>
+        )}
+        {price && currency && (
+          <Body>
+            {price} {currency}
           </Body>
         )}
       </>

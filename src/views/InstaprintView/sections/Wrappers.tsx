@@ -19,7 +19,7 @@ const BLACK = "/images/instaprint/frame-texture/black-wood-texture.avif"
 const DARK_BROWN = "/images/instaprint/frame-texture/dark-brown-texture.avif"
 const NATURAL = "/images/instaprint/frame-texture/natural-wood-texture.avif"
 
-function getFrameBackgroundImage(frame: InstaprintFrameOptionsEnum) {
+function getFrameBackgroundImage(frame: InstaprintFrameOptionsEnum): string | null {
     switch (frame) {
         case InstaprintFrameOptionsEnum.BLACK: return BLACK
         case InstaprintFrameOptionsEnum.DARK_BROWN: return DARK_BROWN
@@ -38,17 +38,22 @@ export const MediaWrapper = (props: Props) => {
     const { observe, width } = useDimensions({ useBorderBoxSize: true });
     console.log("mediawrapper props", props)
     console.log("isDefault", props.mat, props.frame)
+    const hasFrame = useMemo(() => props.frame !== InstaprintFrameOptionsEnum.NO_FRAME, [props.frame])
+    const hasMat = useMemo(() => Boolean(props.mat), [props.mat])
+
     return (
         <motion.div
-            style={{ width, height:400 }}
+            style={{ width, height: 400 }}
             className="flex flex-col justify-center items-center"
             ref={observe}
         >
             <FrameLayer frame={props.frame}>
-                <MatLayer mat={props.mat}>
-                    <ImageComponent 
-                        imageSrc={props.imageSrc} 
-                        isDefault={Boolean(props.mat) === false && props.frame === InstaprintFrameOptionsEnum.NO_FRAME} 
+                <MatLayer mat={props.mat} hasFrame={hasFrame}>
+                    <ImageComponent
+                        hasFrame={hasFrame}
+                        hasMat={hasMat}
+                        imageSrc={props.imageSrc}
+                        isDefault={Boolean(props.mat) === false && props.frame === InstaprintFrameOptionsEnum.NO_FRAME}
                     />
                 </MatLayer>
             </FrameLayer>
@@ -57,11 +62,12 @@ export const MediaWrapper = (props: Props) => {
 }
 
 const frameVariants = {
-    hasFrame: {
+    hasFrame: (src: string) => ({
         padding: `${FRAME_THICKNESS}px`,
         border: "1px solid transparent",
-        
-    },
+        ...(src && ({ backgroundImage: `url(${src})` }))
+
+    }),
     noFrame: {
         padding: `${0}px`,
         border: "1px solid rgba(0,0,0, 0.01)",
@@ -80,14 +86,15 @@ const FrameLayer = ({ frame, children }: { frame: InstaprintFrameOptionsEnum, ch
         height: "auto",
         boxShadow: "6px 8px 16px -1px rgba(0, 0, 0, 0.3)",
         // padding: `${isNoFrame ? 0 : FRAME_THICKNESS}px`,
-        ...(!isNoFrame && ({ backgroundImage: `url(${getFrameBackgroundImage(frame)})` })),
+        // ...(!isNoFrame && ({ backgroundImage: `url(${getFrameBackgroundImage(frame)})` })),
     }) as React.CSSProperties, [frame])
     console.log("frame style", style)
     return (
-        <motion.div 
-            style={style} 
-            variants={frameVariants} 
-            initial="noFrame" 
+        <motion.div
+            custom={getFrameBackgroundImage(frame)}
+            style={style}
+            variants={frameVariants}
+            initial="noFrame"
             animate={isNoFrame ? "noFrame" : "hasFrame"}>
             {children}
         </motion.div>
@@ -98,6 +105,13 @@ const matVariants = {
     hasMat: {
         width: PRINT_WIDTH_CM + 2 * MAT_THICKNESS,
         // height: PRINT_HEIGHT_CM2 + 2 * MAT_THICKNESS,
+        boxShadow: "inset 0px 0px 0px 0px",
+        padding: `${MAT_THICKNESS}px`
+    },
+    hasMatWithFrame: {
+        width: PRINT_WIDTH_CM + 2 * MAT_THICKNESS,
+        boxShadow: "inset 0px 2px 16px 1px rgba(0, 0, 0, 0.3), inset 0px -2px 16px 1px rgba(0, 0, 0, 0.3)",
+        // height: PRINT_HEIGHT_CM2 + 2 * MAT_THICKNESS,
         padding: `${MAT_THICKNESS}px`
     },
     noMat: {
@@ -106,7 +120,7 @@ const matVariants = {
         padding: `${0}px`
     }
 }
-const MatLayer = ({ mat, children }: { mat: boolean | string, children: JSX.Element }) => {
+const MatLayer = ({ mat, hasFrame, children }: { mat: boolean | string, hasFrame: boolean, children: JSX.Element }) => {
     const hasMat = useMemo(() => Boolean(mat) === true, [mat])
     const style = useMemo(() => ({
         position: "relative",
@@ -115,7 +129,7 @@ const MatLayer = ({ mat, children }: { mat: boolean | string, children: JSX.Elem
         alignItems: "center",
         justifyContent: "center",
         border: "0px solid transparent",
-        height:"auto",
+        height: "auto",
         background: "#fff",
         zIndex: 1,
         // width: `${hasMat ? PRINT_WIDTH_CM + 2 * MAT_THICKNESS : PRINT_WIDTH_CM}px`,
@@ -124,10 +138,10 @@ const MatLayer = ({ mat, children }: { mat: boolean | string, children: JSX.Elem
     }) as React.CSSProperties, [mat])
 
     return (
-        <motion.div 
-            style={style} 
-            initial={"noMat"} 
-            animate={hasMat ? "hasMat" : "noMat"} 
+        <motion.div
+            style={style}
+            initial={"noMat"}
+            animate={!hasMat ? "noMat" : hasFrame ? "hasMatWithFrame" : "hasMat"}
             variants={matVariants}>
             {children}
         </motion.div>
@@ -135,14 +149,25 @@ const MatLayer = ({ mat, children }: { mat: boolean | string, children: JSX.Elem
 }
 
 const imageVariants = {
-    default:{
+    default: {
         boxShadow: "6px 8px 16px -1px rgba(0, 0, 0, 0.3)",
+        //boxShadow: "inset 0px 2px 16px 1px rgba(0, 0, 0, 0.3), inset 0px -2px 16px 1px rgba(0, 0, 0, 0.3)"
     },
-    modified:{
-        boxShadow: "none"
+    modified: {
+        boxShadow: "none",
+        //boxShadow: "inset 0px 2px 16px 1px rgba(0, 0, 0, 0.3), inset 0px -2px 16px 1px rgba(0, 0, 0, 0.3)"
     }
 }
-const ImageComponent = ({ imageSrc, isDefault }: { imageSrc: string, isDefault:boolean }) => {
+
+const imageShadowVariants = {
+    default:{
+        boxShadow: "none",
+    },
+    hasFrameNoMat:{
+        boxShadow: "inset 0px 2px 16px 1px rgba(0, 0, 0, 0.3), inset 0px -2px 16px 1px rgba(0, 0, 0, 0.3)"
+    }
+}
+const ImageComponent = ({ imageSrc, isDefault, hasFrame, hasMat }: { imageSrc: string, isDefault: boolean, hasFrame: boolean, hasMat: boolean }) => {
     const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
     const ratio = imageDimensions.width / imageDimensions.height;
     console.log("ratio", ratio)
@@ -160,16 +185,25 @@ const ImageComponent = ({ imageSrc, isDefault }: { imageSrc: string, isDefault:b
         setImageDimensions({ width: naturalWidth, height: naturalHeight });
     };
     console.log("isDefault", isDefault)
+    console.log("hasFrameHasMat", (hasFrame && !hasMat) ? "hasFrameNoMat" : "default")
 
     return (
-        <motion.img
-            style={style}
-            src={imageSrc}
-            onLoad={handleImageLoad}
-            variants={imageVariants}
-            initial={"default"}
-            animate={isDefault ? "default" : "modified"}
-            alt="Instaprint"
-        />
+        <>
+            <motion.img
+                style={style}
+                src={imageSrc}
+                onLoad={handleImageLoad}
+                variants={imageVariants}
+                initial={"default"}
+                animate={isDefault ? "default" : "modified"}
+                alt="Instaprint"
+            />
+            <motion.div
+                variants={imageShadowVariants}
+                initial={"default"}
+                style={{...style, zIndex:3}}
+                animate={(hasFrame && !hasMat) ? "hasFrameNoMat" : "default"}
+            />
+        </>
     );
 };

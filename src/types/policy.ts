@@ -16,10 +16,15 @@ export type PolicyStatus = 'publish' | 'draft' | 'future' | 'pending' | 'private
  * There should be only one Policy category and
  * the name value of it must only be one of the locales.
  * */
+export interface PolicyCategoryConnection {
+  edges: PolicyCategoryNode[];
+}
+
 export interface PolicyCategory {
   node: PolicyCategoryNode;
 }
 export interface PolicyCategoryNode {
+  id?: string;
   name: LocaleType;
 }
 
@@ -44,10 +49,10 @@ export interface PolicyNode extends Node {
 }
 
 export type PolicyType = {
-  id: string;
-  categories: { edges: PolicyCategory[] };
+  id?: string;
+  categories: { edges: {node: { name: LocaleType, id: string }}[] };
   slug: string;
-  tags?: { edges: { node: { name: string } }[] };
+  tags: { edges: { node: { name: string, id: string } }[] };
   title: string;
   content: string;
 };

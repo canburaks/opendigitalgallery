@@ -7,3 +7,4 @@ export * from './queryStaleDuration';
 export * from './trnslationKeys';
 export * from './infiniteScrollCounters';
 export * from './payment';
+export * from './policy';

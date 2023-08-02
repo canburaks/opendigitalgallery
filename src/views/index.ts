@@ -16,3 +16,5 @@ export * from './ArtPrintsView';
 export * from './SearchProductsView';
 export * from './CheckoutView';
 export * from './OrderView';
+export * from './PolicyView';
+

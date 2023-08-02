@@ -1,6 +1,6 @@
-import type { PostCategory } from '@/types';
+import type { PostCategory, PolicyCategory } from '@/types';
 import type { PostIdType, LocaleType } from '@/types';
-import { DEFAULT_LOCALE } from '@/constants';
+import { DEFAULT_LOCALE, POLICY_TAG } from '@/constants';
 import { PostPreviewNode } from '@/types';
 
 const API_URL: string = process.env.WORDPRESS_API_URL!;
@@ -236,4 +236,80 @@ export async function getPostAndMorePosts(
   if (data.posts.edges.length > 2) data.posts.edges.pop();
 
   return data;
+}
+
+
+/*
+==================================================================================================
+POLICIES
+==================================================================================================
+*/
+
+export async function getAllPoliciesForHome(preview: boolean, locale?: LocaleType) {
+  const data = await fetchAPI(
+    `
+    query AllPolicies {
+      pages(first: 20, where: {categoryName: "${locale || DEFAULT_LOCALE}", tag: "${POLICY_TAG}"}) {
+        edges {
+          node {
+            id
+            slug
+            title
+            tags(first: 10) {
+              edges {
+                node {
+                  name
+                  slug
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `,
+    {
+      variables: {
+        onlyEnabled: !preview,
+        preview,
+      },
+    }
+  );
+
+  return data?.pages;
+}
+
+
+export async function getAllPoliciesWithSlug(): Promise<{
+  edges: { node: { id: string, slug: string, title:string, content:string, categories: { edges: PolicyCategory[] } } }[];
+}> {
+  const data = await fetchAPI(`
+    {
+      pages(first: 100, where: {tag: "${POLICY_TAG}"}) {
+        edges {
+          node {
+            categories {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+            tags {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+            slug
+            title(format: RENDERED)
+            id
+            content(format: RENDERED)
+          }
+        }
+      }
+    }
+  `);
+  return data?.pages;
 }

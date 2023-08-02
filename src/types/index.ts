@@ -5,3 +5,5 @@ export * from './SelectInterface';
 export * from './posts';
 export * from './locale';
 export * from './payment';
+export * from './policy';
+

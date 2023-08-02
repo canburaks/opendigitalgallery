@@ -1,4 +1,4 @@
-import type { PostCategory, PolicyCategory, PolicyConnection } from '@/types';
+import type { PostCategory } from '@/types';
 import type { PostIdType, LocaleType } from '@/types';
 import { DEFAULT_LOCALE, POLICY_TAG } from '@/constants';
 import { PostPreviewNode } from '@/types';

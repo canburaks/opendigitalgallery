@@ -11,7 +11,6 @@ import {
 } from '@/views/ProductDetailsView/utils';
 import { TRX } from '@/constants';
 import { ImageBox } from './components';
-// import { AddToCartButton } from './components/AddToCartButton';
 import { useFrameDataFromQuery } from './utils';
 import { Button } from '@/components';
 import { useCartStore } from '@/data/stores';

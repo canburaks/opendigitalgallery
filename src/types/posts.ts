@@ -77,10 +77,10 @@ export type PostType = {
   };
   categories: { edges: PostCategory[] };
   databaseId?: number;
+  status: PostStatus;
   date?: string;
   excerpt: string;
   slug: string;
-  status: PostStatus;
   tags?: { edges: { node: { name: string } }[] };
   title: string;
   content?: string;

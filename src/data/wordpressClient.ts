@@ -1,4 +1,4 @@
-import type { PostCategory, PolicyCategory } from '@/types';
+import type { PostCategory, PolicyCategory, PolicyConnection } from '@/types';
 import type { PostIdType, LocaleType } from '@/types';
 import { DEFAULT_LOCALE, POLICY_TAG } from '@/constants';
 import { PostPreviewNode } from '@/types';
@@ -245,7 +245,7 @@ POLICIES
 ==================================================================================================
 */
 
-export async function getAllPoliciesForHome(preview: boolean, locale?: LocaleType) {
+export async function getAllPoliciesByLanguage(preview: boolean, locale?: LocaleType) {
   const data = await fetchAPI(
     `
     query AllPolicies {
@@ -258,6 +258,7 @@ export async function getAllPoliciesForHome(preview: boolean, locale?: LocaleTyp
             tags(first: 10) {
               edges {
                 node {
+                  id
                   name
                   slug
                 }
@@ -280,17 +281,18 @@ export async function getAllPoliciesForHome(preview: boolean, locale?: LocaleTyp
 }
 
 
-export async function getAllPoliciesWithSlug(): Promise<{
-  edges: { node: { id: string, slug: string, title:string, content:string, categories: { edges: PolicyCategory[] } } }[];
-}> {
+export async function getAllPoliciesWithSlug() {
   const data = await fetchAPI(`
     {
       pages(first: 100, where: {tag: "${POLICY_TAG}"}) {
         edges {
           node {
+            id
+            slug
             categories {
               edges {
                 node {
+                  id
                   name
                 }
               }
@@ -298,13 +300,12 @@ export async function getAllPoliciesWithSlug(): Promise<{
             tags {
               edges {
                 node {
+                  id
                   name
                 }
               }
             }
-            slug
             title(format: RENDERED)
-            id
             content(format: RENDERED)
           }
         }

@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import { GetStaticProps } from 'next';
-import { getAllPoliciesWithSlug, getPostAndMorePosts } from '@/data/wordpressClient';
+import { getAllPoliciesWithSlug, getAllPoliciesByLanguage } from '@/data/wordpressClient';
 import { PolicyView } from '@/views';
-import { LocaleType, PolicyCategory, PolicyType } from '@/types';
+import { LocaleType, PolicyCategory, PolicyType, PolicyConnection, PolicyNode } from '@/types';
 import nextI18NextConfig from '../../../next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { DEFAULT_LOCALE } from '@/constants';
@@ -41,14 +41,17 @@ export async function getStaticProps(ctx: GetStaticProps) {
   try {
     const { params, locale } = ctx as any;
 
-    const allPolicies = await getAllPoliciesWithSlug();
-    console.log('getStaticProps data', allPolicies);
-    const policy = allPolicies.edges.find(({ node }: { node: PolicyType }) => node.slug === params.slug)?.node;
+    let policies = await getAllPoliciesWithSlug();
+    policies = modifySlugs(policies)
+    //console.log('\n\ngetStaticPaths data', JSON.stringify(policies));
 
-    
+    const policiesWithSameSlug = policies.edges.filter(({ node }: { node: PolicyType }) => node.slug === params.slug);
+    const policy = policiesWithSameSlug.find((pn: PolicyNode) => pn.node.categories.edges[0].node.name.toLowerCase() === locale.toLowerCase())
+
+
     return {
       props: {
-        policy,
+        policy: policy.node,
         ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
       },
       revalidate: 10,
@@ -64,14 +67,15 @@ export async function getStaticProps(ctx: GetStaticProps) {
 }
 
 export async function getStaticPaths() {
+  
   try {
-    const allPolicies = await getAllPoliciesWithSlug();
-    console.log('getStaticPaths data', allPolicies);
+    let policies = await getAllPoliciesWithSlug();
+
+
+    policies = modifySlugs(policies)
 
     const pathHandler = (policy: PolicyType) => {
-      const categories: PolicyCategory[] = policy?.categories?.edges || [
-        { node: { name: DEFAULT_LOCALE } },
-      ];
+      const categories: PolicyCategory[] = policy?.categories?.edges;
       const category: PolicyCategory = categories[0];
       const policyLanguage: string | LocaleType =
         category?.node?.name.toLowerCase() || DEFAULT_LOCALE!;
@@ -83,7 +87,7 @@ export async function getStaticPaths() {
       }
     };
 
-    const paths = allPolicies.edges.map(({ node }: { node: PolicyType }) => pathHandler(node)) || [];
+    const paths = policies.edges.map(({ node }: { node: PolicyType }) => pathHandler(node)) || [];
     return {
       paths,
       fallback: false,
@@ -93,5 +97,36 @@ export async function getStaticPaths() {
       paths: [],
       fallback: false,
     };
+  }
+}
+
+function modifySlugs(policies: PolicyConnection) {
+  return {
+    ...policies,
+    edges: policies.edges.map((pn: PolicyNode) => {
+      /**
+       * Because we can not set the same slug for a policy with different language in WordPress
+       * We must set the same slug for all languages in WordPress.
+       * 
+       * For example: Gizliliz Politikası and Privacy Policy have different slug value in WordPress.
+       * In order to language changes to be set effectively, we must set the same slug.
+       * Let say 'privacy-policy', for those two policies. 
+       * 
+       * General tagging pattern in WordPress CMS for policies is like that
+       * Every policy page has exactly two tags: 
+       * - The first tag for any policy page is 'policy'
+       * - The second tag starts with 'policy-' and ends with the same suffix for the same policies but with different languages.
+       *   'policy-privacy' is the tag name for those two policies above. Others are: 'policy-tos', 'policy-distant-selling', etc..  
+       */
+
+      const slugTagNode = pn?.node?.tags?.edges.find((t: any) => t.node.name.startsWith('policy-'));
+
+      return {
+        node: {
+          ...(pn.node as PolicyType),
+          ...(slugTagNode && ({ slug: slugTagNode.node.name }))
+        }
+      }
+    })
   }
 }

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { useModalStore } from '@/data/stores';
-import { Body, Divider, HeadlineXS, LinkComponent } from '@/components';
+import { useModalStore, usePaymentStore } from '@/data/stores';
+import { Body, Divider, ErrorText, HeadlineXS, LinkComponent, Loading } from '@/components';
 import { useUser } from '@/data/hooks';
 import { Button } from '@mui/material';
 import { CheckoutContactForm, CheckoutContactFormType } from '../forms/CheckoutContactForm';
@@ -25,6 +25,9 @@ export const CheckoutSection = () => {
   const [continueWithoutAuth, setContinueWithoutAuth] = useState(false);
   const [activeIndex, setActiveIndex] = useState<null | number>(null);
   const [formValues, setFormValues] = useState<CheckoutFormValues | null>(null);
+  const setHiddenAuthUser = usePaymentStore((store) => store.setHiddenAuthUser);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // This function prevents data loss during form transitions
   const formSetter = (newFormValues: CheckoutFormValues | null) => {
@@ -35,15 +38,29 @@ export const CheckoutSection = () => {
   // This hook is responsible for preparing the data for the payment request API
   usePaymentRequestData({ formValues });
 
-  const onNext = () => {
+  const onNext = async () => {
+    setErrorMessage('');
     // Contact Form Submit
     if (activeIndex === 0 && contactFormRef.current) {
-      contactFormRef.current.submitForm().then(() => {
-        if (contactFormRef.current?.isValid) {
-          formSetter(contactFormRef.current.values);
+      setLoading(true);
+      try {
+        await contactFormRef.current.submitForm();
+
+        const isValid = contactFormRef.current?.isValid;
+        if (isValid) {
+          const values = contactFormRef.current.values;
+          if (!user) {
+            // just get user info anyway if it is not our user, we will register it in create-payment-request api.
+            setHiddenAuthUser(values);
+          }
+          formSetter(values);
           swiperRef.current.slideNext();
         }
-      });
+      } catch (err: any) {
+        setErrorMessage(err.message);
+      } finally {
+        setLoading(false);
+      }
     }
 
     // Address Form Submit
@@ -72,6 +89,7 @@ export const CheckoutSection = () => {
       setContinueWithoutAuth(false);
     }
     swiperRef.current.slidePrev();
+    setErrorMessage('');
   };
 
   return (
@@ -79,6 +97,8 @@ export const CheckoutSection = () => {
       <HeadlineXS className="pb-2">Order Information</HeadlineXS>
       <Divider direction="horizontal" />
       <BreadcumbsUI activeIndex={activeIndex} />
+      {loading && <Loading size={20} className="pt-6 pb-0" />}
+      <ErrorText error={errorMessage} />
 
       {/* Step 1: Check auth */}
       {!user && !continueWithoutAuth && (

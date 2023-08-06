@@ -6,6 +6,7 @@ import { FormInitializeRequest, FormInitializeResponse } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { TRX, IYZICO_LOCAL_STORAGE_TOKEN, IYZICO_CREATE_REQUEST_ENDPOINT } from '@/constants';
 import IconButton from '@mui/material/IconButton';
+import { ErrorText } from '@/components';
 
 const style = {
   position: 'absolute',
@@ -25,39 +26,47 @@ export function PaymentModal() {
   const paymentModal = useModalStore((state) => state.paymentModal);
   const closeModal = useModalStore((state) => state.closePaymentModal);
   const paymentRequestData = usePaymentStore((state) => state.paymentRequestData);
-
+  const [loading, setLoading] = React.useState(false);
+  const hiddenAuthUser = usePaymentStore((state) => state.hiddenAuthUser);
+  const [error, setError] = React.useState('');
   const [payload, setPayload] = React.useState({
-    loading: false,
     response: {} as FormInitializeResponse,
     success: false,
   });
 
   const submitHandler = useCallback(
     (requestData: Partial<FormInitializeRequest> | null) => {
-      if (payload.loading === false) {
-
-
-        setPayload({ ...payload, loading: true });
+      if (loading === false && !error) {
+        setLoading(true);
         fetch(IYZICO_CREATE_REQUEST_ENDPOINT, {
           method: 'POST',
-          body: JSON.stringify(requestData),
+          body: JSON.stringify({
+            requestData,
+            hiddenAuthUser,
+          }),
         })
           .then((res: Response) => res.json())
           .then((res: FormInitializeResponse) => {
-            console.log('Payment modal response status: ', res);
-            if (res.status === 'success') {
-              setPayload({ ...payload, response: res, success: true, loading: false });
+            if (res && res.status && res.status === 'success') {
+              setPayload((prev) => ({ ...prev, response: res, success: true }));
             } else {
-              setPayload({ ...payload, response: res, success: false, loading: false });
+              setPayload((prev) => ({ ...prev, response: res, success: false }));
+              if (res && res.message) {
+                setError(res.message);
+              }
             }
           })
           .catch((e) => {
+            console.log('e', e);
             console.error('Payment modal error:', e);
-            setPayload({ ...payload, response: e, success: false, loading: false });
+            setPayload((prev) => ({ ...prev, response: e, success: false }));
+          })
+          .finally(() => {
+            setLoading(false);
           });
       }
     },
-    [payload]
+    [error, hiddenAuthUser, loading]
   );
 
   /*
@@ -83,9 +92,8 @@ export function PaymentModal() {
    ########################################################################################
    */
   useEffect(() => {
-    console.log('payload', payload);
     if (canUseDOM()) {
-      if (payload.success && payload.response?.paymentPageUrl) {
+      if (payload.success && payload.response?.paymentPageUrl && !error) {
         // 1) save the token locally
         localStorage.setItem(IYZICO_LOCAL_STORAGE_TOKEN, payload.response.token);
         // 2) Navigate user to Iyzico payment page.
@@ -103,7 +111,8 @@ export function PaymentModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {payload.loading ? (
+          <ErrorText error={error} />
+          {loading ? (
             <div className="bg-indigo-500 ...">
               <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24"></svg>
               Processing...

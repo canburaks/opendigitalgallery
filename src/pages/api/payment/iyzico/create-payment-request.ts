@@ -1,6 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { IYZICO_LOCAL_STORAGE_TOKEN, PAGES } from '@/constants';
-import { FormInitializeRequest, FormInitializeResponse, PaymentGroup, OrderStatusEnum } from '@/types';
+import {
+  FormInitializeRequest,
+  FormInitializeResponse,
+  PaymentGroup,
+  OrderStatusEnum,
+} from '@/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import requestIp from 'request-ip';
 import { isString } from 'lodash';
@@ -8,18 +13,75 @@ import { iyzipay } from '@/data/iyzicoServer';
 import { serialize, CookieSerializeOptions } from 'cookie';
 // import { loggerServer as logger } from '@/utils/logger/server';
 import { v5 as uuidv5 } from 'uuid';
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { User, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { generatePassword } from '@/utils';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<FormInitializeResponse>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<FormInitializeResponse | { message: string }>
+) {
   const bodyData = JSON.parse(req.body);
+  const requestData = bodyData.requestData;
+  const hiddenAuthUser = bodyData.hiddenAuthUser;
   const supabase = createServerSupabaseClient({ req, res });
+  let currentUser: null | User = null;
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    currentUser = user;
+  }
+
+  // Case: If there is hidden auth user, start save here (coming from payment flow without login)
+  if (!user && hiddenAuthUser) {
+    const emailCheckRes = await supabase
+      .from('users')
+      .select('*', { count: 'exact' })
+      .eq('email', hiddenAuthUser.email);
+
+    if (emailCheckRes.error) {
+      return res.status(500).json({
+        message: emailCheckRes.error.message,
+      });
+    }
+    // not registered
+    if (emailCheckRes.count === 0) {
+      const signUpRes = await supabase.auth.signUp({
+        email: hiddenAuthUser.email,
+        password: generatePassword(),
+      });
+      if (signUpRes.error) {
+        return res.status(500).json({
+          message: signUpRes.error.message,
+        });
+      }
+
+      const userRes = await supabase.from('users').insert({
+        uid: signUpRes.data.user?.id,
+        email: hiddenAuthUser.email,
+        first_name: hiddenAuthUser.firstName,
+        last_name: hiddenAuthUser.lastName,
+      });
+      if (userRes.error) {
+        return res.status(500).json({
+          message: userRes.error.message,
+        });
+      }
+
+      currentUser = signUpRes.data.user;
+    } else {
+      currentUser = emailCheckRes.data[0];
+    }
+  }
 
   // const { price, paidPrice, currency, locale, shippingAddress, billingAddress, buyer, basketItems } = req.body;
   const data: Partial<FormInitializeRequest> = {
     paymentGroup: PaymentGroup.LISTING!,
     callbackUrl: process.env.IYZICO_CALLBACK_URL!,
     enabledInstallments: [1],
-    ...(bodyData as Partial<FormInitializeRequest>),
+    ...(requestData as Partial<FormInitializeRequest>),
   };
 
   // set buyer ip address
@@ -54,6 +116,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<FormIn
         const orderSetResponse = supabase
           .from('orders')
           .insert({
+            uid: currentUser?.id,
             order_status_id: OrderStatusEnum.PaymentAwaiting,
             payment_provider_response: result,
             payment_provider_token: result.token,

@@ -25,7 +25,6 @@ const getProductsByIDs = async <F extends keyof Product>({
     .in('product_id', productIDs)
     .limit(limit || Infinity);
 
-  console.log('res', res);
   return res as Promise<Res<F>>;
 };
 

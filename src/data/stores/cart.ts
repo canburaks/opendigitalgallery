@@ -12,7 +12,6 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
   setBuyer: (buyer: Partial<Buyer>) => set({ buyer }),
   setStore: (store: CartProduct[]) => set({ store }),
   addToCart: async (product: CartProduct, openCartPopup) => {
-    const cardID = get().cartID;
     const existingProduct: CartProduct | undefined = get().store.find(
       (p) => p.priceId === product.priceId
     );
@@ -35,19 +34,18 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
         ])
       );
 
-      if (cardID) {
+      if (get().cartID) {
         await client
           .from('cart_details')
           .update({ quantity: existingProduct.quantity + 1 })
-          .eq('cart_id', cardID)
+          .eq('cart_id', get().cartID)
           .eq('price_id', product.priceId);
       }
     } else {
-      if (cardID) {
-        console.log('cardID', cardID);
+      if (get().cartID) {
         await client
           .from('cart_details')
-          .insert([{ cart_id: cardID, price_id: product.priceId, quantity: 1 }]);
+          .insert([{ cart_id: get().cartID || -1, price_id: product.priceId, quantity: 1 }]);
       }
 
       localStorage.setItem('cart', JSON.stringify([...get().store, product]));
@@ -61,7 +59,6 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
   },
 
   removeFromCart: async (product: Partial<CartProduct>) => {
-    const cardID = get().cartID;
     // check the existence of the product in the cart
 
     const existProduct: CartProduct | undefined = get().store.find(
@@ -72,11 +69,11 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
       if (existProduct.quantity === 1) {
         const newList = get().store.filter((p) => p.priceId !== product.priceId);
         set(() => ({ store: [...newList] }));
-        if (cardID) {
+        if (get().cartID) {
           await client
             .from('cart_details')
             .delete()
-            .eq('cart_id', cardID)
+            .eq('cart_id', get().cartID)
             .eq('price_id', product.priceId);
         }
       } else {
@@ -87,11 +84,11 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
           return p;
         });
         set(() => ({ store: [...newList] }));
-        if (cardID) {
+        if (get().cartID) {
           await client
             .from('cart_details')
             .update({ quantity: existProduct.quantity - 1 })
-            .eq('cart_id', cardID)
+            .eq('cart_id', get().cartID)
             .eq('price_id', product.priceId);
         }
       }
@@ -100,17 +97,16 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
   },
 
   removeCartPermanently: async (product: Partial<CartProduct>) => {
-    const cardID = get().cartID;
-
+    console.log('cartID remove permamnently', get().cartID);
     const notExistingProducts: CartProduct[] = get().store.filter(
       (p) => p.priceId !== product.priceId
     );
     set(() => ({ store: [...notExistingProducts] }));
-    if (cardID) {
+    if (get().cartID) {
       await client
         .from('cart_details')
         .delete()
-        .eq('cart_id', cardID)
+        .eq('cart_id', get().cartID || -1)
         .eq('price_id', product.priceId);
     }
 
@@ -138,12 +134,13 @@ export interface CartStoreTypes {
 export const getInitialCartProducts = async () => {
   // ATTENTION:  This function is not IDEMPOTENT (it has side effects) and too much request, so be careful for race conditions
 
-  const resAuth = await client.auth.getSession();
+  const resAuth = await client.auth.getSession().catch((err) => console.log('err', err));
   const user = resAuth?.data.session?.user;
   let products: CartProduct[] = [];
   let dbCart: Cart | null = null;
   let dbProducts: CartDetail[] = [];
-  const localStorageCart = localStorage.getItem('cart');
+  const isCSR = typeof window !== 'undefined';
+  const localStorageCart = isCSR && localStorage.getItem('cart');
   let cartID: number | undefined = undefined;
 
   // Case:  User Logged
@@ -257,25 +254,39 @@ export const getInitialCartProducts = async () => {
       );
 
       // update local
-      localStorage.setItem('cart', JSON.stringify(mergeProducts));
+      isCSR && localStorage.setItem('cart', JSON.stringify(mergeProducts));
 
       // update state
       products = mergeProducts;
     }
   }
-
+  console.log('user', user);
   // Case: User Not Logged
   if (!user) {
-    const localStorageCart = localStorage.getItem('cart');
+    const localStorageCart = isCSR && localStorage.getItem('cart');
     if (localStorageCart) {
       products = JSON.parse(localStorageCart);
     }
     cartID = undefined;
   }
 
+  console.log('getInitial cartID', cartID);
+  console.log('getInitial products', products);
   return { products, cartID };
 };
 
-getInitialCartProducts().then((data) =>
-  useCartStore.setState({ store: data.products, cartID: data.cartID })
-);
+// This is triggered at first mount
+getInitialCartProducts()
+  .then((data) => useCartStore.setState({ store: data.products, cartID: data.cartID }))
+  .catch((err) => {
+    console.log('couldnt initial cart ', err);
+  });
+
+// This will be triggered on auth change listener
+export const authChangeTriggerCartState = async () => {
+  return getInitialCartProducts()
+    .then((data) => useCartStore.setState({ store: data.products, cartID: data.cartID }))
+    .catch((err) => {
+      console.log('couldnt initial cart ', err);
+    });
+};

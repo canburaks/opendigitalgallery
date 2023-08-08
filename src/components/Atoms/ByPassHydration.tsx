@@ -1,11 +1,10 @@
-import { getInitialCartProducts } from '@/data/stores';
+import { authChangeTriggerCartState } from '@/data/stores';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
-
 export const ByPassHydration: FC<PropsWithChildren> = ({ children }) => {
   const supabaseClient = useSupabaseClient();
   const [isHydrated, setIsHydrated] = useState(false);
-  const [callCartSync, setCallCartSync] = useState(false);
+  const [callCartSync, setCallCartSync] = useState<string | null>(null);
 
   //Wait till NextJS rehydration completes
   useEffect(() => {
@@ -14,17 +13,20 @@ export const ByPassHydration: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (callCartSync) {
-      getInitialCartProducts();
+      authChangeTriggerCartState();
     }
   }, [callCartSync]);
 
   useEffect(() => {
     const { data: authListener } = supabaseClient.auth.onAuthStateChange(async (e) => {
-      if (e === 'SIGNED_IN') {
-        setCallCartSync(true);
+      if (e === 'SIGNED_IN' || e === 'SIGNED_OUT') {
+        setCallCartSync('SIGNED_IN');
       }
       if (e === 'SIGNED_OUT') {
-        setCallCartSync(false);
+        setCallCartSync('SIGNED_OUT');
+      }
+      if (e !== 'SIGNED_IN' && e !== 'SIGNED_OUT') {
+        setCallCartSync(null);
       }
     });
 

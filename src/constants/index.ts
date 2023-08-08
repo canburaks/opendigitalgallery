@@ -8,3 +8,4 @@ export * from './trnslationKeys';
 export * from './infiniteScrollCounters';
 export * from './payment';
 export * from './instaprint';
+export * from './policy';

@@ -1,7 +1,7 @@
 import Image, { ImageProps } from 'next/image';
 import { FC, useEffect, useState } from 'react';
+import { PRODUCT_IMAGE_PLACEHOLDER } from '@/constants';
 
-const fallbackSrc = '/images/fallback.jpg';
 export const ImageWithFallback: FC<ImageProps> = ({ src, ...rest }) => {
   const [imgSrc, set_imgSrc] = useState(src);
 
@@ -17,11 +17,11 @@ export const ImageWithFallback: FC<ImageProps> = ({ src, ...rest }) => {
       onLoadingComplete={(result) => {
         if (result.naturalWidth === 0) {
           // Broken image
-          set_imgSrc(fallbackSrc);
+          set_imgSrc(PRODUCT_IMAGE_PLACEHOLDER);
         }
       }}
       onError={() => {
-        set_imgSrc(fallbackSrc);
+        set_imgSrc(PRODUCT_IMAGE_PLACEHOLDER);
       }}
     />
   );

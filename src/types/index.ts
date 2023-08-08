@@ -6,3 +6,5 @@ export * from './posts';
 export * from './locale';
 export * from './payment';
 export * from './instaprint';
+export * from './policy';
+

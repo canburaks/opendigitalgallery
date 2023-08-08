@@ -1,4 +1,4 @@
-import { useProductPricesByIDs } from '@/data/hooks';
+import { usePricesByIDs } from '@/data/hooks';
 import { useProductOptions } from '@/data/hooks/useProductOptions';
 import { useCartStore } from '@/data/stores';
 import React, { FC } from 'react';
@@ -16,9 +16,10 @@ interface CartProductListProps {
 
 export const CartProductList: FC<CartProductListProps> = ({ layout = 'horizontal', className }) => {
   const cartStore = useCartStore((state) => state);
+  const priceIDs = cartStore?.store?.map((item) => +item.priceId);
   const productIDs = cartStore?.store?.map((item) => +item.productId);
   const productOptions = useProductOptions();
-  const productPrices = useProductPricesByIDs(productIDs || [], Boolean(productIDs));
+  const productPrices = usePricesByIDs(priceIDs || [], Boolean(priceIDs));
   const { data: products } = useProductsByIDs({
     productIDs: productIDs || [],
   });

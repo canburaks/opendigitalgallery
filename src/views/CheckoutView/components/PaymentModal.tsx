@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useModalStore, usePaymentStore } from '@/data/stores';
+import { useCartStore, useModalStore, usePaymentStore } from '@/data/stores';
 import { FormInitializeRequest, FormInitializeResponse } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { TRX, IYZICO_LOCAL_STORAGE_TOKEN, IYZICO_CREATE_REQUEST_ENDPOINT } from '@/constants';
@@ -33,6 +33,7 @@ export function PaymentModal() {
     response: {} as FormInitializeResponse,
     success: false,
   });
+  const cartProducts = useCartStore((state) => state.store);
 
   const submitHandler = useCallback(
     (requestData: Partial<FormInitializeRequest> | null) => {
@@ -43,6 +44,7 @@ export function PaymentModal() {
           body: JSON.stringify({
             requestData,
             hiddenAuthUser,
+            cartProducts,
           }),
         })
           .then((res: Response) => res.json())
@@ -66,7 +68,7 @@ export function PaymentModal() {
           });
       }
     },
-    [error, hiddenAuthUser, loading]
+    [cartProducts, error, hiddenAuthUser, loading]
   );
 
   /*

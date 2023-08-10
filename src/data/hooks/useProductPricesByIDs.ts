@@ -1,6 +1,6 @@
 import { getLocaleValues, queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
-import { getSupabaseBrowserClient } from '../supabaseClient';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 
 export const getProductPricesByIDs = async (productIDs: number[]) => {
   const client = getSupabaseBrowserClient();

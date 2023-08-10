@@ -1,7 +1,7 @@
 import { queryKeys } from '@/constants';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getSupabaseBrowserClient } from '../supabaseClient';
-import { COLLECTION_PRODUCT_LIST_ITEM_QUERY_SELECT } from '../queries';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
+import { COLLECTION_PRODUCT_LIST_ITEM_QUERY_SELECT } from '../queries/collectionQueries';
 
 type GetInitialPostersType = {
   from: number;

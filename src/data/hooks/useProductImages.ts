@@ -1,6 +1,6 @@
 import { queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
-import { getSupabaseBrowserClient } from '../supabaseClient';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 
 export const getProductImages = async (id: number) => {
   const client = getSupabaseBrowserClient();

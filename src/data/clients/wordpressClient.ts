@@ -238,7 +238,6 @@ export async function getPostAndMorePosts(
   return data;
 }
 
-
 /*
 ==================================================================================================
 POLICIES
@@ -279,7 +278,6 @@ export async function getAllPoliciesByLanguage(preview: boolean, locale?: Locale
 
   return data?.pages;
 }
-
 
 export async function getAllPoliciesWithSlug() {
   const data = await fetchAPI(`

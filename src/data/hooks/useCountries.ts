@@ -2,7 +2,7 @@ import { queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
 import { Country } from '@/types';
 import { PostgrestResponse } from '@supabase/supabase-js';
-import { getSupabaseBrowserClient } from '../supabaseClient';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 
 // This is used for listing the countries for address select in profile page
 

@@ -21,3 +21,4 @@ export * from './useCountry';
 export * from './usePricesByIDs';
 export * from './useInstaprintProduct';
 export * from './useRemoteMediaDimensions';
+export * from './useCart';

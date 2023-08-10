@@ -1,7 +1,7 @@
 import { queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
-import { getSupabaseBrowserClient } from '../supabaseClient';
-import { PRODUCT_FULL_QUERY_SELECT } from '../queries';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
+import { PRODUCT_FULL_QUERY_SELECT } from '../queries/productQueries';
 
 export const getProduct = async (id: string) => {
   const client = getSupabaseBrowserClient();

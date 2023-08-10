@@ -1,12 +1,11 @@
 import { ProductType, getLocaleValues, queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
-import { getSupabaseBrowserClient } from '../supabaseClient';
-import { PRODUCT_FULL_QUERY_SELECT } from '../queries';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
+import { PRODUCT_FULL_QUERY_SELECT } from '../queries/productQueries';
 import { useRouter } from 'next/router';
 
-
-export const getFrames = async (locale="en") => {
-  const locales = getLocaleValues(locale === "tr" ? "tr" : "en");
+export const getFrames = async (locale = 'en') => {
+  const locales = getLocaleValues(locale === 'tr' ? 'tr' : 'en');
   const client = getSupabaseBrowserClient();
   return client
     .from('products')

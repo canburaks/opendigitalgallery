@@ -56,6 +56,7 @@ export type ProductPricesResponseSuccess = ProductPricesResponse['data'];
 export type ProductPricesResponseError = ProductPricesResponse['error'];
 export type ProductOptionsResponse = Awaited<ReturnType<typeof getProductOptions>>;
 
+// Table: Order
 export type OrderType = Database['public']['Tables']['orders']['Row'];
 export type OrderInsertType = Database['public']['Tables']['orders']['Insert'];
 export type OrderResponseType = Awaited<ReturnType<typeof getOrders>>;
@@ -67,3 +68,6 @@ export type Cart = Database['public']['Tables']['carts']['Row'];
 
 // Table: Cart Details
 export type CartDetail = Database['public']['Tables']['cart_details']['Row'];
+
+// Table Users
+export type PublicUser = Database['public']['Tables']['users']['Row'];

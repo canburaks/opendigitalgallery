@@ -49,10 +49,6 @@ export const CheckoutSection = () => {
         const isValid = contactFormRef.current?.isValid;
         if (isValid) {
           const values = contactFormRef.current.values;
-          if (!user) {
-            // just get user info anyway if it is not our user, we will register it in create-payment-request api.
-            setHiddenAuthUser(values);
-          }
           formSetter(values);
           swiperRef.current.slideNext();
         }
@@ -68,6 +64,7 @@ export const CheckoutSection = () => {
       addressFormRef.current.submitForm().then(() => {
         if (addressFormRef.current?.isValid) {
           formSetter(addressFormRef.current.values);
+
           swiperRef.current.slideNext();
         }
       });
@@ -80,6 +77,10 @@ export const CheckoutSection = () => {
 
     // Payment Form Submit
     if (activeIndex === 3) {
+      if (!user) {
+        // just get user info anyway if it is not our user, we will register it in create-payment-request api.
+        setHiddenAuthUser(formValues);
+      }
       openModal();
     }
   };

@@ -1,7 +1,10 @@
 import { queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
-import { getSupabaseBrowserClient } from '../supabaseClient';
-import { PRODUCT_LIST_ITEM_QUERY_SELECT, SEARCH_POSTERS_INCLUDED_COLUMNS } from '../queries';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
+import {
+  PRODUCT_LIST_ITEM_QUERY_SELECT,
+  SEARCH_POSTERS_INCLUDED_COLUMNS,
+} from '../queries/productQueries';
 
 export const getSearchPosters = async (searchTerm: string) => {
   const client = getSupabaseBrowserClient();

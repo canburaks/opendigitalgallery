@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import { GetStaticProps } from 'next';
-import { getAllPostsWithSlug, getPostAndMorePosts } from '@/data/wordpressClient';
+import { getAllPostsWithSlug, getPostAndMorePosts } from '@/data/clients/wordpressClient';
 import { PostView } from '@/views';
 import { LocaleType, PostCategory, PostType } from '@/types';
 import nextI18NextConfig from '../../../next-i18next.config';

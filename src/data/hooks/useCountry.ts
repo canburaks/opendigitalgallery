@@ -2,7 +2,7 @@ import { queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
 import { Country } from '@/types';
 import { PostgrestResponse } from '@supabase/supabase-js';
-import { getSupabaseBrowserClient } from '../supabaseClient';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 
 // This is used for getting country name
 export type GetCountryQueries<F extends keyof Country> = {

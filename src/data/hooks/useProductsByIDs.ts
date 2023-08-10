@@ -2,7 +2,7 @@ import { queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
 import { Product } from '@/types';
 import { PostgrestResponse } from '@supabase/supabase-js';
-import { getSupabaseBrowserClient } from '../supabaseClient';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 
 type GetProductsByIDsQueries<F extends keyof Product> = {
   select?: F[];

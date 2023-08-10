@@ -20,4 +20,6 @@ export const queryKeys = {
   ordersByToken: 'ordersByToken',
   prices: 'prices',
   instaprintProduct: 'instaprintProduct',
+  cart: 'cart',
+  cartDetails: 'cartDetails',
 };

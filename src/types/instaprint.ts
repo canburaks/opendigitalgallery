@@ -1,3 +1,6 @@
+import { CartProduct } from '@/types';
+import { InstaprintFrameOptionsEnum } from '@/constants';
+
 export type InstagramTokenFunctionParams = {
   code: string;
   client_id: number | string;
@@ -14,3 +17,20 @@ export type IGMedia = {
   username: string;
   timestamp: string;
 };
+
+export interface InstaprintProduct extends CartProduct {
+  /* NECESSARY INFORMATIONS FOR BACKEND*/
+  productId: number;
+  priceId: number;
+  quantity: number;
+
+  frameProductId?: number;
+  framePriceId?: number;
+  instaprint?: {
+    mediaId?: string;
+    mediaUrl?: string;
+    mat?: string | boolean;
+    frame?: InstaprintFrameOptionsEnum;
+    ratio?: number;
+  };
+}

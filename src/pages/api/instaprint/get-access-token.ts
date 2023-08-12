@@ -41,7 +41,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
       function (this: typeof curlTest, statusCode: number, data: any, headers: any) {
         const responseData = JSON.parse(data);
         if (statusCode !== 200) {
-          throw new Error(responseData?.error_message || "Access Token couldn't be retrieved");
+          //throw new Error(responseData?.error_message || "Access Token couldn't be retrieved");
+          return res.status(200).json({error: "Access Token couldn't be retrieved"})
             // res.status(404).json({ error: responseData?.error_message || "Access Token couldn't be retrieved" });
         }
         console.log("data", data)

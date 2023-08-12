@@ -19,4 +19,5 @@ export const queryKeys = {
   postersByIDs: 'postersByIDs',
   ordersByToken: 'ordersByToken',
   prices: 'prices',
+  instaprintProduct: 'instaprintProduct',
 };

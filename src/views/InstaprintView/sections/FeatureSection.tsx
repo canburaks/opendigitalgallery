@@ -14,14 +14,14 @@ export const FeatureSection = ({ title, description, authUrl, image }: { title: 
         <div className="max-w-8xl mx-auto text-center lg:mx-auto lg:text-left flex flex-col items-center">
           <div className="flex flex-col items-center relative overflow-x-hidden">
             <Image
-              className="relative transform-gpu h-auto drop-shadow-md hover:drop-shadow-2xl"
+              className="relative transform-gpu h-auto drop-shadow-md hover:drop-shadow-2xl rounded-3xl"
               src={image}
               height={400}
               alt="Print your Instagram photos"
             />
           </div>
           <Headline className="mt-12 font-bold !text-gray-900 text-center tracking-tight">{title}</Headline>
-          <BodyX className="mt-6 font-medium !text-gray-700 text-center font-normal tracking-tight">{description}</BodyX>
+          <BodyX className="mt-6 font-medium !text-gray-700 text-center tracking-tight">{description}</BodyX>
           <div className="mt-4">
             <motion.a
               href={authUrl}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {SectionContainer,} from '@/components';
+import { SectionContainer, } from '@/components';
 // import { useProductPricesByIDs } from '@/data/hooks';
 // import { PRODUCT_IMAGE_PLACEHOLDER, TRX, PAGES, ProductType } from '@/constants';
 import { motion, AnimatePresence } from "framer-motion"
@@ -12,10 +12,14 @@ import { motion, AnimatePresence } from "framer-motion"
 // import { instagramClient } from '@/data/instagramClient';
 // import { IGMedia, CartProduct } from '@/types';
 // import { CheckCircle as TickIcon, ArrowCircleLeft as ArrowLeftIcon, ArrowCircleRight as ArrowRightIcon } from '@mui/icons-material';
-import { InstaFeed, NextButton, PrevButton, InstaSelection } from './sections';
+import { InstaFeed, NextButton, PrevButton, InstaSelection, InstaCartPreview } from './sections';
 import { Instagram } from '@/data/instagramClient';
+import { useInstaprintProducts } from "@/data/hooks";
+import { UseInstaprintStore } from '@/data/stores';
 
-export const InstaprintAppView = ({instagramClient}:{instagramClient: Instagram}) => {
+export const InstaprintAppView = () => {
+    const instaprintProducts = useInstaprintProducts();
+
 
     return (
         <SectionContainer>
@@ -25,16 +29,15 @@ export const InstaprintAppView = ({instagramClient}:{instagramClient: Instagram}
                 <div className='flex flex-col justify-start'>
                     <div className="w-full flex flex-col flex-grow">
                         <motion.div className="w-full flex flex-col  overflow-x-hidden overflow-y-scroll h-auto min-h-[300px] max-h-[70vh]">
-                            <AnimatePresence>
-                                <InstaFeed />
-                                <InstaSelection />
-                                {/* 
+                            <InstaFeed key="instafeed"  />
+                            <InstaSelection key="instaselection" />
+                            <InstaCartPreview key="instacartpreview" />
+                            {/* 
                                 {page === 1 && 
                                 }
                                 {page === 2 && <InstaSelection />}
                                 {page === 3 && <InstaCartPreview />} */}
 
-                            </AnimatePresence>
                         </motion.div>
                     </div>
 

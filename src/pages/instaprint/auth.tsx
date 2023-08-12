@@ -14,7 +14,7 @@ import { Loading } from '@/components';
 // import { getProductOptions } from '@/data/hooks/useProductOptions';
 // import { getFrames } from '@/data/hooks';
 
-export default function InstaPrintAuthPage(props:any) {
+export default function InstaPrintAuthPage(props: any) {
     const router = useRouter();
     const { query } = router;
     const { code } = query;
@@ -24,10 +24,13 @@ export default function InstaPrintAuthPage(props:any) {
         if (code && typeof code === "string") {
             const igCode = code.replace("#_", "");
             if (code) {
-                const token = await instagramClient.getAccessToken(igCode);
-                console.log("ig auth page token", token)
-                if (token) {
-                    const mediaResponse = await instagramClient.getMedia(token);
+                const { access_token, error } = await instagramClient.getAccessToken(igCode);
+                console.log("ig auth page token", access_token)
+                if (error){
+                    router.push(PAGES.INSTAPRINT.path)
+                }
+                if (access_token) {
+                    const mediaResponse = await instagramClient.getMedia(access_token);
                     if (mediaResponse.length) { }
                     router.push(PAGES.INSTAPRINT_APP.path);
                 }
@@ -42,7 +45,7 @@ export default function InstaPrintAuthPage(props:any) {
         if (code) {
             getInstagramData();
         }
-    },[code])
+    }, [code])
 
     return (
         <>

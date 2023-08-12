@@ -36,8 +36,8 @@ type Props = {
 
 export const MediaWrapper = (props: Props) => {
     const { observe, width } = useDimensions({ useBorderBoxSize: true });
-    console.log("mediawrapper props", props)
-    console.log("isDefault", props.mat, props.frame)
+    // console.log("mediawrapper props", props)
+    // console.log("isDefault", props.mat, props.frame)
     const hasFrame = useMemo(() => props.frame !== InstaprintFrameOptionsEnum.NO_FRAME, [props.frame])
     const hasMat = useMemo(() => Boolean(props.mat), [props.mat])
 
@@ -88,7 +88,7 @@ const FrameLayer = ({ frame, children }: { frame: InstaprintFrameOptionsEnum, ch
         // padding: `${isNoFrame ? 0 : FRAME_THICKNESS}px`,
         // ...(!isNoFrame && ({ backgroundImage: `url(${getFrameBackgroundImage(frame)})` })),
     }) as React.CSSProperties, [frame])
-    console.log("frame style", style)
+    // console.log("frame style", style)
     return (
         <motion.div
             custom={getFrameBackgroundImage(frame)}
@@ -170,7 +170,7 @@ const imageShadowVariants = {
 const ImageComponent = ({ imageSrc, isDefault, hasFrame, hasMat }: { imageSrc: string, isDefault: boolean, hasFrame: boolean, hasMat: boolean }) => {
     const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
     const ratio = imageDimensions.width / imageDimensions.height;
-    console.log("ratio", ratio)
+    // console.log("ratio", ratio)
     const style = useMemo(() => ({
         position: "relative",
         zIndex: 2,
@@ -182,10 +182,11 @@ const ImageComponent = ({ imageSrc, isDefault, hasFrame, hasMat }: { imageSrc: s
 
     const handleImageLoad = (event: SyntheticEvent<HTMLImageElement>) => {
         const { naturalWidth, naturalHeight } = (event.target as HTMLImageElement);
+        console.log("imageDimensions", naturalWidth, naturalHeight )
         setImageDimensions({ width: naturalWidth, height: naturalHeight });
     };
-    console.log("isDefault", isDefault)
-    console.log("hasFrameHasMat", (hasFrame && !hasMat) ? "hasFrameNoMat" : "default")
+    // console.log("isDefault", isDefault)
+    // console.log("hasFrameHasMat", (hasFrame && !hasMat) ? "hasFrameNoMat" : "default")
 
     return (
         <>

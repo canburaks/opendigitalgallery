@@ -29,7 +29,7 @@ export interface MergedProductOption {
 
 export type FrameOptionsSelectUnionType = keyof typeof InstaprintFrameOptionsEnum
 
-export type CartProduct = {
+export interface CartProduct {
   /* NECESSARY INFORMATIONS FOR BACKEND*/
   productId: number;
   priceId: number;

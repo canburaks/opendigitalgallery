@@ -33,7 +33,7 @@ export const SegmentedControl = (props: Props) => {
     const cls = `grid grid-cols-${numberOfItems} h-12 p-1 shadow-inner`
 
     useEffect(() => {
-        console.log("value changed: ", value)
+        // console.log("value changed: ", value)
         props.onChange(value)
     },[value])
 

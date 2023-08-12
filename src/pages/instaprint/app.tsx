@@ -33,6 +33,7 @@ export default function InstaPrintAppPage(props:any) {
                     }
                 }
             } else {
+                console.log("access token", localStorage.getItem(IG_USER_ACCESS_TOKEN_LOCAL_STORAGE_KEY))
                 instagramClient.getMedia(instagramClient.accessToken, setMedia)
             }
         }
@@ -48,7 +49,7 @@ export default function InstaPrintAppPage(props:any) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className='min-h-[80vh]'>
-                <InstaprintAppView instagramClient={instagramClient}  />
+                <InstaprintAppView  />
             </main>
         </>
     );

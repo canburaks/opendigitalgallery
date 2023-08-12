@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { IGMedia } from '@/types';
+import type { IGMedia, InstaprintProduct } from '@/types';
 
 export const UseInstaprintStore = create<UseInstaprintStore>((set, get) => ({
   page: 1,
@@ -22,6 +22,15 @@ export const UseInstaprintStore = create<UseInstaprintStore>((set, get) => ({
     }
     set({ selections });
   },
+
+  instaprintCart: [],
+  addOrUpdateInstaprintCart: (instaprintProduct: InstaprintProduct) => {
+    console.log("input ", instaprintProduct);
+    const selectedMediaId = get().selections.find((p) => p === instaprintProduct?.instaprint?.mediaId);
+    const excludedInstaProducts = get().instaprintCart.filter((p) => p.instaprint?.mediaId !== selectedMediaId);
+    return set({ instaprintCart: [...excludedInstaProducts, instaprintProduct] });
+  }
+
 }));
 
 interface UseInstaprintStore {
@@ -36,4 +45,7 @@ interface UseInstaprintStore {
   selections: string[];
   setSelections: (selections: string[]) => void;
   toggleSelection: (id: string) => void;
+
+  instaprintCart: InstaprintProduct[];
+  addOrUpdateInstaprintCart: (instaprintProduct: InstaprintProduct) => void;
 }

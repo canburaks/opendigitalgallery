@@ -2,9 +2,9 @@ import { useTranslation } from 'next-i18next';
 import { useMemo, memo } from "react"
 import { UseInstaprintStore, useCartStore } from "@/data/stores";
 import { TRX, ProductType } from '@/constants';
-import type { CartProduct, IGMedia } from "@/types";
+import type { CartProduct, IGMedia, InstaprintProduct } from "@/types";
 import { motion } from "framer-motion"
-
+import { useInstaprintProducts } from "@/data/hooks";
 
 // @ts-ignore
 export const NextButton = memo(function NextButton() {
@@ -18,12 +18,13 @@ export const NextButton = memo(function NextButton() {
     const page = UseInstaprintStore(state => state.page);
     const nextPage = UseInstaprintStore(state => state.nextPage);
 
+
     const isNextDisabled = useMemo(() => {
         if (page === 1) {
             return selections.length === 0;
         } else if (2) {
-            const nonMats = store.filter((ci: CartProduct) => ci?.instaprint?.mat !== null)
-            const nonFrames = store.filter((ci: CartProduct) => ci?.instaprint?.frame !== null)
+            const nonMats = store.filter((ci: InstaprintProduct) => ci?.instaprint?.mat !== null)
+            const nonFrames = store.filter((ci: InstaprintProduct) => ci?.instaprint?.frame !== null)
             return nonMats.length !== selections.length || nonFrames.length !== selections.length
         } else if (page === 3) {
         }
@@ -50,7 +51,7 @@ export const NextButton = memo(function NextButton() {
                  * TODO: Fix this product parameters
                  */
                 addToCart({
-                    productId: selectedMedia.id,
+                    productId: parseInt(selectedMedia.id),
                     productTitle: selectedMedia.caption || "Instaprint",
                     productType: ProductType.INSTAPRINT,
                     quantity: 1,

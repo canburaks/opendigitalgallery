@@ -1,44 +1,19 @@
-import { useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { UseInstaprintStore } from "@/data/stores";
 import { motion } from "framer-motion"
 import useDimensions from "react-cool-dimensions";
-import type { IGMedia, CartProduct } from "@/types";
-import { TRX, INSTAPRINT_PRODUCT_PLACEHOLDER, InstaprintFrameOptionsEnum } from "@/constants";
+import type { IGMedia, InstaprintProduct, ProductDetails, Price } from "@/types";
+import { TRX, INSTAPRINT_PRODUCT_PLACEHOLDER, InstaprintFrameOptionsEnum, INSTAPRINT_PRODUCT_OPTIONS_MAP, INSTAPRINT_FRAME_OPTIONS_MAP } from "@/constants";
 import { useTranslation } from 'next-i18next';
 import { MatSelection, FrameSelection, QuantitySelection, MediaWrapper } from "./index";
-
+import { useInstaprintProducts, useRemoteMediaDimensions } from "@/data/hooks";
+import { ProductPricePreview } from "./ProductPricePreview";
 
 export const InstaSelection = () => {
-
-  const { observe } = useDimensions({
-    // onResize: ({ observe }) => {
-    //   // // Triggered whenever the size of the target is changed...
-
-    //   // unobserve(); // To stop observing the current target element
-    //   // observe(); // To re-start observing the current target element
-    // },
-  });
-  // const dynamicProductData = useDynamicProductData();
-  // const inputData = useMemo(() => {
-  //   return dynamicProductData?.product?.variants?.map(pv => ({
-  //     label: pv.title,
-  //     value: pv.id.toString(),
-  //   }))
-  // }, [dynamicProductData])
+  const { observe } = useDimensions({});
   const page = UseInstaprintStore(state => state.page);
-
-  // const media = UseInstaprintStore(state => state.media);
   const selections = UseInstaprintStore(state => state.selections);
-  // const toggleMedia = UseInstaprintStore(state => state.toggleSelection);
-
-  // const initialData = useMemo(() => selections.map(s => ({ id: s, })), [selections])
-
-  // const cartItems = useCartStore(state => state.store);
-  // const setCartItems = useCartStore(state => state.addToCart);
-  // console.log("\n\ninsta selection---\npage", page)
-  // console.log("selection", selections)
-  // console.log("media", media)
-  // console.log("cartItems", cartItems)
+  const instaprintProducts = useInstaprintProducts();
 
   if (page !== 2) return <div></div>
 
@@ -52,7 +27,7 @@ export const InstaSelection = () => {
     >
       {selections.map((selectedId, index) => (
         <InstaSelectionItem
-          key={selectedId + index}
+          key={"instaselections-" + selectedId + index}
           selectedId={selectedId}
         //order={index}
         // dynamicProductData={[]}
@@ -63,55 +38,52 @@ export const InstaSelection = () => {
   )
 }
 
-const InstaSelectionItem = ({ selectedId,
-  //  order
-}: {
-  selectedId: string,
-  //order: number
-}) => {
+const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
   const { t } = useTranslation("common");
   // const imageRef = useRef<HTMLImageElement>(null);
 
   const medias: IGMedia[] = UseInstaprintStore(state => state?.media);
+  const addOrUpdateInstaprintCart = UseInstaprintStore(state => state?.addOrUpdateInstaprintCart);
   const currentMedia: IGMedia = medias.find(m => m.id === selectedId)!;
-  const [currentProduct, setCurrentProduct] = useState<CartProduct>({
+
+  const { ratio } = useRemoteMediaDimensions(currentMedia.media_url);
+  console.log("ratio", ratio)
+
+  const [currentProduct, setCurrentProduct] = useState<InstaprintProduct>({
     ...INSTAPRINT_PRODUCT_PLACEHOLDER,
+
     instaprint: {
-      mediaId: selectedId,
       ...INSTAPRINT_PRODUCT_PLACEHOLDER.instaprint,
+      mediaId: selectedId,
+      mediaUrl: currentMedia.media_url,
+      ratio: ratio || 1
     }
   });
-  // console.log("media-single", currentMedia)
-
-  // const cartItems = useCartStore(store => store.store);
-  // const setCartItems = useCartStore(state => state.addToCart);
-  // const addToCart = useCartStore(state => state.addToCart);
-
-
-  // const updateCartItems = (selectedId: string, cartItem: CartProduct) => {
-  //   console.log("updateCartItems", selectedId)
-  //   const existingItem = cartItems.find((item: any) => item.instaprint.__insta_id === selectedId);
-  //   const otherItems = cartItems.filter((item: any) => item.instaprint.__insta_id !== selectedId);
-  //   setCartItems([...otherItems, { ...existingItem, ...cartItem }])
-  // }
-
-
 
   // Handlers
   const quantityHandler = (value: number | string) => setCurrentProduct({ ...currentProduct, quantity: typeof value === "string" ? parseInt(value) : value });
-  const matHandler = (value: boolean | string) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, mat: value } });
-  const frameHandler = (value: InstaprintFrameOptionsEnum) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, frame: value } });
+  const matHandler = (value: boolean | string) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, mat: value, ratio } });
+  const frameHandler = (value: InstaprintFrameOptionsEnum) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, frame: value, mat: value === InstaprintFrameOptionsEnum.NO_FRAME ? "" : currentProduct.instaprint?.mat, ratio } });
 
 
-
-
-
-  // STEPPER
-  // const [active, setActive] = useState(0);
-  // const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
-  // const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   // console.log("current product", currentProduct)
+  useEffect(() => {
+    addOrUpdateInstaprintCart(currentProduct)
+  }, [currentProduct])
+
+  useEffect(() => {
+
+    setCurrentProduct((prev) => (
+      {
+        ...prev,
+        instaprint: {
+          ...prev.instaprint,
+          ratio
+        }
+      }
+    ))
+  }, [ratio])
 
   return (
     <div
@@ -126,13 +98,6 @@ const InstaSelectionItem = ({ selectedId,
           handler={quantityHandler}
           value={(currentProduct.quantity).toString()}
         />
-        {currentProduct?.instaprint?.mat !== undefined
-          && <MatSelection
-            value={currentProduct.instaprint.mat!}
-            handler={matHandler}
-            title={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION1_TITLE)}
-            description={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION1_DESCRIPTION)}
-          />}
         {currentProduct?.instaprint?.frame !== undefined
           && <FrameSelection
             // @ts-ignore
@@ -141,7 +106,15 @@ const InstaSelectionItem = ({ selectedId,
             title={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION2_TITLE)}
             description={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION2_DESCRIPTION)}
           />}
+        {currentProduct?.instaprint?.mat !== undefined && currentProduct?.instaprint?.frame !== InstaprintFrameOptionsEnum.NO_FRAME
+          && <MatSelection
+            value={currentProduct.instaprint.mat!}
+            handler={matHandler}
+            title={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION1_TITLE)}
+            description={t(TRX.INSTAPRINT.APP_MODAL_SELECTION_VARIATION1_DESCRIPTION)}
+          />}
         <div className="rounded-lg w-[80%] p-2">
+          <ProductPricePreview selectedMediaId={selectedId} />
 
         </div>
       </div>
@@ -158,4 +131,9 @@ const InstaSelectionItem = ({ selectedId,
     </div>
   )
 }
+
+
+
+
+
 

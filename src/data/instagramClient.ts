@@ -58,7 +58,7 @@ export class Instagram {
       return code;
     }
   }
-  public async getAccessToken(code: string): Promise<string | void | null> {
+  public async getAccessToken(code: string): Promise<{access_token?: string, error: string}> {
     try {
       const response = await fetch(IG_BACKEND_ACCESS_TOKEN_ENDPOINT, {
         method: 'POST',
@@ -67,16 +67,19 @@ export class Instagram {
         },
         body: JSON.stringify({ code: code || this.code }),
       });
+      console.log("response", response)
       const jsonResponse = await response.json();
       this.accessToken = jsonResponse.access_token;
       this.userId = jsonResponse.user_id;
       localStorage.setItem(IG_USER_ACCESS_TOKEN_LOCAL_STORAGE_KEY, jsonResponse.access_token);
-      return jsonResponse.access_token;
+      return jsonResponse;
     } catch (e) {
-      console.error('error', e);
-      throw new Error(JSON.stringify(e));
+      console.log('error', e);
+      return {error: JSON.stringify(e)}
     }
   }
+
+  
   public async getMedia(token?: string, callback?: (media: IGMedia[]) => void): Promise<IGMedia[]> {
     /**
      * This function returns the data for all media items

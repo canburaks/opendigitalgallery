@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SectionContainer, } from '@/components';
 // import { useProductPricesByIDs } from '@/data/hooks';
 // import { PRODUCT_IMAGE_PLACEHOLDER, TRX, PAGES, ProductType } from '@/constants';
@@ -18,7 +18,14 @@ import { useInstaprintProducts } from "@/data/hooks";
 import { UseInstaprintStore } from '@/data/stores';
 
 export const InstaprintAppView = () => {
-    const instaprintProducts = useInstaprintProducts();
+    const instaprintDbProducts = useInstaprintProducts();
+    const setInstaprintProducts = UseInstaprintStore(state => state.setInstaprintProducts);
+
+    useEffect(() => {
+        if (instaprintDbProducts?.instaprintProduct && instaprintDbProducts?.frames){
+            setInstaprintProducts({instaprint: instaprintDbProducts?.instaprintProduct, frames:instaprintDbProducts?.frames});
+        }
+    },[instaprintDbProducts])
 
 
     return (
@@ -29,7 +36,7 @@ export const InstaprintAppView = () => {
                 <div className='flex flex-col justify-start'>
                     <div className="w-full flex flex-col flex-grow">
                         <motion.div className="w-full flex flex-col  overflow-x-hidden overflow-y-scroll h-auto min-h-[300px] max-h-[70vh]">
-                            <InstaFeed key="instafeed"  />
+                            <InstaFeed key="instafeed" />
                             <InstaSelection key="instaselection" />
                             <InstaCartPreview key="instacartpreview" />
                             {/* 

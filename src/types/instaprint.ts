@@ -24,6 +24,10 @@ export interface InstaprintProduct extends CartProduct {
   priceId: number;
   quantity: number;
 
+  priceText?: string;
+  priceNumber?: number;
+  priceCurrency?: string;
+
   frameProductId?: number;
   framePriceId?: number;
   instaprint?: {

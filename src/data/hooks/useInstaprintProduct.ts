@@ -1,10 +1,9 @@
 import { useState, useMemo, useEffect } from 'react';
 import { INSTAPRINT_PRODUCT_QUERY_SELECT } from '@/data/queries';
-import { TRX, INSTAPRINT_PRODUCT_PLACEHOLDER, INSTAPRINT_PRODUCT_ID, INSTAPRINT_PRODUCT_HANDLE, INSTAPRINT_PRODUCT_OPTION_IDS } from '@/constants';
-import { useProductsByIDs, useFrames } from '@/data/hooks';
-import type { IGMedia, InstaprintProduct, Product, ProductDetails } from '@/types';
-import { ProductType, getLocaleValues, queryKeys } from '@/constants';
-import { useQuery } from '@tanstack/react-query';
+import { INSTAPRINT_PRODUCT_ID, INSTAPRINT_PRODUCT_HANDLE, INSTAPRINT_PRODUCT_OPTION_IDS } from '@/constants';
+import { useProductsByIDs } from '@/data/hooks';
+import type { Product, ProductDetails } from '@/types';
+import { ProductType, getLocaleValues } from '@/constants';
 import { getSupabaseBrowserClient } from '../supabaseClient';
 import { useRouter } from 'next/router';
 

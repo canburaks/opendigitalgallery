@@ -98,7 +98,6 @@ const variants = {
 }
 const SelectedLabel = ({ id }: { id: string }) => {
 	const { t } = useTranslation("common");
-	// const [hover, setHover] = useState(false)
 	const selections = UseInstaprintStore(state => state.selections);
 	const toggleSelection = UseInstaprintStore(state => state.toggleSelection);
 	const toggle = useCallback(() => toggleSelection(id), [id])

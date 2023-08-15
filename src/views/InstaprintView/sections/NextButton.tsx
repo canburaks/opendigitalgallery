@@ -1,10 +1,9 @@
 import { useTranslation } from 'next-i18next';
 import { useMemo, memo } from "react"
 import { UseInstaprintStore, useCartStore } from "@/data/stores";
-import { TRX, ProductType } from '@/constants';
-import type { CartProduct, IGMedia, InstaprintProduct } from "@/types";
+import { TRX } from '@/constants';
+import type { CartProduct, InstaprintProduct } from "@/types";
 import { motion } from "framer-motion"
-import { useInstaprintProducts } from "@/data/hooks";
 
 // @ts-ignore
 export const NextButton = memo(function NextButton() {
@@ -13,6 +12,7 @@ export const NextButton = memo(function NextButton() {
     const addToCart = useCartStore((state) => state.addToCart);
 
     const selections = UseInstaprintStore(state => state.selections);
+    const instaprintCart = UseInstaprintStore(state => state.instaprintCart);
     const media = UseInstaprintStore(state => state.media);
 
     const page = UseInstaprintStore(state => state.page);
@@ -23,9 +23,10 @@ export const NextButton = memo(function NextButton() {
         if (page === 1) {
             return selections.length === 0;
         } else if (2) {
-            const nonMats = store.filter((ci: InstaprintProduct) => ci?.instaprint?.mat !== null)
-            const nonFrames = store.filter((ci: InstaprintProduct) => ci?.instaprint?.frame !== null)
-            return nonMats.length !== selections.length || nonFrames.length !== selections.length
+            return false
+            // const nonMats = store.filter((ci: InstaprintProduct) => ci?.instaprint?.mat !== null)
+            // const nonFrames = store.filter((ci: InstaprintProduct) => ci?.instaprint?.frame !== null)
+            // return nonMats.length !== selections.length || nonFrames.length !== selections.length
         } else if (page === 3) {
         }
     }, [page, store, selections])
@@ -43,32 +44,13 @@ export const NextButton = memo(function NextButton() {
         return t(label)
     }, [page, isNextDisabled])
 
-    const submitProducts = (selectedMediaIds: string[]) => {
-        selectedMediaIds.forEach((id: string) => {
-            const selectedMedia = media.find((m: IGMedia) => m.id === id);
-            if (selectedMedia) {
-                /**
-                 * TODO: Fix this product parameters
-                 */
-                addToCart({
-                    productId: parseInt(selectedMedia.id),
-                    productTitle: selectedMedia.caption || "Instaprint",
-                    productType: ProductType.INSTAPRINT,
-                    quantity: 1,
-                    price: 0,
-                    priceId: 0,
-                    productOptionId: -1,
-                    ...(selectedMedia.media_url && ({
-                        url: selectedMedia.media_url,
-                        alt: selectedMedia.caption
-                    })),
-                    // instaprint: {
-                    //     mat: null,
-                    //     frame: null,
-                    // }
-                })
-            }
-        })
+    const submitProducts = () => {
+        const cartItems: CartProduct[] = instaprintCart.map((instaprintCartItem: InstaprintProduct) => ({
+            productId: instaprintCartItem.productId,
+            priceId: instaprintCartItem.priceId,
+            quantity: instaprintCartItem.quantity,
+        }as CartProduct))
+
     }
 
     return (
@@ -81,7 +63,7 @@ export const NextButton = memo(function NextButton() {
             disabled={isNextDisabled}
             className="relative cursor-pointer flex justify-center items-center shadow-lg bg-black !w-40 !md:w-50 !h-12 md:h-12 rounded-lg"
             style={{ opacity: isNextDisabled ? 0.3 : 1 }}
-            onClick={page === 3 ? () => submitProducts(selections) : nextPage}
+            onClick={page === 3 ? () => submitProducts() : nextPage}
         >
             <span style={{ width: 120, color: "white", fontWeight: "bold", marginLeft: -8 }} className="break-normal uppercase">{nextButtonLabel}</span>
             <ArrowRightIcon />

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { IGMedia, InstaprintProduct } from '@/types';
+import type { IGMedia, InstaprintProduct, ProductDetails } from '@/types';
 
 export const UseInstaprintStore = create<UseInstaprintStore>((set, get) => ({
   page: 1,
@@ -10,8 +10,12 @@ export const UseInstaprintStore = create<UseInstaprintStore>((set, get) => ({
   media: [],
   setMedia: (media: IGMedia[]) => set({ media }),
 
+  instaprint: {},
+  frames: [],
+  setInstaprintProducts: ({instaprint, frames}: {instaprint: Partial<ProductDetails>, frames: Partial<ProductDetails>[]}) => set({ instaprint, frames }),
+
   selections: [],
-  setSelections: (selections: string[]) => set({ selections }),
+  setSelections: (selections: string[]) => set({ selections,  }),
   toggleSelection: (id: string) => {
     const selections = [...get().selections];
     const index = selections.indexOf(id);
@@ -20,10 +24,12 @@ export const UseInstaprintStore = create<UseInstaprintStore>((set, get) => ({
     } else {
       selections.push(id);
     }
-    set({ selections });
+    set({ selections, instaprintCart: get().instaprintCart.filter((cartItem) => cartItem?.instaprint?.mediaId ? selections.includes(cartItem?.instaprint?.mediaId) : false) });
   },
 
   instaprintCart: [],
+
+  getInstaprintCartProduct: (mediaId: string) => get().instaprintCart.find((p) => p.instaprint?.mediaId === mediaId)!,
   addOrUpdateInstaprintCart: (instaprintProduct: InstaprintProduct) => {
     console.log("input ", instaprintProduct);
     const selectedMediaId = get().selections.find((p) => p === instaprintProduct?.instaprint?.mediaId);
@@ -42,10 +48,15 @@ interface UseInstaprintStore {
   media: IGMedia[];
   setMedia: (media: IGMedia[]) => void;
 
+  instaprint: Partial<ProductDetails>;
+  frames: Partial<ProductDetails>[];
+  setInstaprintProducts: ({instaprint, frames}: {instaprint: Partial<ProductDetails>, frames: Partial<ProductDetails>[]}) => void;
+
   selections: string[];
   setSelections: (selections: string[]) => void;
   toggleSelection: (id: string) => void;
 
   instaprintCart: InstaprintProduct[];
+  getInstaprintCartProduct: (mediaId: string) => InstaprintProduct;
   addOrUpdateInstaprintCart: (instaprintProduct: InstaprintProduct) => void;
 }

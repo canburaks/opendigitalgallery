@@ -10,7 +10,7 @@ export function generateCartProductsFromInstaCart(): CartProduct[] {
 	const instaprintCart = UseInstaprintStore(state => state.instaprintCart);
 
 	const cartProducts = useMemo(() => {
-		const cartProductList:CartProduct[] = [];
+		const cartProductList: CartProduct[] = [];
 		instaprintCart.forEach((instaCartItem: InstaprintProduct) => {
 			const instaprintPrice = getProductPrice(instaCartItem!, instaprintProduct)
 			const currentFrame = getFrameProductFromInstaCartFrameLabel(instaCartItem.instaprint!.frame!, frames)
@@ -33,10 +33,17 @@ export function generateCartProductsFromInstaCart(): CartProduct[] {
 			}
 		})
 		return cartProductList;
-	
+
 	}, [instaprintCart, instaprintProduct, frames])
 
 	return cartProducts;
+}
+
+export function getPriceTextFromPrices(instaprintPrice: Price | undefined, framePrice: Price | undefined, quantity:number): string {
+	const currency = instaprintPrice?.currency || framePrice?.currency || "USD"
+	const totalPrice = (instaprintPrice?.price || 0) + (framePrice?.price || 0)
+	const currentQuantitu = quantity || 1;
+	return `${totalPrice * currentQuantitu} ${currency}`
 }
 
 export function getProductPrice(instaCartItem: InstaprintProduct, instaprintProduct: Partial<ProductDetails>): Price | undefined {

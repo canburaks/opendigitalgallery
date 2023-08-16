@@ -48,27 +48,32 @@ const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
   const medias: IGMedia[] = UseInstaprintStore(state => state?.media);
   const instaprint = UseInstaprintStore(state => state?.instaprint);
   const frames = UseInstaprintStore(state => state?.frames);
-
+  const getInstaprintCartProduct = UseInstaprintStore(state => state?.getInstaprintCartProduct);
 
   const addOrUpdateInstaprintCart = UseInstaprintStore(state => state?.addOrUpdateInstaprintCart);
   const currentMedia: IGMedia = medias.find(m => m.id === selectedId)!;
+  const existingInstaCartProduct = getInstaprintCartProduct(selectedId);
 
   const { ratio } = useRemoteMediaDimensions(currentMedia.media_url);
   //const currentInstaprintCartProduct = useMemo(() => getInstaprintCartProduct(selectedId), [selectedId, ratio])
   //console.log("currentInstaprintCartProduct", currentInstaprintCartProduct)
   // console.log("ratio", ratio)
 
-  const [currentProduct, setCurrentProduct] = useState<InstaprintProduct>({
-    ...INSTAPRINT_PRODUCT_PLACEHOLDER
-    ,
-
-    instaprint: {
-      ...INSTAPRINT_PRODUCT_PLACEHOLDER?.instaprint,
-      mediaId: selectedId,
-      mediaUrl: currentMedia.media_url,
-      ratio: ratio || 1
-    }
-  });
+  const [currentProduct, setCurrentProduct] = useState<InstaprintProduct>(
+    existingInstaCartProduct
+      ? existingInstaCartProduct
+      : {
+        ...INSTAPRINT_PRODUCT_PLACEHOLDER,
+        instaprint: {
+          ...INSTAPRINT_PRODUCT_PLACEHOLDER?.instaprint,
+          mediaId: selectedId,
+          mediaUrl: currentMedia.media_url,
+          ratio: ratio || 1
+        }
+      });
+  const productPrice = getProductPrice(currentProduct, instaprint);
+  const currentFrame = getFrameProductFromInstaCartFrameLabel(currentProduct?.instaprint?.frame!, frames)
+  const framePrice = getFramePrice(currentProduct, currentFrame)
   // const currentProductPrice = useMemo(() => getProductPrice(currentProduct, instaprint), [ratio, selectedId, instaprint])
   // const currentProductFrameProduct = useMemo(() => getFrameProductFromInstaCartFrameLabel(currentProduct?.instaprint?.frame!, frames), [ratio, currentProduct, selectedId, frames])
   // const currentProductFramePrice = useMemo(() => getFramePrice(currentProduct, currentProductFrameProduct), [ratio, selectedId, currentProduct, currentProductFrameProduct])
@@ -78,6 +83,7 @@ const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
   // console.log("current frame price", currentProductFramePrice)
 
   // Handlers
+  // console.log("currentProduct", currentProduct)
   const quantityHandler = (value: number | string) => setCurrentProduct({ ...currentProduct, quantity: typeof value === "string" ? parseInt(value) : value });
   const matHandler = (value: boolean | string) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, mat: value, ratio } });
   const frameHandler = (value: InstaprintFrameOptionsEnum) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, frame: value, mat: value === InstaprintFrameOptionsEnum.NO_FRAME ? "" : currentProduct.instaprint?.mat, ratio } });
@@ -93,36 +99,39 @@ const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
   // }, [currentProduct])
 
   useEffect(() => {
-    // console.log("setting currentProduct")
-    const productPrice = getProductPrice(currentProduct, instaprint);
-    const currentFrame =getFrameProductFromInstaCartFrameLabel(currentProduct?.instaprint?.frame!, frames)
-    const currentFramePrice = getFramePrice(currentProduct, currentFrame)
-    const priceText = getPriceTextFromPrices(productPrice, currentFramePrice, currentProduct?.quantity!)
+    const priceText = getPriceTextFromPrices(productPrice, framePrice, currentProduct?.quantity!)
     const [priceNumber, priceCurrency] = priceText.split(" ")
     // console.log("current price", productPrice)
     // console.log("current frame product", currentFrame)
-  
+
     // console.log("current frame price", currentFramePrice)
     const newCurrentProduct = {
       ...currentProduct,
       priceId: productPrice ? productPrice.price_id : currentProduct.priceId,
       frameProductId: currentFrame ? currentFrame.product_id : currentProduct.frameProductId,
-      framePriceId: currentFramePrice ? currentFramePrice.price_id : currentProduct.framePriceId,
+      framePriceId: framePrice ? framePrice.price_id : currentProduct.framePriceId,
+
+      productPrice,
+      framePrice,
+
       priceText,
       priceNumber: parseInt(priceNumber),
       priceCurrency,
-      
+
+      frameShippingPrice: framePrice?.shipping_cost || 0,
+      productShippingPrice: productPrice?.shipping_cost || 0,
+
       instaprint: {
         ...currentProduct.instaprint,
         ratio
       }
     }
-    console.log("newCurrentProduct", newCurrentProduct)
+    // console.log("newCurrentProduct", newCurrentProduct)
 
     setCurrentProduct(newCurrentProduct)
     addOrUpdateInstaprintCart(newCurrentProduct)
 
-  }, [ratio, instaprint, frames, currentProduct?.instaprint?.frame!])
+  }, [ratio, instaprint, frames, currentProduct?.instaprint?.frame!, currentProduct.quantity, framePrice, productPrice])
 
   return (
     <div

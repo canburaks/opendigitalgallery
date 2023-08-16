@@ -26,10 +26,10 @@ export const ProductDetailsView: React.FC = () => {
   const addToCart = useCartStore((state) => state.addToCart);
 
   // short circuit if no product
-  const product: ProductDetails | undefined =
+  const product: Partial<ProductDetails> | undefined =
     useProductDataFromQuery(asPath.split('/').pop() ?? '') || {};
-  const images = product.images || [];
-  const options = useMemo(() => product.options || [], [product?.options]);
+  const images = product?.images || [];
+  const options = useMemo(() => product?.options || [], [product?.options]);
   const optionIds = useMemo(() => options.map((o) => o.product_option_id), [options]);
 
   // Selected Size
@@ -45,13 +45,13 @@ export const ProductDetailsView: React.FC = () => {
   // console.log("frames data", framesData)
 
   // FRAMES WITH NO FRAME OPTION
-  const frames: ProductDetails[] = useMemo(() => [NO_FRAME_PRODUCT, ...framesData], [framesData]);
+  const frames: Partial<ProductDetails>[] = useMemo(() => [NO_FRAME_PRODUCT, ...framesData], [framesData]);
 
   // PRODUCT ID OF THE FRAME: the frame which selected by user. E.g: id of Black Wooden Frame
   const [selectedFrameId, setSelectedFrameId] = React.useState<number>(-1);
 
   // FRAME PRODUCT: No Frame, Black Wooden Frame, Natuarl Wooden Frame etc.
-  const selectedFrame: ProductDetails = useMemo(() => {
+  const selectedFrame: Partial<ProductDetails> = useMemo(() => {
     // find the frame product that matches the selected frame id
     const selectedframe = frames.find((f) => f.product_id === selectedFrameId);
     if (
@@ -236,7 +236,7 @@ export const ProductDetailsView: React.FC = () => {
                     </RadioGroup.Label>
                     <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-4">
                       {framesByProductOptionId.length > 0 &&
-                        framesByProductOptionId.map((frame: ProductDetails) => (
+                        framesByProductOptionId.map((frame: Partial<ProductDetails>) => (
                           <RadioGroup.Option
                             as="div"
                             key={frame.product_id}

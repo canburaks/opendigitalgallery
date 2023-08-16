@@ -6,7 +6,8 @@ import { UseInstaprintStore } from "@/data/stores";
 
 
 export function generateCartProductsFromInstaCart(): CartProduct[] {
-	const { instaprintProduct, frames } = useInstaprintProducts();
+	const instaprintProduct = UseInstaprintStore(state => state.instaprint);
+	const frames = UseInstaprintStore(state => state.frames);
 	const instaprintCart = UseInstaprintStore(state => state.instaprintCart);
 
 	const cartProducts = useMemo(() => {
@@ -42,8 +43,8 @@ export function generateCartProductsFromInstaCart(): CartProduct[] {
 export function getPriceTextFromPrices(instaprintPrice: Price | undefined, framePrice: Price | undefined, quantity:number): string {
 	const currency = instaprintPrice?.currency || framePrice?.currency || "USD"
 	const totalPrice = (instaprintPrice?.price || 0) + (framePrice?.price || 0)
-	const currentQuantitu = quantity || 1;
-	return `${totalPrice * currentQuantitu} ${currency}`
+	const currentQuantity = quantity || 1;
+	return `${totalPrice * currentQuantity} ${currency}`
 }
 
 export function getProductPrice(instaCartItem: InstaprintProduct, instaprintProduct: Partial<ProductDetails>): Price | undefined {
@@ -67,6 +68,7 @@ export function getInstaprintProductOptionId(instaCartItem: InstaprintProduct): 
 	} else {
 		productOptionId = INSTAPRINT_PRODUCT_OPTIONS_MAP.RECTANGLE
 	}
+	console.log("product Option id", productOptionId)
 	return productOptionId;
 }
 

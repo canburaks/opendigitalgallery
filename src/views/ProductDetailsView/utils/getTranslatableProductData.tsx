@@ -2,7 +2,7 @@ import { LocaleType, ProductDetails, TranslatableFields } from '@/types';
 import { DEFAULT_LOCALE } from '@/constants';
 
 export function getTranslatableProductData(
-  product: ProductDetails,
+  product: Partial<ProductDetails>,
   locale: LocaleType
 ): TranslatableFields {
   {

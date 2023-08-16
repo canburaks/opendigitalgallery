@@ -29,7 +29,7 @@ export const UseInstaprintStore = create<UseInstaprintStore>((set, get) => ({
 
   instaprintCart: [],
 
-  getInstaprintCartProduct: (mediaId: string) => get().instaprintCart.find((p) => p.instaprint?.mediaId === mediaId)!,
+  getInstaprintCartProduct: (mediaId: string) => get().instaprintCart.find((p) => p.instaprint?.mediaId === mediaId),
   addOrUpdateInstaprintCart: (instaprintProduct: InstaprintProduct) => {
     console.log("input ", instaprintProduct);
     const selectedMediaId = get().selections.find((p) => p === instaprintProduct?.instaprint?.mediaId);
@@ -57,6 +57,6 @@ interface UseInstaprintStore {
   toggleSelection: (id: string) => void;
 
   instaprintCart: InstaprintProduct[];
-  getInstaprintCartProduct: (mediaId: string) => InstaprintProduct;
+  getInstaprintCartProduct: (mediaId: string) => InstaprintProduct | undefined;
   addOrUpdateInstaprintCart: (instaprintProduct: InstaprintProduct) => void;
 }

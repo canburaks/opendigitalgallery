@@ -1,4 +1,4 @@
-import { CartProduct } from '@/types';
+import { CartProduct, Price } from '@/types';
 import { InstaprintFrameOptionsEnum } from '@/constants';
 
 export type InstagramTokenFunctionParams = {
@@ -27,6 +27,12 @@ export interface InstaprintProduct extends CartProduct {
   priceText?: string;
   priceNumber?: number;
   priceCurrency?: string;
+
+  productPrice?:Partial<Price>
+  framePrice?: Partial<Price>
+  
+  frameShippingPrice?: number;
+  productShippingPrice?: number;
 
   frameProductId?: number;
   framePriceId?: number;

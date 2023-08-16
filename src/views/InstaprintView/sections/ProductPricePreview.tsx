@@ -25,6 +25,7 @@ export const ProductPricePreview = ({ selectedMediaId }: Props) => {
 			// const currency = instaprintPrice?.currency || framePrice?.currency || "USD"
 			// const totalPrice = (instaprintPrice?.price || 0) + (framePrice?.price || 0) 
 			const quantity = instaCartItem?.quantity || 1;
+			console.log("quantity", quantity)
 			const priceTextRaw = getPriceTextFromPrices(instaprintPrice, framePrice, quantity)
 			setPriceText(priceTextRaw)
 		}

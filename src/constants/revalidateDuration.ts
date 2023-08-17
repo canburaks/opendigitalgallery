@@ -1,1 +1,1 @@
-export const revalidateDuration = 60 * 5; // 5 mins
+export const revalidateDuration = 1 * 5; // 5 mins

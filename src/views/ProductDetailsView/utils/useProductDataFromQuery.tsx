@@ -21,6 +21,6 @@ export function useProductDataFromQuery(slug: string): ProductDetails | undefine
     }
   } catch (error) {
     console.log(error);
-    return {};
+    return undefined;
   }
 }

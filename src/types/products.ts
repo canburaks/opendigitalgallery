@@ -1,3 +1,4 @@
+import { InstaprintFrameOptionsEnum } from '@/constants';
 /*
  * MERGED PRODUCT OPTION
  * This is the interface for the merged product option.
@@ -25,7 +26,10 @@ export interface MergedProductOption {
  * @quantity: The quantity of the product
  *
  * */
-export type CartProduct = {
+
+export type FrameOptionsSelectUnionType = keyof typeof InstaprintFrameOptionsEnum
+
+export interface CartProduct {
   /* NECESSARY INFORMATIONS FOR BACKEND*/
   productId: number;
   priceId: number;

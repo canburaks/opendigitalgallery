@@ -12,4 +12,7 @@ export const PAGES: { [key: string]: PageInfo } = {
   PRODUCTS: { name: 'Products', path: '/products' },
   IYZICO_CALLBACK: { name: 'Iyzico Callback', path: '/orders/callback' },
   ORDERS: { name: 'Orders', path: '/orders' },
+  INSTAPRINT: { name: 'Instaprint', path: '/instaprint' },
+  INSTAPRINT_AUTH: { name: 'Instaprint Auth', path: '/instaprint/auth' },
+  INSTAPRINT_APP: { name: 'Instaprint Dashboard', path: '/instaprint/app' },
 };

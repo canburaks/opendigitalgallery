@@ -13,6 +13,8 @@ const fontSizes = {
   BodyL: 'sm:text-lg text-base font-light',
   Body: 'text-base font-light',
   BodyS: 'text-sm font-light',
+  BodyXS: 'text-xs font-light',
+
 };
 
 interface TypeProps {
@@ -55,4 +57,7 @@ export const BodyL: React.FC<PropsWithChildren<TypeProps>> = ({ children, classN
 
 export const BodyS: React.FC<PropsWithChildren<TypeProps>> = ({ children, className }) => {
   return <p className={cx(fontSizes.BodyS, className)}>{children}</p>;
+};
+export const BodyXS: React.FC<PropsWithChildren<TypeProps>> = ({ children, className }) => {
+  return <p className={cx(fontSizes.BodyXS, className)}>{children}</p>;
 };

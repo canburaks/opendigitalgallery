@@ -12,6 +12,7 @@ export function OrderView() {
   const urlToken = asPath.replace(`${PAGES.ORDERS.path}/`, '');
 
   const { data, isLoading } = useOrders(urlToken);
+  console.log('data', data);
   // console.log("data", data)
   const paymentProviderData = useMemo(() => {
     if (data && data.data && Array.isArray(data?.data)) {
@@ -43,7 +44,7 @@ export function OrderView() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 200 }}
               >
-                <OrderSuccess data={paymentProviderData} />
+                <OrderSuccess data={paymentProviderData} orderData={data} />
               </motion.div>
             )}
           {/* PAYMENT FAILURE CASE */}

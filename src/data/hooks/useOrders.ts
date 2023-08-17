@@ -1,7 +1,7 @@
 import { queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
-import { getSupabaseBrowserClient } from '../supabaseClient';
-import { ORDER_QUERY } from '../queries';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
+import { ORDER_QUERY } from '../queries/orderQueries';
 
 export async function getOrders(token: string | undefined) {
   const client = getSupabaseBrowserClient();

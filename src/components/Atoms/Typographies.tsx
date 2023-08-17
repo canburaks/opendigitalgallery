@@ -14,7 +14,6 @@ const fontSizes = {
   Body: 'text-base font-light',
   BodyS: 'text-sm font-light',
   BodyXS: 'text-xs font-light',
-
 };
 
 interface TypeProps {

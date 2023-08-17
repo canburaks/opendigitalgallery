@@ -1,5 +1,5 @@
 import { ProductType } from '@/constants';
-import { getSupabaseBrowserClient } from '../supabaseClient';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 
 export const getPostersHandleList = async () => {
   const client = getSupabaseBrowserClient();

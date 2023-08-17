@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import type { Buyer, Cart, CartDetail, CartProduct } from '@/types';
-import { getSupabaseBrowserClient } from '../supabaseClient';
+import { CART_STATUSES, type Buyer, type Cart, type CartDetail, type CartProduct } from '@/types';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 const client = getSupabaseBrowserClient();
 
 export const useCartStore = create<CartStoreTypes>()((set, get) => ({
@@ -145,7 +145,11 @@ export const getInitialCartProducts = async () => {
 
   // Case:  User Logged
   if (user) {
-    const res = await client.from('carts').select('*').eq('uid', user?.id).eq('cart_status_id', 1);
+    const res = await client
+      .from('carts')
+      .select('*')
+      .eq('uid', user?.id)
+      .eq('cart_status_id', CART_STATUSES.ACTIVE);
     dbCart = res && res.data && res.data[0];
     cartID = dbCart?.cart_id;
   }
@@ -260,7 +264,6 @@ export const getInitialCartProducts = async () => {
       products = mergeProducts;
     }
   }
-  console.log('user', user);
   // Case: User Not Logged
   if (!user) {
     const localStorageCart = isCSR && localStorage.getItem('cart');
@@ -270,8 +273,6 @@ export const getInitialCartProducts = async () => {
     cartID = undefined;
   }
 
-  console.log('getInitial cartID', cartID);
-  console.log('getInitial products', products);
   return { products, cartID };
 };
 

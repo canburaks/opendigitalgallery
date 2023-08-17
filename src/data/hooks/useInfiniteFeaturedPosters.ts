@@ -1,7 +1,7 @@
 import { ProductType, getLocaleValues, queryKeys } from '@/constants';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getSupabaseBrowserClient } from '../supabaseClient';
-import { PRODUCT_LIST_ITEM_QUERY_SELECT } from '../queries';
+import { getSupabaseBrowserClient } from '../clients/supabaseClient';
+import { PRODUCT_LIST_ITEM_QUERY_SELECT } from '../queries/productQueries';
 
 type GetInitialPostersType = {
   from: number;

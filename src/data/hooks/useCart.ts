@@ -2,16 +2,14 @@ import { queryKeys } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
 import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 
-export const getAddress = async (userId?: string) => {
+export const getCart = async (cartId: string) => {
   const client = getSupabaseBrowserClient();
-  return client.from('addresses').select('*').eq('uid', userId);
+  return client.from('carts').select().eq('cart_id', cartId);
 };
 
-export const useAddresses = (userId?: string, enabled?: boolean) => {
-  const { data, isLoading } = useQuery([queryKeys.addresses, userId], () => getAddress(userId), {
+export const useCat = (cartId: string, enabled?: boolean) => {
+  const { data, isLoading } = useQuery([queryKeys.cart, cartId], () => getCart(cartId), {
     enabled: enabled === undefined ? true : enabled,
-    staleTime: 0,
   });
-
   return { data: data, isLoading };
 };

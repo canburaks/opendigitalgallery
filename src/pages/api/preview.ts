@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getPreviewPost } from '@/data/wordpressClient';
+import { getPreviewPost } from '@/data/clients/wordpressClient';
 import type { RequestQuery } from '@/types';
 
 export default async function preview(req: NextApiRequest, res: NextApiResponse) {

@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { getAllPostsForHome } from '@/data/wordpressClient';
+import { getAllPostsForHome } from '@/data/clients/wordpressClient';
 import { useTranslation } from 'next-i18next';
 // import { useRouter } from 'next/router';
 import { TRX } from '@/constants';

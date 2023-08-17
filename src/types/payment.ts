@@ -43,6 +43,10 @@ export enum PaymentGroup {
   SUBSCRIPTION = 'SUBSCRIPTION',
   OTHER = 'OTHER',
 }
+export enum CART_STATUSES {
+  'ACTIVE' = 1,
+  'ORDERED' = 2,
+}
 
 export interface Buyer {
   id: string;

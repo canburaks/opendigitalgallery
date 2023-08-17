@@ -26,6 +26,8 @@
     "product-additional-details": "Additional Details",
     "product-size": "Dimensions",
     "product-frame-selection": "Choose Frame",
+    "product-quantity": "Quantity",
+    "brand": "OPEN DIGITAL GALLERY",
     "error": "Error"
   },
   "blog": {
@@ -34,7 +36,7 @@
     "title": "Gallery Wall",
     "description": "Artful Insights from the Gallery Wall of Open Digital Gallery."
   },
-  "orders":{
+  "orders": {
     "order": "Order",
     "order-number": "Order Number",
     "order-date": "Order placed",
@@ -46,8 +48,57 @@
     "order-successful-message": "We received your order. Thank you for shopping with us!",
     "order-failed-message": "We couldn't process your order. Please try again later.",
     "order-tracking-number": "Order tracking number"
-
-
+  },
+  "instaprint": {
+    "meta": {
+      "title": "Print your Instagram photos with Instaprint",
+      "description": "Bring your memories to life with Instaprint by Open Digital Gallery."
+    },
+    "hero": {
+      "title": "Bring your memories to life with Instaprint",
+      "description": "We believe that your memories should be celebrated and shared with the world. That's why we offer a wide range of products to help you do just that. ",
+      "cta": "Get started"
+    },
+    "section1": {
+      "title": "Bring your Instagram photos to life with a high-resolution digital print.",
+      "description": "Our state-of-the-art printing technology ensures that your memories are captured in stunning detail and vibrant colors. Plus, with our easy-to-use 4 steps online ordering system, you can create your perfect print from the comfort of your own home.",
+      "image": "https://cdn.rareblocks.xyz/collection/celebration/images/steps/2/curved-dotted-line.svg"
+    },
+    "section2": {
+      "title": "Bring your Instagram photos to life with a high-resolution digital print.",
+      "description": "Our state-of-the-art printing technology ensures that your memories are captured in stunning detail and vibrant colors. Plus, with our easy-to-use 4 steps online ordering system, you can create your perfect print from the comfort of your own home.",
+      "image": "https://cdn.rareblocks.xyz/collection/celebration/images/steps/2/curved-dotted-line.svg"
+    },
+    "app": {
+      "modal": {
+        "title": "Choose photos from you feed",
+        "description": "Baskısını almak istediğiniz fotoğrafları seçiniz.",
+        "image": "https://cdn.rareblocks.xyz/collection/celebration/images/steps/1/step-1.svg",
+        "next": "Next",
+        "addcart": "Add to cart",
+        "prev": "Prev",
+        "nonselected": "Please select at least one photo",
+        "selected": "Selected",
+        "cancel": "Cancel"
+      },
+      "selection": {
+        "title": "Choose your print size and frame",
+        "description": "Choose your print size and frame",
+        "variations1": {
+          "title": "Mat Selection",
+          "description": "Mat height is 10x10cm.",
+          "footnote": "Seçtiğiniz görsel kare ise 20x20cm, dikdörtgen ise 20x25cm boyutlarında baskı alınır. Paspartulu seçimde görsel 30x30cm ya da 30x35 boyutlarında size gönderilir."
+        },
+        "variations2": {
+          "title": "Frame Selection",
+          "description": "",
+          "footnote": ""
+        },
+        "size": "Size",
+        "placeholder": "Pick one",
+        "quantity": "Quantity"
+      }
+    }
   },
   "paymentErrors": {
     "MISCALCULATED_SUM": "Miscalculated sum",
@@ -84,5 +135,11 @@
     "ISSUER_OR_SWITCH_INOPERATIVE": "Issuer or switch inoperative",
     "INVALID_EXPIRE_YEAR_MONTH": "Invalid expire year month",
     "INVALID_AMOUNT": "Invalid amount"
+  },
+  "frames":{
+    "noframe": "No Frame",
+    "natural": "Natural",
+    "darkbrown": "Dark Brown",
+    "black": "Black"
   }
 }

@@ -1,5 +1,12 @@
 // The keys for the correct translations
 export const TRX = {
+  COMMON: {
+    BRAND: 'pages.brand',
+    SIZE: 'pages.product-size',
+    QUANTITY: 'pages.product-quantity',
+    NEXT: 'instaprint.app.modal.next',
+    PREV: 'instaprint.app.modal.prev',
+  },
   PRODUCT_DETAILS: {
     INFORMATION: 'pages.product-information',
     DESCRIPTION: 'pages.product-description',
@@ -29,6 +36,41 @@ export const TRX = {
     SUCCESSFUL_MESSAGE: 'orders.order-successful-message',
     FAILED_MESSAGE: 'orders.failed-message',
     TRACKING_NUMBER: 'orders.order-tracking-number',
+  },
+  INSTAPRINT: {
+    META_TITLE: 'instaprint.meta.title',
+    META_DESCRIPTION: 'instaprint.meta.description',
+    HERO_TITLE: 'instaprint.hero.title',
+    HERO_DESCRIPTION: 'instaprint.hero.description',
+    HERO_CTA: 'instaprint.hero.cta',
+    SECTION1_TITLE: 'instaprint.section1.title',
+    SECTION1_DESCRIPTION: 'instaprint.section1.description',
+    SECTION1_IMAGE: 'instaprint.section1.image',
+    SECTION2_TITLE: 'instaprint.section2.title',
+    SECTION2_DESCRIPTION: 'instaprint.section2.description',
+    SECTION2_IMAGE: 'instaprint.section2.image',
+    APP_MODAL_TITLE: 'instaprint.app.modal.title',
+    APP_MODAL_DESCRIPTION: 'instaprint.app.modal.description',
+    APP_MODAL_IMAGE: 'instaprint.app.modal.image',
+    APP_MODAL_NEXT: 'instaprint.app.modal.next',
+    APP_MODAL_PREV: 'instaprint.app.modal.prev',
+    APP_MODAL_ADD_CART: 'instaprint.app.modal.addcart',
+    APP_MODAL_NONSELECTED: 'instaprint.app.modal.nonselected',
+    APP_MODAL_SELECTION_TITLE: 'instaprint.app.modal.selection.title',
+    APP_MODAL_SELECTION_DESCRIPTION: 'instaprint.app.selection.description',
+    APP_MODAL_SELECTION_VARIATION1_TITLE: 'instaprint.app.selection.variations1.title',
+    APP_MODAL_SELECTION_VARIATION1_DESCRIPTION:
+      'instaprint.app.selection.variations1.description',
+    APP_MODAL_SELECTION_VARIATION1_FOOTNOTE: 'instaprint.app.selection.variations1.footnote',
+    APP_MODAL_SELECTION_VARIATION2_TITLE: 'instaprint.app.selection.variations2.title',
+    APP_MODAL_SELECTION_VARIATION2_DESCRIPTION:
+      'instaprint.app.selection.variations2.description',
+    APP_MODAL_SELECTION_VARIATION2_FOOTNOTE: 'instaprint.app.selection.variations2.footnote',
+    APP_MODAL_SIZE: 'instaprint.app.selection.size',
+    APP_MODAL_PLACEHOLDER: 'instaprint.app.selection.placeholder',
+    APP_MODAL_QUANTITY: 'instaprint.app.selection.quantity',
+    APP_MODAL_SELECTED: 'instaprint.app.modal.selected',
+    APP_MODAL_CANCEL: 'instaprint.app.modal.cancel',
   },
   PAYMENT_ERRORS: {
     '5062': 'paymentErrors.MISCALCULATED_SUM',
@@ -65,5 +107,11 @@ export const TRX = {
     '10228': 'paymentErrors.ISSUER_OR_SWITCH_INOPERATIVE',
     '10229': 'paymentErrors.INVALID_EXPIRE_YEAR_MONTH',
     '10232': 'paymentErrors.INVALID_AMOUNT',
+  },
+  FRAMES: {
+    NO_FRAME: 'frames.noframe',
+    BLACK: 'frames.black',
+    DARK_BROWN: 'frames.darkbrown',
+    NATURAL: 'frames.natural',
   },
 };

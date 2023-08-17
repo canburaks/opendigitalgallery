@@ -26,6 +26,8 @@
     "product-additional-details": "Ürün Detayları",
     "product-size": "Boyutlar",
     "product-frame-selection": "Çerçeve Seçimi",
+    "product-quantity": "Adet",
+    "brand": "OPEN DIGITAL GALLERY",
     "error": "Hata"
   },
   "blog": {
@@ -46,6 +48,57 @@
     "order-successful-message": "Siparişi başarıyla aldık. Teşekkür ederiz.",
     "order-failed-message": "Ödeme işlemi başarısız oldu. Lütfen tekrar deneyiniz.",
     "order-tracking-number": "Sipariş takip numarası"
+  },
+  "instaprint": {
+    "meta": {
+      "title": "Instagram gönderilerinizi yüksek çözünürlüklü baskıya dönüştürün",
+      "description": "En son baskı teknolojimiz, anılarınızın çarpıcı ayrıntılar ve canlı renklerle yakalanmasını sağlar. Ayrıca, kullanımı kolay 4 adımlı çevrimiçi sipariş sistemimizle, kendi evinizin rahatlığında mükemmel baskınızı oluşturabilirsiniz."
+    },
+    "hero": {
+      "title": "Dijital anılarınızı hayata döndürün",
+      "description": "Anılarınızın kutlanması ve dünya ile paylaşılması gerektiğine inanıyoruz. Bu nedenle, tam da bunu yapmanıza yardımcı olacak geniş bir ürün yelpazesi sunuyoruz.",
+      "cta": "Şimdi dene"
+    },
+    "section1": {
+      "title": "Instagram gönderilerinizi yüksek çözünürlüklü baskıya dönüştürün",
+      "description": "En son baskı teknolojimiz, anılarınızın çarpıcı ayrıntılar ve canlı renklerle yakalanmasını sağlar. Ayrıca, kullanımı kolay 4 adımlı çevrimiçi sipariş sistemimizle, kendi evinizin rahatlığında mükemmel baskınızı oluşturabilirsiniz.",
+      "image": "https://cdn.rareblocks.xyz/collection/celebration/images/steps/2/curved-dotted-line.svg"
+    },
+    "section2": {
+      "title": "Dijital anılarınızı hayata döndürün",
+      "description": "En son baskı teknolojimiz, anılarınızın çarpıcı ayrıntılar ve canlı renklerle yakalanmasını sağlar. Ayrıca, kullanımı kolay 4 adımlı çevrimiçi sipariş sistemimizle, kendi evinizin rahatlığında mükemmel baskınızı oluşturabilirsiniz.",
+      "image": "https://cdn.rareblocks.xyz/collection/celebration/images/steps/2/curved-dotted-line.svg"
+    },
+    "app": {
+      "modal": {
+        "title": "IG FEED’İNİZDEN FOTOĞRAF SEÇİNİZ",
+        "description": "Baskısını almak istediğiniz fotoğrafları seçiniz.",
+        "image": "https://cdn.rareblocks.xyz/collection/celebration/images/steps/1/step-1.svg",
+        "next": "Devam et",
+        "prev": "Geri",
+        "addcart": "Sepete Ekle",
+        "nonselected": "Feed'inizden fotoğraf seçtikten sonra ilerleyebilirsiniz.",
+        "selected": "Seçildi",
+        "cancel": "Vazgeç"
+      },
+      "selection": {
+        "title": "Choose your print size and frame",
+        "description": "Choose your print size and frame",
+        "variations1": {
+          "title": "Paspartu Seçimi",
+          "description": "Paspartu kalınlığı 10x10cm’dir.",
+          "footnote": "Seçtiğiniz görsel kare ise 20x20cm, dikdörtgen ise 20x25cm boyutlarında baskı alınır. Paspartulu seçimde görsel 30x30cm ya da 30x35 boyutlarında size gönderilir."
+        },
+        "variations2": {
+          "title": "Çerçeve seçimi",
+          "description": "",
+          "footnote": ""
+        },
+        "size": "Size",
+        "placeholder": "Pick one",
+        "quantity": "Quantity"
+      }
+    }
   },
   "paymentErrors": {
     "MISCALCULATED_SUM": "Hesaplanan tutar ile ödenen tutar uyuşmuyor",
@@ -82,5 +135,12 @@
     "ISSUER_OR_SWITCH_INOPERATIVE": "Banka veya terminal işlem yapamıyor",
     "INVALID_EXPIRE_YEAR_MONTH": "Son kullanma tarihi geçersiz",
     "INVALID_AMOUNT": "Geçersiz tutar"
+  },
+  "frames":{
+    "noframe": "Çerçevesiz",
+    "natural": "Naturel",
+    "darkbrown": "Koyu Kahverengi",
+    "black": "Siyah"
   }
+
 }

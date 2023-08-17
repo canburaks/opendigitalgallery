@@ -9,3 +9,4 @@ export * from './CartPopup';
 export * from './ProductCart';
 export * from './SearchBox';
 export * from './CartProductList';
+export * from './SegmentedControl';

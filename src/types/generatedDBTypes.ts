@@ -28,7 +28,7 @@ export type ProductTranslationsResponseError = ProductTranslationsResponse['erro
 export interface ProductDetails extends Partial<Product> {
   images?: ProductImage[];
   translations?: ProductTranslations[];
-  prices: ProductPriceOptions[];
+  prices?: ProductPriceOptions[];
   options?: MergedProductOption[];
   frames?: Product[];
 }

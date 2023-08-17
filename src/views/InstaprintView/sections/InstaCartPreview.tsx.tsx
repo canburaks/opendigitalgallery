@@ -1,80 +1,77 @@
-import { MouseEventHandler } from "react";
-import { UseInstaprintStore } from "@/data/stores";
-import { motion } from "framer-motion"
-import type { InstaprintProduct } from "@/types";
+import { UseInstaprintStore } from '@/data/stores';
+import { motion } from 'framer-motion';
+import type { InstaprintProduct } from '@/types';
 import { useCartStore } from '@/data/stores';
-import { ProductPricePreview } from "./ProductPricePreview";
-import { generateCartProductsFromInstaCart } from "../utils"
-import { Button } from "@/components/Atoms/Button";
+import { ProductPricePreview } from './ProductPricePreview';
+import { useGenerateCartProductsFromInstaCart } from '../utils';
+import { Button } from '@/components/Atoms/Button';
 
 export const InstaCartPreview = () => {
 
   const addToCart = useCartStore((state) => state.addToCart);
 
-  const cartProducts = generateCartProductsFromInstaCart()
-  console.log("cart Productw", cartProducts)
+  const cartProducts = useGenerateCartProductsFromInstaCart();
 
 
   const page = UseInstaprintStore(state => state.page);
   const instaprintCart = UseInstaprintStore(state => state.instaprintCart);
   // get the sum of total priceNumber values of all instaprintCart
   const getTotalPrice = () => {
-    let total = 0
+    let total = 0;
     instaprintCart.forEach((ipc) => {
-      console.log("ipc", ipc)
-      let subPrice = 0
+      console.log('ipc', ipc);
+      let subPrice = 0;
       if (ipc?.productPrice) {
-        subPrice += ipc?.productPrice.price!
+        subPrice += ipc?.productPrice?.price || 0;
       }
       if (ipc?.framePrice) {
-        subPrice += ipc?.framePrice.price!
+        subPrice += ipc?.framePrice?.price || 0;
       }
-      total += subPrice * ipc.quantity
-    })
-    return total
-  }
+      total += subPrice * ipc.quantity;
+    });
+    return total;
+  };
   const getTotalShippingPrice = () => {
-    let total = 0
+    let total = 0;
     instaprintCart.forEach((ipc) => {
-      console.log("ipc", ipc)
-      let subPrice = 0
+      let subPrice = 0;
       if (ipc?.productPrice) {
-        subPrice += ipc?.productPrice.shipping_cost!
+        subPrice += ipc?.productPrice?.shipping_cost || 0;
       }
       if (ipc?.framePrice) {
-        subPrice += ipc?.framePrice.shipping_cost!
+        subPrice += ipc?.framePrice?.shipping_cost || 0;
       }
-      total += subPrice * ipc.quantity
-    })
-    return total
-  }
+      total += subPrice * ipc.quantity;
+    });
+    return total;
+  };
 
 
-  const currency = instaprintCart[0]?.priceCurrency
+  const currency = instaprintCart[0]?.priceCurrency;
 
-  const totalProductPrice = getTotalPrice()
-  const totalShippingPrice = getTotalShippingPrice()
-  const totalPrice = totalProductPrice + totalShippingPrice
+  const totalProductPrice = getTotalPrice();
+  const totalShippingPrice = getTotalShippingPrice();
+  const totalPrice = totalProductPrice + totalShippingPrice;
 
 
   const addToCartMutation= (e: any): void => {
     e.preventDefault();
     cartProducts.forEach((cartProduct, ix: number) => {
-      let isLatest = ix === cartProducts.length - 1
+      const isLatest = ix === cartProducts.length - 1;
       addToCart(cartProduct, isLatest);
-    })
-  }
+    });
+  };
 
-  console.log("instaprintCart", instaprintCart, "totalPrice", totalPrice, "currency", currency)
+  console.log('instaprintCart', instaprintCart, 'totalPrice', totalPrice, 'currency', currency);
 
-  if (page !== 3) return <div></div>
+  if (page !== 3) return <div></div>;
 
   return (
     <motion.div className="flex flex-col pr-2"
-      exit={{ opacity: 0, left: "-100%" }}
-      initial={{ opacity: 1, left: "100%" }}
+      exit={{ opacity: 0, left: '-100%' }}
+      initial={{ opacity: 1, left: '100%' }}
       animate={{ opacity: 1, left: 0 }}
-      transition={{ duration: 0.3, ease: "linear" }}
+      transition={{ duration: 0.3, ease: 'linear' }}
     >
       <section className="py-12 bg-white sm:py-16 lg:py-20">
         <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
@@ -164,31 +161,31 @@ export const InstaCartPreview = () => {
       </section>
 
     </motion.div>
-  )
-}
+  );
+};
 
 
 const InstaCartPreviewItem = ({ product }: { product: InstaprintProduct }) => (
   <li className="flex py-7">
     <div className="flex-shrink-0">
-      <img className="object-cover w-16 h-16 rounded-lg" src={product?.instaprint?.mediaUrl!} alt="" />
+      <img className="object-cover w-16 h-16 rounded-lg" src={product.instaprint!.mediaUrl} alt="" />
     </div>
 
     <div className="flex-1 ml-5">
       <div className="relative sm:grid sm:grid-cols-2 sm:gap-x-5 sm:pr-0">
         <div className="pr-9 sm:pr-5">
           <p className="text-base font-bold text-gray-900">Instaprint Product</p>
-          <p className="mt-1.5 text-sm font-medium text-gray-500">{product?.instaprint?.ratio === 1 ? "Square" : "Rectangle"}</p>
+          <p className="mt-1.5 text-sm font-medium text-gray-500">{product?.instaprint?.ratio === 1 ? 'Square' : 'Rectangle'}</p>
         </div>
 
         <div className="flex items-end justify-between mt-3 sm:justify-end sm:pr-14 sm:items-start sm:mt-0">
 
           <div className="flex-shrink-0 w-20 text-base font-bold text-left text-gray-900 sm:text-right sm:order-2 sm:ml-8">
-            <ProductPricePreview selectedMediaId={product?.instaprint?.mediaId!} />
+            <ProductPricePreview selectedMediaId={product.instaprint!.mediaId!} />
           </div>
         </div>
       </div>
     </div>
   </li>
-)
+);
 

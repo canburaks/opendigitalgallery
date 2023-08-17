@@ -60,10 +60,10 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "addresses_uid_fkey"
-            columns: ["uid"]
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
+            foreignKeyName: 'addresses_uid_fkey'
+            columns: ['uid']
+            referencedRelation: 'users'
+            referencedColumns: ['uid']
           }
         ]
       }
@@ -97,28 +97,28 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "cart_details_cart_id_fkey"
-            columns: ["cart_id"]
-            referencedRelation: "carts"
-            referencedColumns: ["cart_id"]
+            foreignKeyName: 'cart_details_cart_id_fkey'
+            columns: ['cart_id']
+            referencedRelation: 'carts'
+            referencedColumns: ['cart_id']
           },
           {
-            foreignKeyName: "cart_details_price_id_fkey"
-            columns: ["price_id"]
-            referencedRelation: "prices"
-            referencedColumns: ["price_id"]
+            foreignKeyName: 'cart_details_price_id_fkey'
+            columns: ['price_id']
+            referencedRelation: 'prices'
+            referencedColumns: ['price_id']
           },
           {
-            foreignKeyName: "fk_cart_details_item_type"
-            columns: ["item_type_id"]
-            referencedRelation: "cart_item_type"
-            referencedColumns: ["id"]
+            foreignKeyName: 'fk_cart_details_item_type'
+            columns: ['item_type_id']
+            referencedRelation: 'cart_item_type'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "fk_cart_details_user_images"
-            columns: ["user_images_id"]
-            referencedRelation: "user_images"
-            referencedColumns: ["id"]
+            foreignKeyName: 'fk_cart_details_user_images'
+            columns: ['user_images_id']
+            referencedRelation: 'user_images'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -182,16 +182,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "carts_cart_status_id_fkey"
-            columns: ["cart_status_id"]
-            referencedRelation: "cart_status"
-            referencedColumns: ["cart_status_id"]
+            foreignKeyName: 'carts_cart_status_id_fkey'
+            columns: ['cart_status_id']
+            referencedRelation: 'cart_status'
+            referencedColumns: ['cart_status_id']
           },
           {
-            foreignKeyName: "carts_uid_fkey"
-            columns: ["uid"]
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
+            foreignKeyName: 'carts_uid_fkey'
+            columns: ['uid']
+            referencedRelation: 'users'
+            referencedColumns: ['uid']
           }
         ]
       }
@@ -233,7 +233,7 @@ export interface Database {
       }
       countries: {
         Row: {
-          continent: Database["public"]["Enums"]["continents"] | null
+          continent: Database['public']['Enums']['continents'] | null
           country_id: number
           iso2: string
           iso3: string | null
@@ -241,7 +241,7 @@ export interface Database {
           name: string | null
         }
         Insert: {
-          continent?: Database["public"]["Enums"]["continents"] | null
+          continent?: Database['public']['Enums']['continents'] | null
           country_id?: number
           iso2: string
           iso3?: string | null
@@ -249,7 +249,7 @@ export interface Database {
           name?: string | null
         }
         Update: {
-          continent?: Database["public"]["Enums"]["continents"] | null
+          continent?: Database['public']['Enums']['continents'] | null
           country_id?: number
           iso2?: string
           iso3?: string | null
@@ -426,40 +426,40 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "orders_address_id_fkey"
-            columns: ["address_id"]
-            referencedRelation: "addresses"
-            referencedColumns: ["address_id"]
+            foreignKeyName: 'orders_address_id_fkey'
+            columns: ['address_id']
+            referencedRelation: 'addresses'
+            referencedColumns: ['address_id']
           },
           {
-            foreignKeyName: "orders_cart_id_fkey"
-            columns: ["cart_id"]
-            referencedRelation: "carts"
-            referencedColumns: ["cart_id"]
+            foreignKeyName: 'orders_cart_id_fkey'
+            columns: ['cart_id']
+            referencedRelation: 'carts'
+            referencedColumns: ['cart_id']
           },
           {
-            foreignKeyName: "orders_delivery_organization_id_fkey"
-            columns: ["delivery_organization_id"]
-            referencedRelation: "delivery_organizations"
-            referencedColumns: ["delivery_organization_id"]
+            foreignKeyName: 'orders_delivery_organization_id_fkey'
+            columns: ['delivery_organization_id']
+            referencedRelation: 'delivery_organizations'
+            referencedColumns: ['delivery_organization_id']
           },
           {
-            foreignKeyName: "orders_order_status_id_fkey"
-            columns: ["order_status_id"]
-            referencedRelation: "order_status"
-            referencedColumns: ["order_status_id"]
+            foreignKeyName: 'orders_order_status_id_fkey'
+            columns: ['order_status_id']
+            referencedRelation: 'order_status'
+            referencedColumns: ['order_status_id']
           },
           {
-            foreignKeyName: "orders_uid_fkey"
-            columns: ["uid"]
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
+            foreignKeyName: 'orders_uid_fkey'
+            columns: ['uid']
+            referencedRelation: 'users'
+            referencedColumns: ['uid']
           },
           {
-            foreignKeyName: "orders_user_payment_method_id_fkey"
-            columns: ["user_payment_method_id"]
-            referencedRelation: "user_payment_methods"
-            referencedColumns: ["payment_method_id"]
+            foreignKeyName: 'orders_user_payment_method_id_fkey'
+            columns: ['user_payment_method_id']
+            referencedRelation: 'user_payment_methods'
+            referencedColumns: ['payment_method_id']
           }
         ]
       }
@@ -526,22 +526,22 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "prices_country_id_fkey"
-            columns: ["country_id"]
-            referencedRelation: "countries"
-            referencedColumns: ["country_id"]
+            foreignKeyName: 'prices_country_id_fkey'
+            columns: ['country_id']
+            referencedRelation: 'countries'
+            referencedColumns: ['country_id']
           },
           {
-            foreignKeyName: "prices_product_id_fkey"
-            columns: ["product_id"]
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            foreignKeyName: 'prices_product_id_fkey'
+            columns: ['product_id']
+            referencedRelation: 'products'
+            referencedColumns: ['product_id']
           },
           {
-            foreignKeyName: "prices_product_option_id_fkey"
-            columns: ["product_option_id"]
-            referencedRelation: "product_options"
-            referencedColumns: ["product_option_id"]
+            foreignKeyName: 'prices_product_option_id_fkey'
+            columns: ['product_option_id']
+            referencedRelation: 'product_options'
+            referencedColumns: ['product_option_id']
           }
         ]
       }
@@ -563,16 +563,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "product_accessories_product_id_fkey"
-            columns: ["product_id"]
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            foreignKeyName: 'product_accessories_product_id_fkey'
+            columns: ['product_id']
+            referencedRelation: 'products'
+            referencedColumns: ['product_id']
           },
           {
-            foreignKeyName: "product_accessories_product_id2_fkey"
-            columns: ["product_id2"]
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            foreignKeyName: 'product_accessories_product_id2_fkey'
+            columns: ['product_id2']
+            referencedRelation: 'products'
+            referencedColumns: ['product_id']
           }
         ]
       }
@@ -597,16 +597,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "product_collections_collection_id_fkey"
-            columns: ["collection_id"]
-            referencedRelation: "collections"
-            referencedColumns: ["collection_id"]
+            foreignKeyName: 'product_collections_collection_id_fkey'
+            columns: ['collection_id']
+            referencedRelation: 'collections'
+            referencedColumns: ['collection_id']
           },
           {
-            foreignKeyName: "product_collections_product_id_fkey"
-            columns: ["product_id"]
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            foreignKeyName: 'product_collections_product_id_fkey'
+            columns: ['product_id']
+            referencedRelation: 'products'
+            referencedColumns: ['product_id']
           }
         ]
       }
@@ -649,10 +649,10 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "product_images_product_id_fkey"
-            columns: ["product_id"]
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            foreignKeyName: 'product_images_product_id_fkey'
+            columns: ['product_id']
+            referencedRelation: 'products'
+            referencedColumns: ['product_id']
           }
         ]
       }
@@ -731,10 +731,10 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "product_translations_product_id_fkey"
-            columns: ["product_id"]
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            foreignKeyName: 'product_translations_product_id_fkey'
+            columns: ['product_id']
+            referencedRelation: 'products'
+            referencedColumns: ['product_id']
           }
         ]
       }
@@ -861,16 +861,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "products_product_status_id_fkey"
-            columns: ["product_status_id"]
-            referencedRelation: "product_status"
-            referencedColumns: ["product_status_id"]
+            foreignKeyName: 'products_product_status_id_fkey'
+            columns: ['product_status_id']
+            referencedRelation: 'product_status'
+            referencedColumns: ['product_status_id']
           },
           {
-            foreignKeyName: "products_product_type_id_fkey"
-            columns: ["product_type_id"]
-            referencedRelation: "product_types"
-            referencedColumns: ["product_type_id"]
+            foreignKeyName: 'products_product_type_id_fkey'
+            columns: ['product_type_id']
+            referencedRelation: 'product_types'
+            referencedColumns: ['product_type_id']
           }
         ]
       }
@@ -892,16 +892,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "related_products_product_id_fkey"
-            columns: ["product_id"]
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            foreignKeyName: 'related_products_product_id_fkey'
+            columns: ['product_id']
+            referencedRelation: 'products'
+            referencedColumns: ['product_id']
           },
           {
-            foreignKeyName: "related_products_product_id2_fkey"
-            columns: ["product_id2"]
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            foreignKeyName: 'related_products_product_id2_fkey'
+            columns: ['product_id2']
+            referencedRelation: 'products'
+            referencedColumns: ['product_id']
           }
         ]
       }
@@ -1043,10 +1043,10 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "user_images_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
+            foreignKeyName: 'user_images_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'users'
+            referencedColumns: ['uid']
           }
         ]
       }
@@ -1074,16 +1074,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "user_payment_methods_payment_collector_id_fkey"
-            columns: ["payment_collector_id"]
-            referencedRelation: "payment_collectors"
-            referencedColumns: ["payment_collector_id"]
+            foreignKeyName: 'user_payment_methods_payment_collector_id_fkey'
+            columns: ['payment_collector_id']
+            referencedRelation: 'payment_collectors'
+            referencedColumns: ['payment_collector_id']
           },
           {
-            foreignKeyName: "user_payment_methods_uid_fkey"
-            columns: ["uid"]
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
+            foreignKeyName: 'user_payment_methods_uid_fkey'
+            columns: ['uid']
+            referencedRelation: 'users'
+            referencedColumns: ['uid']
           }
         ]
       }
@@ -1111,16 +1111,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "user_roles_auth_user_id_fkey"
-            columns: ["auth_user_id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: 'user_roles_auth_user_id_fkey'
+            columns: ['auth_user_id']
+            referencedRelation: 'users'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "user_roles_roles_id_fkey"
-            columns: ["roles_id"]
-            referencedRelation: "roles"
-            referencedColumns: ["id"]
+            foreignKeyName: 'user_roles_roles_id_fkey'
+            columns: ['roles_id']
+            referencedRelation: 'roles'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -1169,16 +1169,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "users_role_fkey"
-            columns: ["role"]
-            referencedRelation: "roles"
-            referencedColumns: ["description"]
+            foreignKeyName: 'users_role_fkey'
+            columns: ['role']
+            referencedRelation: 'roles'
+            referencedColumns: ['description']
           },
           {
-            foreignKeyName: "users_uid_fkey"
-            columns: ["uid"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: 'users_uid_fkey'
+            columns: ['uid']
+            referencedRelation: 'users'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -1219,13 +1219,13 @@ export interface Database {
     }
     Enums: {
       continents:
-        | "Africa"
-        | "Antarctica"
-        | "Asia"
-        | "Europe"
-        | "Oceania"
-        | "NorthAmerica"
-        | "SouthAmerica"
+        | 'Africa'
+        | 'Antarctica'
+        | 'Asia'
+        | 'Europe'
+        | 'Oceania'
+        | 'NorthAmerica'
+        | 'SouthAmerica'
     }
     CompositeTypes: {
       [_ in never]: never

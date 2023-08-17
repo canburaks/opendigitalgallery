@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
-import { SegmentedControl, BodyXS } from "@/components";
-import { TRX, InstaprintFrameOptionsEnum } from "@/constants";
+import { motion } from 'framer-motion';
+import { SegmentedControl, BodyXS } from '@/components';
+import { TRX, InstaprintFrameOptionsEnum } from '@/constants';
 import { useTranslation } from 'next-i18next';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const FrameSelection = ({ value, handler, title, description }: Props) => {
-    const { t } = useTranslation("common");
+    const { t } = useTranslation('common');
     // @ts-ignore
     const data = Object.keys(TRX.FRAMES).map((key:string) => ({ label: t(TRX.FRAMES[key]), value: InstaprintFrameOptionsEnum[key] }));
     return (
@@ -25,5 +25,5 @@ export const FrameSelection = ({ value, handler, title, description }: Props) =>
                 onChange={handler}
             />
         </motion.div>
-    )
-}
+    );
+};

@@ -1,5 +1,5 @@
-import { motion } from "framer-motion"
-import { SegmentedControl, BodyXS } from "@/components";
+import { motion } from 'framer-motion';
+import { SegmentedControl, BodyXS } from '@/components';
 
 type Props = {
     value: boolean | string,
@@ -15,12 +15,12 @@ export const MatSelection = ({ value, handler, title, description }: Props) => {
             <BodyXS className="mb-1 text-gray-700">{description}</BodyXS>
             <SegmentedControl
                 data={[
-                    { label: 'Yes', value: "true" },
-                    { label: 'No', value: "" },
+                    { label: 'Yes', value: 'true' },
+                    { label: 'No', value: '' },
                 ]}
                 value={value}
                 // @ts-ignore
                 onChange={handler}
             />
-        </motion.div>)
-}
+        </motion.div>);
+};

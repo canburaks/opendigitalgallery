@@ -1,4 +1,4 @@
-import { ProductType, InstaprintFrameOptionsEnum } from '@/constants';
+import { InstaprintFrameOptionsEnum } from '@/constants';
 /*
  * MERGED PRODUCT OPTION
  * This is the interface for the merged product option.

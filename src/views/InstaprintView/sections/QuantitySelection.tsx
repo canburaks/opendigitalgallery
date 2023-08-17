@@ -1,6 +1,6 @@
-import { ProductBulkPurchaseLimits } from "@/constants";
-import { motion } from "framer-motion"
-import { SegmentedControl, BodyXS } from "@/components"
+import { ProductBulkPurchaseLimits } from '@/constants';
+import { motion } from 'framer-motion';
+import { SegmentedControl, BodyXS } from '@/components';
 
 type Props = {
     value: string,
@@ -20,5 +20,5 @@ export const QuantitySelection = ({ value, handler, title, description }: Props)
                 // @ts-ignore
                 onChange={handler}
             />
-        </motion.div>)
-}
+        </motion.div>);
+};

@@ -31,7 +31,7 @@ export const UseInstaprintStore = create<UseInstaprintStore>((set, get) => ({
 
   getInstaprintCartProduct: (mediaId: string) => get().instaprintCart.find((p) => p.instaprint?.mediaId === mediaId),
   addOrUpdateInstaprintCart: (instaprintProduct: InstaprintProduct) => {
-    console.log("input ", instaprintProduct);
+    console.log('input ', instaprintProduct);
     const selectedMediaId = get().selections.find((p) => p === instaprintProduct?.instaprint?.mediaId);
     const excludedInstaProducts = get().instaprintCart.filter((p) => p.instaprint?.mediaId !== selectedMediaId);
     return set({ instaprintCart: [...excludedInstaProducts, instaprintProduct] });

@@ -26,16 +26,16 @@ export const useInstaprintProducts = () => {
       product_id: INSTAPRINT_PRODUCT_ID,
       prices: [],
       quantity: 1,
-    })
-  }, [isLoading, instaprintProductData])
+    });
+  }, [isLoading, instaprintProductData]);
 
-  const getInstaprintProductOptionIds = useMemo(() => {
-    if (instaprintProduct && instaprintProduct.prices) {
-      return instaprintProduct.prices.map((price) => price.product_option_id);
-    } else return [];
-  }, [instaprintProduct])
+  // const getInstaprintProductOptionIds = useMemo(() => {
+  //   if (instaprintProduct && instaprintProduct.prices) {
+  //     return instaprintProduct.prices.map((price) => price.product_option_id);
+  //   } else return [];
+  // }, [instaprintProduct])
 
-  const frames = useFramesByOptionIds(INSTAPRINT_PRODUCT_OPTION_IDS)
+  const frames = useFramesByOptionIds(INSTAPRINT_PRODUCT_OPTION_IDS);
   return { instaprintProduct, frames };
 };
 
@@ -54,25 +54,25 @@ const useFramesByOptionIds = (optionIds: number[]) => {
         // filter prices of frame products
         const framesWithFilteredPrices = data.map((frameProduct) => {
           const filteredPrices = frameProduct.prices.filter((price) => optionIds.includes(price.product_option_id));
-          frameProduct["prices"] = filteredPrices;
-          return frameProduct
-        })
-        setFrameProductsData(framesWithFilteredPrices)
+          frameProduct['prices'] = filteredPrices;
+          return frameProduct;
+        });
+        setFrameProductsData(framesWithFilteredPrices);
       }
-    })
-  },[])
-  return frameProducts
-}
+    });
+  },[]);
+  return frameProducts;
+};
 
-async function getFramesByOptionIds(locale="en"){
+async function getFramesByOptionIds(locale='en'){
   const client = getSupabaseBrowserClient();
-  const locales = getLocaleValues(locale === "tr" ? "tr" : "en");
+  const locales = getLocaleValues(locale === 'tr' ? 'tr' : 'en');
   const { data } = await client
     .from('products')
-    .select("handle, product_id, tags, title, product_type_id, prices(country_id, price_id, product_id, product_option_id, is_active, price, currency, shipping_cost, product_options(*))")
+    .select('handle, product_id, tags, title, product_type_id, prices(country_id, price_id, product_id, product_option_id, is_active, price, currency, shipping_cost, product_options(*))')
     .eq('product_type_id', ProductType.FRAME)
     .eq('prices.country_id', locales.code);
-  return data
+  return data;
 }
 
 type FrameProductsType = typeof getFramesByOptionIds

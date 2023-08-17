@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react"
-import { UseInstaprintStore } from "@/data/stores";
-import { motion } from "framer-motion"
-import useDimensions from "react-cool-dimensions";
-import type { IGMedia, InstaprintProduct } from "@/types";
-import { TRX, INSTAPRINT_PRODUCT_PLACEHOLDER, InstaprintFrameOptionsEnum } from "@/constants";
+import { useEffect, useState } from 'react';
+import { UseInstaprintStore } from '@/data/stores';
+import { motion } from 'framer-motion';
+import useDimensions from 'react-cool-dimensions';
+import type { IGMedia, InstaprintProduct } from '@/types';
+import { TRX, INSTAPRINT_PRODUCT_PLACEHOLDER, InstaprintFrameOptionsEnum } from '@/constants';
 import { useTranslation } from 'next-i18next';
-import { MatSelection, FrameSelection, QuantitySelection, MediaWrapper } from "./index";
-import { useRemoteMediaDimensions } from "@/data/hooks";
-import { ProductPricePreview } from "./ProductPricePreview";
-import { getProductPrice, getFramePrice, getFrameProductFromInstaCartFrameLabel, getPriceTextFromPrices } from "../utils";
+import { MatSelection, FrameSelection, QuantitySelection, MediaWrapper } from './index';
+import { useRemoteMediaDimensions } from '@/data/hooks';
+import { ProductPricePreview } from './ProductPricePreview';
+import { getProductPrice, getFramePrice, getFrameProductFromInstaCartFrameLabel, getPriceTextFromPrices } from '../utils';
 
 export const InstaSelection = () => {
   const { observe } = useDimensions({});
@@ -18,19 +18,19 @@ export const InstaSelection = () => {
   // const frames = UseInstaprintStore(state => state?.frames);
 
 
-  if (page !== 2) return <div></div>
+  if (page !== 2) return <div></div>;
 
   return (
     <motion.div className="flex flex-col pr-2" ref={observe}
-      exit={{ opacity: 0, left: "-100%" }}
-      initial={{ opacity: 1, left: "100%" }}
+      exit={{ opacity: 0, left: '-100%' }}
+      initial={{ opacity: 1, left: '100%' }}
       animate={{ opacity: 1, left: 0 }}
-      transition={{ duration: 0.3, ease: "linear" }}
+      transition={{ duration: 0.3, ease: 'linear' }}
 
     >
-      {selections.map((selectedId, index) => (
+      {selections.map((selectedId) => (
         <InstaSelectionItem
-          key={"instaselections-" + selectedId}
+          key={'instaselections-' + selectedId}
           selectedId={selectedId}
         //order={index}
         // dynamicProductData={[]}
@@ -38,11 +38,11 @@ export const InstaSelection = () => {
 
       ))}
     </motion.div>
-  )
-}
+  );
+};
 
 const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
   // const imageRef = useRef<HTMLImageElement>(null);
 
   const medias: IGMedia[] = UseInstaprintStore(state => state?.media);
@@ -72,8 +72,8 @@ const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
         }
       });
   const productPrice = getProductPrice(currentProduct, instaprint);
-  const currentFrame = getFrameProductFromInstaCartFrameLabel(currentProduct?.instaprint?.frame!, frames)
-  const framePrice = getFramePrice(currentProduct, currentFrame)
+  const currentFrame = getFrameProductFromInstaCartFrameLabel(currentProduct.instaprint!.frame!, frames);
+  const framePrice = getFramePrice(currentProduct, currentFrame);
   // const currentProductPrice = useMemo(() => getProductPrice(currentProduct, instaprint), [ratio, selectedId, instaprint])
   // const currentProductFrameProduct = useMemo(() => getFrameProductFromInstaCartFrameLabel(currentProduct?.instaprint?.frame!, frames), [ratio, currentProduct, selectedId, frames])
   // const currentProductFramePrice = useMemo(() => getFramePrice(currentProduct, currentProductFrameProduct), [ratio, selectedId, currentProduct, currentProductFrameProduct])
@@ -84,9 +84,9 @@ const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
 
   // Handlers
   // console.log("currentProduct", currentProduct)
-  const quantityHandler = (value: number | string) => setCurrentProduct({ ...currentProduct, quantity: typeof value === "string" ? parseInt(value) : value });
+  const quantityHandler = (value: number | string) => setCurrentProduct({ ...currentProduct, quantity: typeof value === 'string' ? parseInt(value) : value });
   const matHandler = (value: boolean | string) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, mat: value, ratio } });
-  const frameHandler = (value: InstaprintFrameOptionsEnum) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, frame: value, mat: value === InstaprintFrameOptionsEnum.NO_FRAME ? "" : currentProduct.instaprint?.mat, ratio } });
+  const frameHandler = (value: InstaprintFrameOptionsEnum) => setCurrentProduct({ ...currentProduct, instaprint: { ...currentProduct.instaprint, frame: value, mat: value === InstaprintFrameOptionsEnum.NO_FRAME ? '' : currentProduct.instaprint?.mat, ratio } });
 
 
 
@@ -97,10 +97,9 @@ const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
 
   //   })
   // }, [currentProduct])
-
   useEffect(() => {
-    const priceText = getPriceTextFromPrices(productPrice, framePrice, currentProduct?.quantity!)
-    const [priceNumber, priceCurrency] = priceText.split(" ")
+    const priceText = getPriceTextFromPrices(productPrice, framePrice, currentProduct.quantity!);
+    const [priceNumber, priceCurrency] = priceText.split(' ');
     // console.log("current price", productPrice)
     // console.log("current frame product", currentFrame)
 
@@ -125,13 +124,13 @@ const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
         ...currentProduct.instaprint,
         ratio
       }
-    }
+    };
     // console.log("newCurrentProduct", newCurrentProduct)
 
-    setCurrentProduct(newCurrentProduct)
-    addOrUpdateInstaprintCart(newCurrentProduct)
+    setCurrentProduct(newCurrentProduct);
+    addOrUpdateInstaprintCart(newCurrentProduct);
 
-  }, [ratio, instaprint, frames, currentProduct?.instaprint?.frame!, currentProduct.quantity, framePrice, productPrice])
+  }, [ratio, currentProduct?.instaprint?.frame, currentProduct?.quantity, framePrice?.price_id, productPrice?.price_id]);
 
   return (
     <div
@@ -177,8 +176,8 @@ const InstaSelectionItem = ({ selectedId }: { selectedId: string }) => {
       </div>}
 
     </div>
-  )
-}
+  );
+};
 
 
 

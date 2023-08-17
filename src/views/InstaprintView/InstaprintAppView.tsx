@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { SectionContainer, } from '@/components';
 // import { useProductPricesByIDs } from '@/data/hooks';
 // import { PRODUCT_IMAGE_PLACEHOLDER, TRX, PAGES, ProductType } from '@/constants';
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from 'framer-motion';
 // import useDimensions from "react-cool-dimensions";
 // import { useProductsByIDs } from '@/data/hooks/useProductsByIDs';
 // import { useMediaQuery } from '@mui/material';
@@ -13,8 +13,8 @@ import { motion, AnimatePresence } from "framer-motion"
 // import { IGMedia, CartProduct } from '@/types';
 // import { CheckCircle as TickIcon, ArrowCircleLeft as ArrowLeftIcon, ArrowCircleRight as ArrowRightIcon } from '@mui/icons-material';
 import { InstaFeed, NextButton, PrevButton, InstaSelection, InstaCartPreview } from './sections';
-import { Instagram } from '@/data/instagramClient';
-import { useInstaprintProducts } from "@/data/hooks";
+// import { Instagram } from '@/data/instagramClient';
+import { useInstaprintProducts } from '@/data/hooks';
 import { UseInstaprintStore } from '@/data/stores';
 
 export const InstaprintAppView = () => {
@@ -25,12 +25,12 @@ export const InstaprintAppView = () => {
         if (instaprintDbProducts?.instaprintProduct && instaprintDbProducts?.frames){
             setInstaprintProducts({instaprint: instaprintDbProducts?.instaprintProduct, frames:instaprintDbProducts?.frames});
         }
-    },[instaprintDbProducts])
+    },[instaprintDbProducts]);
 
 
     return (
         <SectionContainer>
-            <div style={{ position: "relative", width: "100%", height: "auto", maxHeight: "80vh" }}
+            <div style={{ position: 'relative', width: '100%', height: 'auto', maxHeight: '80vh' }}
                 className="min-h-120 p-4 rounded-sm md:rounded-xl border border-gray-200 bg-white shadow-lg overflow-hidden mb-12"
             >
                 <div className='flex flex-col justify-start'>

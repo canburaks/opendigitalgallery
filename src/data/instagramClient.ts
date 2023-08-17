@@ -21,10 +21,10 @@ export class Instagram {
   public tokenUrl: string;
 
   // some default params
-  public grantType = 'authorization_code'
-  public responseType = "code"
-  public scope = "user_profile,user_media"
-  public mediaFields = "id,caption,media_type,media_url,username,timestamp"
+  public grantType = 'authorization_code';
+  public responseType = 'code';
+  public scope = 'user_profile,user_media';
+  public mediaFields = 'id,caption,media_type,media_url,username,timestamp';
 
   // computed later on
   public code: string | null = null;
@@ -36,11 +36,11 @@ export class Instagram {
     if (!appId || !redirectUri) {
       throw new Error('AppId and redirectUri are required');
     }
-    this.appId = appId?.toString() ?? "";
+    this.appId = appId?.toString() ?? '';
     this.redirectUri = redirectUri;
     this.authUrl = `${this.instagramApiBaseUrl}oauth/authorize?client_id=${appId}&redirect_uri=${redirectUri}&scope=${this.scope}&response_type=${this.responseType}`;
     this.tokenUrl = `${this.instagramApiBaseUrl}oauth/access_token`;
-    console.log("this", this)
+    console.log('this', this);
   }
   public getUrl(): string | void {
     if (window?.location) {
@@ -67,7 +67,7 @@ export class Instagram {
         },
         body: JSON.stringify({ code: code || this.code }),
       });
-      console.log("response", response)
+      console.log('response', response);
       const jsonResponse = await response.json();
       this.accessToken = jsonResponse.access_token;
       this.userId = jsonResponse.user_id;
@@ -75,7 +75,7 @@ export class Instagram {
       return jsonResponse;
     } catch (e) {
       console.log('error', e);
-      return {error: JSON.stringify(e)}
+      return {error: JSON.stringify(e)};
     }
   }
 
@@ -88,7 +88,7 @@ export class Instagram {
 
       const accessToken = token ? token : this.accessToken;
       const endpoint = `${this.graphApiMediaUrl}?fields=${this.mediaFields}&access_token=${accessToken}`;
-      const response = await fetch(endpoint)
+      const response = await fetch(endpoint);
       const jsonResponse = await response.json();
       const responseData = jsonResponse.data;
       console.log('responseData', responseData);
@@ -111,7 +111,7 @@ export class Instagram {
      */
     try {
       const endpoint = `${this.graphApiBaseUrl}/${mediaId}?fields=${this.mediaFields}&access_token=${this.accessToken}`;
-      const response =  await fetch(endpoint)
+      const response =  await fetch(endpoint);
       const jsonResponse = response.json();
       return jsonResponse;
     } catch (e){
@@ -122,8 +122,8 @@ export class Instagram {
 
 }
 
-const appId = process.env.INSTAGRAM_APP_ID!;
-const redirectUri = process.env.INSTAGRAM_APP_REDIRECT_URI!;
+// const appId = process.env.INSTAGRAM_APP_ID!;
+// const redirectUri = process.env.INSTAGRAM_APP_REDIRECT_URI!;
 // const isDevelopment = process.env.NODE_ENV === 'development';
 
 // export const instagramClient = new Instagram(process.env.INSTAGRAM_APP_ID!, process.env.INSTAGRAM_APP_REDIRECT_URI!);

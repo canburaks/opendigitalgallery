@@ -38,7 +38,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     curlTest.setOpt(Curl.option.POSTFIELDS, querystring.stringify(accessTokenParams));
     curlTest.on(
       'end',
-      function (this: typeof curlTest, statusCode: number, data: any, headers: any) {
+      function (this: typeof curlTest, statusCode: number, data: any) {
         const responseData = JSON.parse(data);
         if (statusCode !== 200) {
           //throw new Error(responseData?.error_message || "Access Token couldn't be retrieved");

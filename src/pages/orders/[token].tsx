@@ -23,13 +23,7 @@ export default function OrderTokenPage() {
   );
 }
 
-
-export const getStaticProps = async ({
-  locale,
-}: {
-  req: NextApiRequest;
-  locale: LocaleType;
-}) => {
+export const getStaticProps = async ({ locale }: { req: NextApiRequest; locale: LocaleType }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),

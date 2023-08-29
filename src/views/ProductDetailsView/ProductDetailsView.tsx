@@ -45,7 +45,10 @@ export const ProductDetailsView: React.FC = () => {
   // console.log("frames data", framesData)
 
   // FRAMES WITH NO FRAME OPTION
-  const frames: Partial<ProductDetails>[] = useMemo(() => [NO_FRAME_PRODUCT, ...framesData], [framesData]);
+  const frames: Partial<ProductDetails>[] = useMemo(
+    () => [NO_FRAME_PRODUCT, ...framesData],
+    [framesData]
+  );
 
   // PRODUCT ID OF THE FRAME: the frame which selected by user. E.g: id of Black Wooden Frame
   const [selectedFrameId, setSelectedFrameId] = React.useState<number>(-1);

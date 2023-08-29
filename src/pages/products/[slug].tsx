@@ -93,7 +93,7 @@ export const getStaticPaths = async () => {
   const products = await getPostersHandleList();
   console.log('getStaticPaths', products);
   const paths = products?.data?.map((product) => getI18nPaths(product.handle)).flat();
-  console.log('getStaticPaths', paths);  
+  console.log('getStaticPaths', paths);
   return {
     paths,
     fallback: true,

@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '@/../next-i18next.config';
-import { LocaleType, /*OrderQueryApiResponse*/ } from '@/types';
+import { LocaleType /*OrderQueryApiResponse*/ } from '@/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { IYZICO_LOCAL_STORAGE_TOKEN, IYZICO_QUERY_RESPONSE_ENDPOINT } from '@/constants';
 import { getUrl } from '@/utils';
@@ -48,7 +48,7 @@ export const getServerSideProps = async ({
     fetch(getUrl() + IYZICO_QUERY_RESPONSE_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify({ token }),
-    }).then((res: Response) => res.json())
+    }).then((res: Response) => res.json());
     // .then((res: OrderQueryApiResponse | { [message: string]: string }) => {
     //   console.log(`api response order query response: ${JSON.stringify(res)}`);
     //   /**

@@ -60,4 +60,3 @@ export const BodyS: React.FC<PropsWithChildren<TypeProps>> = ({ children, classN
 export const BodyXS: React.FC<PropsWithChildren<TypeProps>> = ({ children, className }) => {
   return <p className={cx(fontSizes.BodyXS, className)}>{children}</p>;
 };
-

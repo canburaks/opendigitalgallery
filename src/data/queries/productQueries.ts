@@ -8,4 +8,5 @@ export const SEARCH_POSTERS_INCLUDED_COLUMNS = 'title';
 
 export const ORDER_QUERY = '*, order_status(order_status_id, description)';
 
-export const INSTAPRINT_PRODUCT_QUERY_SELECT = 'handle, product_id, tags, title, product_type_id, prices(country_id, price_id, product_id, product_option_id, is_active, price, currency, shipping_cost)';
+export const INSTAPRINT_PRODUCT_QUERY_SELECT =
+  'handle, product_id, tags, title, product_type_id, prices(country_id, price_id, product_id, product_option_id, is_active, price, currency, shipping_cost)';

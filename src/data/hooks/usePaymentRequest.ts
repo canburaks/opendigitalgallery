@@ -110,7 +110,7 @@ export const usePaymentRequestData = ({ formValues }: Props) => {
 };
 
 function getCountryName(countryId?: number | string, countries: Partial<Country>[] = []) {
-  console.log('getCountryName', countryId, countries);
+  // console.log('getCountryName', countryId, countries);
   if (countries.length === 0 || !countryId) return '';
   if (isArray(countries) && countries.length > 0) {
     const country = countries.find(

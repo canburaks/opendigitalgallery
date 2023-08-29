@@ -1,13 +1,10 @@
 import { LocaleType } from '@/types/locale';
 
-
-
 interface Node {
   id: string;
 }
 
 export type PolicyIdType = 'DATABASE_ID' | 'SLUG';
-
 
 export type PolicyStatus = 'publish' | 'draft' | 'future' | 'pending' | 'private';
 
@@ -50,9 +47,9 @@ export interface PolicyNode extends Node {
 
 export type PolicyType = {
   id?: string;
-  categories: { edges: {node: { name: LocaleType, id: string }}[] };
+  categories: { edges: { node: { name: LocaleType; id: string } }[] };
   slug: string;
-  tags: { edges: { node: { name: string, id: string } }[] };
+  tags: { edges: { node: { name: string; id: string } }[] };
   title: string;
   content: string;
 };

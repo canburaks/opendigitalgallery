@@ -1,16 +1,15 @@
 import {
   IG_BACKEND_ACCESS_TOKEN_ENDPOINT,
   IG_USER_ACCESS_TOKEN_LOCAL_STORAGE_KEY,
-  IG_USER_USER_MEDIA_LOCAL_STORAGE_KEY
+  IG_USER_USER_MEDIA_LOCAL_STORAGE_KEY,
 } from '@/constants/instaprint';
 import type { IGMedia } from '@/types';
 
 export class Instagram {
-  
-  // constructor params 
+  // constructor params
   public appId: string;
   public redirectUri: string;
-  
+
   // default urls
   public instagramApiBaseUrl = 'https://api.instagram.com/';
   public graphApiBaseUrl = 'https://graph.instagram.com';
@@ -40,7 +39,7 @@ export class Instagram {
     this.redirectUri = redirectUri;
     this.authUrl = `${this.instagramApiBaseUrl}oauth/authorize?client_id=${appId}&redirect_uri=${redirectUri}&scope=${this.scope}&response_type=${this.responseType}`;
     this.tokenUrl = `${this.instagramApiBaseUrl}oauth/access_token`;
-    console.log('this', this);
+    // console.log('this', this);
   }
   public getUrl(): string | void {
     if (window?.location) {
@@ -58,7 +57,7 @@ export class Instagram {
       return code;
     }
   }
-  public async getAccessToken(code: string): Promise<{access_token?: string, error: string}> {
+  public async getAccessToken(code: string): Promise<{ access_token?: string; error: string }> {
     try {
       const response = await fetch(IG_BACKEND_ACCESS_TOKEN_ENDPOINT, {
         method: 'POST',
@@ -67,7 +66,7 @@ export class Instagram {
         },
         body: JSON.stringify({ code: code || this.code }),
       });
-      console.log('response', response);
+      // console.log('response', response);
       const jsonResponse = await response.json();
       this.accessToken = jsonResponse.access_token;
       this.userId = jsonResponse.user_id;
@@ -75,34 +74,31 @@ export class Instagram {
       return jsonResponse;
     } catch (e) {
       console.log('error', e);
-      return {error: JSON.stringify(e)};
+      return { error: JSON.stringify(e) };
     }
   }
 
-  
   public async getMedia(token?: string, callback?: (media: IGMedia[]) => void): Promise<IGMedia[]> {
     /**
      * This function returns the data for all media items
      */
     try {
-
       const accessToken = token ? token : this.accessToken;
       const endpoint = `${this.graphApiMediaUrl}?fields=${this.mediaFields}&access_token=${accessToken}`;
       const response = await fetch(endpoint);
       const jsonResponse = await response.json();
       const responseData = jsonResponse.data;
-      console.log('responseData', responseData);
+      // console.log('responseData', responseData);
       this.media = responseData;
       localStorage.setItem(IG_USER_USER_MEDIA_LOCAL_STORAGE_KEY, JSON.stringify(responseData));
-      if (callback) { 
+      if (callback) {
         callback(responseData);
       }
       return responseData;
-    } catch (e){
+    } catch (e) {
       console.error('error', e);
       throw new Error(JSON.stringify(e));
     }
-
   }
 
   public async getMediaData(mediaId: string): Promise<IGMedia> {
@@ -111,15 +107,14 @@ export class Instagram {
      */
     try {
       const endpoint = `${this.graphApiBaseUrl}/${mediaId}?fields=${this.mediaFields}&access_token=${this.accessToken}`;
-      const response =  await fetch(endpoint);
+      const response = await fetch(endpoint);
       const jsonResponse = response.json();
       return jsonResponse;
-    } catch (e){
+    } catch (e) {
       console.error('error', e);
       throw new Error(JSON.stringify(e));
     }
   }
-
 }
 
 // const appId = process.env.INSTAGRAM_APP_ID!;

@@ -17,7 +17,6 @@ export default function Policy({
 {
   policy: PolicyType;
 }) {
-  console.log('postINNERRR', policy.title);
   const router = useRouter();
   if (!router.isFallback && !policy?.slug) {
     return <ErrorPage statusCode={404} />;

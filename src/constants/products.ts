@@ -27,13 +27,13 @@ export const PRODUCT_OPTION_TYPE = {
 export enum ProductType {
   POSTER = 1,
   FRAME = 2,
-  INSTAPRINT = 3
+  INSTAPRINT = 3,
 }
 export enum InstaprintFrameOptionsEnum {
-  NO_FRAME = "NO_FRAME",
-  BLACK = "BLACK",
-  DARK_BROWN = "DARK_BROWN", 
-  NATURAL = "NATURAL"
+  NO_FRAME = 'NO_FRAME',
+  BLACK = 'BLACK',
+  DARK_BROWN = 'DARK_BROWN',
+  NATURAL = 'NATURAL',
 }
 
 export const ProductBulkPurchaseLimits = [1, 2, 3, 4];
@@ -90,10 +90,9 @@ export const NO_FRAME_PRODUCT: Partial<ProductDetails> = {
   ],
 };
 
-
 export const FRAME_PRODUCT_MAP = {
   [InstaprintFrameOptionsEnum.NO_FRAME]: NO_FRAME_PRODUCT,
-  [InstaprintFrameOptionsEnum.BLACK]: {product_id: 213, handle: "black-frame-wood"},
-  [InstaprintFrameOptionsEnum.DARK_BROWN]: {product_id: 214, handle: "dark-brown-frame-wood"},
-  [InstaprintFrameOptionsEnum.NATURAL]: {product_id: 215, handle: "natural-frame-wood"},
-}
+  [InstaprintFrameOptionsEnum.BLACK]: { product_id: 213, handle: 'black-frame-wood' },
+  [InstaprintFrameOptionsEnum.DARK_BROWN]: { product_id: 214, handle: 'dark-brown-frame-wood' },
+  [InstaprintFrameOptionsEnum.NATURAL]: { product_id: 215, handle: 'natural-frame-wood' },
+};

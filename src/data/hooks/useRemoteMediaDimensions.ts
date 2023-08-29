@@ -1,14 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export type MediaDimension = {
   width: number;
   height: number;
   ratio: number;
-}
+};
 
-export const useRemoteMediaDimensions = (url: string):MediaDimension => {
+export const useRemoteMediaDimensions = (url: string): MediaDimension => {
   const [size, setSize] = useState({ width: 0, height: 0, ratio: 1 });
-  const dimensionSetter = (error: null, image: HTMLImageElement) => setSize({ width: image.naturalWidth, height: image.naturalHeight, ratio: image.naturalWidth / image.naturalHeight });
+  const dimensionSetter = (error: null, image: HTMLImageElement) =>
+    setSize({
+      width: image.naturalWidth,
+      height: image.naturalHeight,
+      ratio: image.naturalWidth / image.naturalHeight,
+    });
 
   const getMeta = (url: string, cb: (error: null, image: HTMLImageElement) => void) => {
     const img = new Image();
@@ -17,7 +22,7 @@ export const useRemoteMediaDimensions = (url: string):MediaDimension => {
   };
   useEffect(() => {
     getMeta(url, dimensionSetter);
-  }, [url])
+  }, [url]);
 
   return size;
-}
+};

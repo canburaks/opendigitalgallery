@@ -12,10 +12,16 @@ export const UseInstaprintStore = create<UseInstaprintStore>((set, get) => ({
 
   instaprint: {},
   frames: [],
-  setInstaprintProducts: ({instaprint, frames}: {instaprint: Partial<ProductDetails>, frames: Partial<ProductDetails>[]}) => set({ instaprint, frames }),
+  setInstaprintProducts: ({
+    instaprint,
+    frames,
+  }: {
+    instaprint: Partial<ProductDetails>;
+    frames: Partial<ProductDetails>[];
+  }) => set({ instaprint, frames }),
 
   selections: [],
-  setSelections: (selections: string[]) => set({ selections,  }),
+  setSelections: (selections: string[]) => set({ selections }),
   toggleSelection: (id: string) => {
     const selections = [...get().selections];
     const index = selections.indexOf(id);
@@ -24,19 +30,28 @@ export const UseInstaprintStore = create<UseInstaprintStore>((set, get) => ({
     } else {
       selections.push(id);
     }
-    set({ selections, instaprintCart: get().instaprintCart.filter((cartItem) => cartItem?.instaprint?.mediaId ? selections.includes(cartItem?.instaprint?.mediaId) : false) });
+    set({
+      selections,
+      instaprintCart: get().instaprintCart.filter((cartItem) =>
+        cartItem?.instaprint?.mediaId ? selections.includes(cartItem?.instaprint?.mediaId) : false
+      ),
+    });
   },
 
   instaprintCart: [],
 
-  getInstaprintCartProduct: (mediaId: string) => get().instaprintCart.find((p) => p.instaprint?.mediaId === mediaId),
+  getInstaprintCartProduct: (mediaId: string) =>
+    get().instaprintCart.find((p) => p.instaprint?.mediaId === mediaId),
   addOrUpdateInstaprintCart: (instaprintProduct: InstaprintProduct) => {
-    console.log('input ', instaprintProduct);
-    const selectedMediaId = get().selections.find((p) => p === instaprintProduct?.instaprint?.mediaId);
-    const excludedInstaProducts = get().instaprintCart.filter((p) => p.instaprint?.mediaId !== selectedMediaId);
+    // console.log('input ', instaprintProduct);
+    const selectedMediaId = get().selections.find(
+      (p) => p === instaprintProduct?.instaprint?.mediaId
+    );
+    const excludedInstaProducts = get().instaprintCart.filter(
+      (p) => p.instaprint?.mediaId !== selectedMediaId
+    );
     return set({ instaprintCart: [...excludedInstaProducts, instaprintProduct] });
-  }
-
+  },
 }));
 
 interface UseInstaprintStore {
@@ -50,7 +65,13 @@ interface UseInstaprintStore {
 
   instaprint: Partial<ProductDetails>;
   frames: Partial<ProductDetails>[];
-  setInstaprintProducts: ({instaprint, frames}: {instaprint: Partial<ProductDetails>, frames: Partial<ProductDetails>[]}) => void;
+  setInstaprintProducts: ({
+    instaprint,
+    frames,
+  }: {
+    instaprint: Partial<ProductDetails>;
+    frames: Partial<ProductDetails>[];
+  }) => void;
 
   selections: string[];
   setSelections: (selections: string[]) => void;

@@ -16,7 +16,8 @@ export const AnnouncementBanner: FC<PropsWithChildren<AnnouncementBannerProps>> 
       className={cx(
         'h-[44px] py-3 flex justify-center items-center text-white bg-black w-full',
         className
-      )}>
+      )}
+    >
       {children ? (
         children
       ) : (

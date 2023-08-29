@@ -16,9 +16,12 @@ type Data = {
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (!process.env.INSTAGRAM_APP_REDIRECT_URI || !process.env.INSTAGRAM_APP_ID) {
-    throw new Error ('Instagram App ID or Redirect URI not found');
+    throw new Error('Instagram App ID or Redirect URI not found');
   }
-  const instagramClient = new Instagram(process.env.INSTAGRAM_APP_ID, process.env.INSTAGRAM_APP_REDIRECT_URI);
+  const instagramClient = new Instagram(
+    process.env.INSTAGRAM_APP_ID,
+    process.env.INSTAGRAM_APP_REDIRECT_URI
+  );
   const { code } = req.body;
   if (!code) {
     return res.status(400).json({ error: 'No code provided' });
@@ -36,19 +39,16 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     curlTest.setOpt(Curl.option.URL, instagramClient.tokenUrl);
     curlTest.setOpt(Curl.option.POST, true);
     curlTest.setOpt(Curl.option.POSTFIELDS, querystring.stringify(accessTokenParams));
-    curlTest.on(
-      'end',
-      function (this: typeof curlTest, statusCode: number, data: any) {
-        const responseData = JSON.parse(data);
-        if (statusCode !== 200) {
-          //throw new Error(responseData?.error_message || "Access Token couldn't be retrieved");
-          return res.status(200).json({error: "Access Token couldn't be retrieved"})
-            // res.status(404).json({ error: responseData?.error_message || "Access Token couldn't be retrieved" });
-        }
-        console.log("data", data)
-        return res.status(200).json(responseData);
+    curlTest.on('end', function (this: typeof curlTest, statusCode: number, data: any) {
+      const responseData = JSON.parse(data);
+      if (statusCode !== 200) {
+        //throw new Error(responseData?.error_message || "Access Token couldn't be retrieved");
+        return res.status(200).json({ error: "Access Token couldn't be retrieved" });
+        // res.status(404).json({ error: responseData?.error_message || "Access Token couldn't be retrieved" });
       }
-    );
+      console.log('data', data);
+      return res.status(200).json(responseData);
+    });
     const terminate = curlTest.close.bind(curlTest);
     curlTest.on('error', terminate);
     curlTest.perform();

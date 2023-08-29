@@ -37,7 +37,7 @@ export const ProfileView = () => {
                   key={item}
                   onClick={() => setSelectedMenu(item)}
                   className={cx('py-2 px-4 rounded-none', {
-                    'border-myBlack-200 border-l-2 border-solid': selectedMenu === item
+                    'border-myBlack-200 border-l-2 border-solid': selectedMenu === item,
                   })}
                 >
                   <Body className={cx('text-myBlack-200 capitalize')}>{item}</Body>

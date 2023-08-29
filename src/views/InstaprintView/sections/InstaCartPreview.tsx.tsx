@@ -7,14 +7,12 @@ import { useGenerateCartProductsFromInstaCart } from '../utils';
 import { Button } from '@/components/Atoms/Button';
 
 export const InstaCartPreview = () => {
-
   const addToCart = useCartStore((state) => state.addToCart);
 
   const cartProducts = useGenerateCartProductsFromInstaCart();
 
-
-  const page = UseInstaprintStore(state => state.page);
-  const instaprintCart = UseInstaprintStore(state => state.instaprintCart);
+  const page = UseInstaprintStore((state) => state.page);
+  const instaprintCart = UseInstaprintStore((state) => state.instaprintCart);
   // get the sum of total priceNumber values of all instaprintCart
   const getTotalPrice = () => {
     let total = 0;
@@ -46,15 +44,13 @@ export const InstaCartPreview = () => {
     return total;
   };
 
-
   const currency = instaprintCart[0]?.priceCurrency;
 
   const totalProductPrice = getTotalPrice();
   const totalShippingPrice = getTotalShippingPrice();
   const totalPrice = totalProductPrice + totalShippingPrice;
 
-
-  const addToCartMutation= (e: any): void => {
+  const addToCartMutation = (e: any): void => {
     e.preventDefault();
     cartProducts.forEach((cartProduct, ix: number) => {
       const isLatest = ix === cartProducts.length - 1;
@@ -67,7 +63,8 @@ export const InstaCartPreview = () => {
   if (page !== 3) return <div></div>;
 
   return (
-    <motion.div className="flex flex-col pr-2"
+    <motion.div
+      className="flex flex-col pr-2"
       exit={{ opacity: 0, left: '-100%' }}
       initial={{ opacity: 1, left: '100%' }}
       animate={{ opacity: 1, left: 0 }}
@@ -82,13 +79,16 @@ export const InstaCartPreview = () => {
 
                 <div className="hidden mt-8 lg:grid lg:grid-cols-2 lg:gap-x-16 xl:gap-x-64">
                   <div className="flex-1">
-                    <p className="text-xs font-bold tracking-widest text-gray-400 uppercase">Product</p>
+                    <p className="text-xs font-bold tracking-widest text-gray-400 uppercase">
+                      Product
+                    </p>
                   </div>
 
                   <div className="sm:grid sm:grid-cols-2 lg:gap-x-0 xl:gap-x-1">
-
                     <div>
-                      <p className="text-xs font-bold tracking-widest text-gray-400 uppercase">Price</p>
+                      <p className="text-xs font-bold tracking-widest text-gray-400 uppercase">
+                        Price
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -100,11 +100,9 @@ export const InstaCartPreview = () => {
                     {instaprintCart.map((instaprintProduct: InstaprintProduct) => (
                       <InstaCartPreviewItem
                         product={instaprintProduct}
-                        key={`instaprint-${instaprintProduct.instaprint?.mediaId}`} />
+                        key={`instaprint-${instaprintProduct.instaprint?.mediaId}`}
+                      />
                     ))}
-
-
-
                   </ul>
                 </div>
 
@@ -132,7 +130,9 @@ export const InstaCartPreview = () => {
                           <div>
                             <div className="flex items-center justify-between">
                               <p className="text-base font-bold text-gray-300">Shipping</p>
-                              <p className="text-base font-bold text-white">{totalShippingPrice} {currency}</p>
+                              <p className="text-base font-bold text-white">
+                                {totalShippingPrice} {currency}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -151,7 +151,6 @@ export const InstaCartPreview = () => {
                     >
                       Add to Cart
                     </Button>
-
                   </div>
                 </div>
               </div>
@@ -159,27 +158,30 @@ export const InstaCartPreview = () => {
           </div>
         </div>
       </section>
-
     </motion.div>
   );
 };
 
-
 const InstaCartPreviewItem = ({ product }: { product: InstaprintProduct }) => (
   <li className="flex py-7">
     <div className="flex-shrink-0">
-      <img className="object-cover w-16 h-16 rounded-lg" src={product.instaprint!.mediaUrl} alt="" />
+      <img
+        className="object-cover w-16 h-16 rounded-lg"
+        src={product.instaprint!.mediaUrl}
+        alt=""
+      />
     </div>
 
     <div className="flex-1 ml-5">
       <div className="relative sm:grid sm:grid-cols-2 sm:gap-x-5 sm:pr-0">
         <div className="pr-9 sm:pr-5">
           <p className="text-base font-bold text-gray-900">Instaprint Product</p>
-          <p className="mt-1.5 text-sm font-medium text-gray-500">{product?.instaprint?.ratio === 1 ? 'Square' : 'Rectangle'}</p>
+          <p className="mt-1.5 text-sm font-medium text-gray-500">
+            {product?.instaprint?.ratio === 1 ? 'Square' : 'Rectangle'}
+          </p>
         </div>
 
         <div className="flex items-end justify-between mt-3 sm:justify-end sm:pr-14 sm:items-start sm:mt-0">
-
           <div className="flex-shrink-0 w-20 text-base font-bold text-left text-gray-900 sm:text-right sm:order-2 sm:ml-8">
             <ProductPricePreview selectedMediaId={product.instaprint!.mediaId!} />
           </div>
@@ -188,4 +190,3 @@ const InstaCartPreviewItem = ({ product }: { product: InstaprintProduct }) => (
     </div>
   </li>
 );
-

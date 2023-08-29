@@ -18,4 +18,3 @@ export * from './CheckoutView';
 export * from './OrderView';
 export * from './InstaprintView';
 export * from './PolicyView';
-

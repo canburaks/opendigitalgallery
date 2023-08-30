@@ -30,11 +30,6 @@ export const InstaprintAppView = () => {
               <InstaFeed key="instafeed" />
               <InstaSelection key="instaselection" />
               <InstaCartPreview key="instacartpreview" />
-              {/* 
-                                {page === 1 && 
-                                }
-                                {page === 2 && <InstaSelection />}
-                                {page === 3 && <InstaCartPreview />} */}
             </motion.div>
           </div>
 

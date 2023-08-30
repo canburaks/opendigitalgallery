@@ -13,7 +13,7 @@ type Props = {
 export const FrameSelection = ({ value, handler, title, description }: Props) => {
   const { t } = useTranslation('common');
   // @ts-ignore
-  const data = Object.keys(TRX.FRAMES).map((key: string) => ({
+  const data = Object.keys(TRX.FRAMES).map((key: InstaprintFrameOptionsEnum) => ({
     label: t(TRX.FRAMES[key]),
     value: InstaprintFrameOptionsEnum[key],
   }));

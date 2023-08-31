@@ -35,7 +35,6 @@ export const PersonalInformationForm: FC<PersonalInformationFormProps> = ({
     // intial settings
     setError('');
     setLoading(true);
-    console.log('personalValues', personalValues);
 
     // Check: any change
     if (

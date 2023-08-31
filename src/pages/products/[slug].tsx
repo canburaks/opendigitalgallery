@@ -7,16 +7,15 @@ import { ProductDetailsView } from '@/views/ProductDetailsView';
 import { LOCALES_LIST, I18N, queryKeys, DEFAULT_LOCALE } from '@/constants';
 import type { ProductDetails } from '@/types';
 import { dehydrate, QueryClient, DehydratedState } from '@tanstack/react-query';
-import {
-  useProductDataFromQuery,
-  getTranslatableProductData,
-} from '@/views/ProductDetailsView/utils';
+
 import { LocaleType, TranslatableFields } from '@/types';
 import { useRouter } from 'next/router';
 import { getProductOptions } from '@/data/hooks/useProductOptions';
 import { getFrames } from '@/data/hooks';
 import { getProductDetailByHandle } from '@/data/hooks/useProductDetailByHandle';
 import { getPostersHandleList } from '@/data/services';
+import { useProductDataFromQuery } from '@/views/ProductDetailsView/utils/useProductDataFromQuery';
+import { getTranslatableProductData } from '@/views/ProductDetailsView/utils/getTranslatableProductData';
 
 type Props = {
   slug: string;
@@ -93,7 +92,7 @@ export const getStaticPaths = async () => {
   const products = await getPostersHandleList();
   console.log('getStaticPaths', products);
   const paths = products?.data?.map((product) => getI18nPaths(product.handle)).flat();
-  console.log('getStaticPaths', paths);  
+  console.log('getStaticPaths', paths);
   return {
     paths,
     fallback: true,

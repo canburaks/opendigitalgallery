@@ -3,7 +3,7 @@ import type { QueryState, Query } from '@tanstack/react-query';
 import { queryKeys } from '@/constants';
 import { useQueryClient } from '@tanstack/react-query';
 import { QueryCache } from '@tanstack/react-query';
-import { merger } from '@/views/ProductDetailsView/utils';
+import { merger } from './mergeOptions';
 
 interface ProductQuery extends Query {
   state: QueryState<any, any>;

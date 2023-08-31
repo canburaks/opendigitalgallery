@@ -1,341 +1,183 @@
 import { useRouter } from 'next/router';
-import { LocaleType, MergedProductOption, ProductDetails, TranslatableFields } from '@/types';
-import React, { useState, useMemo, MouseEvent } from 'react';
-import { RadioGroup } from '@headlessui/react';
-import { DEFAULT_LOCALE, PRODUCT_DIMENSION_UNIT, NO_FRAME_PRODUCT } from '@/constants';
-import { useTranslation } from 'next-i18next';
-import { Container } from '@mui/material';
-import {
-  useProductDataFromQuery,
-  getTranslatableProductData,
-} from '@/views/ProductDetailsView/utils';
-import { TRX } from '@/constants';
+import React, { useState, MouseEvent, useMemo } from 'react';
 import { ImageBox } from './components';
-import { useFrameDataFromQuery } from './utils';
-import { Button } from '@/components';
+import { Body, BodyL, BodyS, Button, ErrorText, HeadlineXS, SectionContainer } from '@/components';
 import { useCartStore } from '@/data/stores';
+import { useProductDetailByHandle } from '@/data/hooks/useProductDetailByHandle';
+import { useProductOptions } from '@/data/hooks/useProductOptions';
+import { useFrames } from '@/data/hooks';
+import cx from 'classnames';
+import { CartProduct } from '@/types';
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+// Note Sizes: Every poster doen't have all size options because of aspect ratio. So we need to check in prices to get available options
 
 export const ProductDetailsView: React.FC = () => {
-  const { locale = DEFAULT_LOCALE, asPath } = useRouter();
-  const { t } = useTranslation('common');
-
   const addToCart = useCartStore((state) => state.addToCart);
+  const { query } = useRouter();
+  const productHandle = query?.slug as string;
+  const [selectedOptionId, setSelectedOptionId] = useState<number | null>(null);
+  const [selectedFrameId, setSelectedFrameId] = React.useState<number | null>(null);
+  const [err, setErr] = useState('');
 
-  // short circuit if no product
-  const product: Partial<ProductDetails> | undefined =
-    useProductDataFromQuery(asPath.split('/').pop() ?? '') || {};
+  // Data: Product
+  const { data: product } = useProductDetailByHandle(productHandle);
   const images = product?.images || [];
-  const options = useMemo(() => product?.options || [], [product?.options]);
-  const optionIds = useMemo(() => options.map((o) => o.product_option_id), [options]);
+  const prices = useMemo(() => product?.prices || [], [product?.prices]);
+  const availableOptionsId = prices.map((price) => price.product_option_id);
 
-  // Selected Size
-  const [activeProductOptionId, setActiveProductionOptionId] = useState<number | undefined>(
-    options[0] ? options[0].product_option_id : undefined
+  // Data: All Product Options (Sizes)
+  const { data: allOptions } = useProductOptions();
+  const availableOptions = useMemo(
+    () => allOptions?.filter((option) => availableOptionsId.includes(option.product_option_id)),
+    [allOptions, availableOptionsId]
   );
-  const selectedOption = useMemo(() => {
-    return options.find((o: MergedProductOption) => o.product_option_id === activeProductOptionId);
-  }, [activeProductOptionId, options]);
 
-  // FRAMES DATA
-  const framesData = useFrameDataFromQuery({ productOptionIds: optionIds });
-  // console.log("frames data", framesData)
+  // Data: Frames
+  const { data: frames } = useFrames();
+  const selectedFrame = useMemo(
+    () => frames?.find((frame) => frame.product_id === selectedFrameId),
+    [frames, selectedFrameId]
+  );
 
-  // FRAMES WITH NO FRAME OPTION
-  const frames: Partial<ProductDetails>[] = useMemo(() => [NO_FRAME_PRODUCT, ...framesData], [framesData]);
-
-  // PRODUCT ID OF THE FRAME: the frame which selected by user. E.g: id of Black Wooden Frame
-  const [selectedFrameId, setSelectedFrameId] = React.useState<number>(-1);
-
-  // FRAME PRODUCT: No Frame, Black Wooden Frame, Natuarl Wooden Frame etc.
-  const selectedFrame: Partial<ProductDetails> = useMemo(() => {
-    // find the frame product that matches the selected frame id
-    const selectedframe = frames.find((f) => f.product_id === selectedFrameId);
-    if (
-      !selectedframe ||
-      selectedframe?.product_id === undefined ||
-      selectedframe?.product_id === -1
-    ) {
-      return NO_FRAME_PRODUCT;
-    } else {
-      return selectedframe;
+  // Prepare Data Format For Cart
+  const productForCart = useMemo<CartProduct | undefined>(() => {
+    const priceData = prices?.find((price) => price.product_option_id === selectedOptionId);
+    if (priceData && product?.product_id) {
+      return {
+        productId: product?.product_id,
+        quantity: 1,
+        priceId: priceData?.price_id,
+      };
     }
-  }, [frames, selectedFrameId]);
+  }, [prices, product?.product_id, selectedOptionId]);
 
-  // THE PRODUCT OPTION of  FRAME PRODUCT: [1,2,3,4] --> 70x50, 50x40, 40x30, 30x21
-  const selectedFrameOption: MergedProductOption = useMemo(() => {
-    const defaultProduct = NO_FRAME_PRODUCT;
-    if (selectedFrame && selectedFrame.options) {
-      const frameOption = selectedFrame.options.filter(
-        (o) => o.product_option_id === activeProductOptionId
-      );
-      if (frameOption.length > 0) {
-        return frameOption[0];
-      }
-    }
-    const defaultOption = defaultProduct.options!.find(
-      (o) => o.product_option_id === activeProductOptionId
+  const frameForCart = useMemo<CartProduct | undefined>(() => {
+    const priceData = selectedFrame?.prices?.find(
+      (price) => price.product_option_id === selectedOptionId
     );
-    // console.log('defaultOption', defaultOption);
-    if (defaultOption) return defaultOption;
-    return defaultProduct.options![0];
-  }, [activeProductOptionId, selectedFrame]);
-
-  // FRAMES HAS ONLY OPTION OF  SELECTED SIZE
-  const framesByProductOptionId = useMemo(() => {
-    return frames.map((frame) => {
-      const _frame = { ...frame };
-      const options: MergedProductOption[] | undefined = frame.options?.filter(
-        (o) => o.product_option_id === selectedFrameOption.product_option_id
-      );
-      if (options && options.length > 0) {
-        _frame.options = options;
-      }
-      return _frame;
-    });
-  }, [frames, selectedFrameOption.product_option_id]);
-
-  // Translated Product
-  const translatedProduct: TranslatableFields = getTranslatableProductData(
-    product,
-    locale as LocaleType
-  );
-
-  // This will be passed to the add to cart button
-  const frameCartProduct = useMemo(() => {
-    if (selectedFrameOption.product_id === NO_FRAME_PRODUCT.product_id) {
-      return undefined;
-    } else {
+    if (selectedFrame?.product_id && priceData?.price_id) {
       return {
-        productId: selectedFrameOption.product_id,
-        priceId: selectedFrameOption.price_id,
+        productId: selectedFrame?.product_id,
         quantity: 1,
+        priceId: priceData?.price_id,
       };
     }
-  }, [selectedFrameOption]);
-
-  // This will be passed to the add to cart button
-  const posterCartProduct = useMemo(() => {
-    if (selectedOption) {
-      return {
-        productId: selectedOption.product_id,
-        priceId: selectedOption.price_id,
-        quantity: 1,
-      };
-    }
-  }, [selectedOption]);
+  }, [selectedFrame, selectedOptionId]);
 
   function addToCartMutation(e: MouseEvent): void {
     e.preventDefault();
-    if (posterCartProduct) {
-      if (frameCartProduct && frameCartProduct.productId !== NO_FRAME_PRODUCT.product_id) {
-        addToCart(frameCartProduct, false);
-        addToCart(posterCartProduct, true);
-      } else {
-        addToCart(posterCartProduct, true);
-      }
+
+    if (!selectedOptionId) {
+      return setErr('Please select a size');
+    }
+
+    if (!productForCart && !frameForCart) {
+      return setErr('Something went wrong, please try again later.');
+    }
+
+    if (productForCart && !frameForCart) {
+      return addToCart(productForCart, true);
+    }
+
+    if (productForCart && frameForCart) {
+      addToCart(productForCart, true);
+      addToCart(frameForCart, false);
+      return;
     }
   }
 
   return (
-    <Container maxWidth="lg" className="flex flex-row mt-16">
-      <div className="bg-white">
-        <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-          <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8 relative">
-            {/* Image gallery */}
-            <ImageBox
-              images={images}
-              defaultAltText={translatedProduct.title}
-              productId={translatedProduct.product_id}
-            />
+    <SectionContainer>
+      <div className="flex gap-16">
+        {/* Left: Image gallery */}
+        <ImageBox
+          images={images}
+          defaultAltText={product?.title || ''}
+          productId={product?.product_id || -1}
+        />
 
-            {/* Product info */}
-            <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-                {translatedProduct.title}
-              </h1>
+        {/* Right: Product Info */}
+        <div className="mt-12">
+          <HeadlineXS className="font-semibold">{product?.title}</HeadlineXS>
+          <div
+            dangerouslySetInnerHTML={{ __html: product?.default_description_html || '' }}
+            className="mt-4"
+          />
 
-              <div className="mt-3">
-                <h2 className="sr-only">{t(TRX.PRODUCT_DETAILS.INFORMATION)}</h2>
-                <p className="text-3xl tracking-tight text-gray-900">
-                  {selectedOption ? `${selectedOption.price} ${selectedOption.currency}` : ''}
-                </p>
-              </div>
+          {/** Product Options **/}
+          <Body className="mt-4 mb-2 font-semibold text-gray-700 ">Dimensions</Body>
+          <div className="flex gap-2">
+            {availableOptions?.map((option) => {
+              return (
+                <button
+                  onClick={() => setSelectedOptionId(option.product_option_id)}
+                  key={option.product_option_id}
+                  className={cx(
+                    'p-3 border-1 bg-transparent border-gray-300 border-solid rounded-md cursor-pointer',
+                    {
+                      'border-greenMui-500 bg-greenMui-50':
+                        selectedOptionId === option.product_option_id,
+                    }
+                  )}
+                >
+                  <BodyS>{option.value}</BodyS>
+                </button>
+              );
+            })}
+          </div>
 
-              <div className="mt-6">
-                <h3 className="sr-only">{TRX.PRODUCT_DETAILS.DESCRIPTION}</h3>
+          {/** Product Frames **/}
+          <Body className="mt-8 mb-2 font-semibold text-gray-700 ">Frames</Body>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setSelectedFrameId(null)}
+              key="no frame"
+              className={cx(
+                'p-3 bg-transparent w-[120px] border-1 border-gray-300 border-solid rounded-md cursor-pointer',
 
-                {translatedProduct.description && (
-                  <div
-                    className="space-y-6 text-base text-gray-700"
-                    dangerouslySetInnerHTML={{ __html: translatedProduct.description }}
+                {
+                  'border-greenMui-500 bg-greenMui-50': selectedFrameId === null,
+                }
+              )}
+            >
+              <div className="h-32" />
+              <BodyS>No Frame</BodyS>
+            </button>
+
+            {frames?.map((frame) => {
+              return (
+                <button
+                  onClick={() => setSelectedFrameId(frame.product_id)}
+                  key={frame.product_id}
+                  className={cx(
+                    'p-3 w-[120px] bg-transparent border-1 border-gray-300 border-solid rounded-md cursor-pointer',
+                    {
+                      'border-greenMui-500 bg-greenMui-50': selectedFrameId === frame.product_id,
+                    }
+                  )}
+                >
+                  <img
+                    src={frame.default_image_url || ''}
+                    className="max-w-full object-cover"
+                    alt={frame.default_image_alt || ''}
                   />
-                )}
-              </div>
+                  <BodyS>{frame.title}</BodyS>
+                </button>
+              );
+            })}
+          </div>
 
-              <form className="mt-6">
-                {/* PRODUCT SIZE */}
-                <div>
-                  <RadioGroup value={activeProductOptionId} onChange={setActiveProductionOptionId}>
-                    <RadioGroup.Label className="block text-sm font-medium text-gray-700 z-10">
-                      {t(TRX.PRODUCT_DETAILS.SIZE)}
-                    </RadioGroup.Label>
-                    <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-4">
-                      {options.map((option: MergedProductOption) => (
-                        <RadioGroup.Option
-                          as="div"
-                          key={option.option_value + '-product-option'}
-                          value={option.product_option_id}
-                          className={({ active }) =>
-                            classNames(
-                              active ? 'ring-2 ring-indigo-500' : '',
-                              activeProductOptionId === option.product_option_id
-                                ? 'bg-indigo-100 border-indigo-200 z-10'
-                                : 'bg-white border-gray-200 z-0',
-                              'relative duration-300 ease-in-out transform-gpu block cursor-pointer rounded-lg border border-solid border-gray-300 p-4 focus:outline-none'
-                            )
-                          }
-                        >
-                          {({ checked }) => (
-                            <>
-                              <RadioGroup.Label
-                                as="p"
-                                className="text-sm font-medium text-gray-900"
-                              >
-                                {option.option_value} {PRODUCT_DIMENSION_UNIT}
-                              </RadioGroup.Label>
-                              <RadioGroup.Description as="p" className="mt-1 text-xs text-gray-500">
-                                {`${option.price} ${option.currency}`}
-                              </RadioGroup.Description>
-                              <div
-                                className={classNames(
-                                  'border-2',
-                                  checked ? 'border-indigo-500' : 'border-gray-500',
-                                  // option.product_option_id === activeProductOptionId
-                                  //   ? 'bg-indigo-200'
-                                  //   : 'bg-gray-500',
-                                  'pointer-events-none absolute inset-px rounded-lg'
-                                )}
-                                aria-hidden="true"
-                              />
-                            </>
-                          )}
-                        </RadioGroup.Option>
-                      ))}
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <div className="mt-8">
-                  <RadioGroup value={selectedFrameId} onChange={setSelectedFrameId}>
-                    <RadioGroup.Label className="block text-sm font-medium text-gray-700 z-10">
-                      {t(TRX.PRODUCT_DETAILS.CHOOSE_FRAME)}
-                    </RadioGroup.Label>
-                    <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-4">
-                      {framesByProductOptionId.length > 0 &&
-                        framesByProductOptionId.map((frame: Partial<ProductDetails>) => (
-                          <RadioGroup.Option
-                            as="div"
-                            key={frame.product_id}
-                            value={frame.product_id}
-                            className={({ active }) =>
-                              classNames(
-                                active ? 'ring-2 ring-indigo-500' : '',
-                                selectedFrame?.product_id === frame?.product_id
-                                  ? 'bg-indigo-100'
-                                  : 'bg-white',
-                                'relative duration-300 ease-in-out transform-gpu block cursor-pointer rounded-lg border border-solid border-gray-300 p-4 focus:outline-none'
-                              )
-                            }
-                          >
-                            {({ checked }) => (
-                              <>
-                                <div className="flex flex-col justify-between h-full">
-                                  <RadioGroup.Label
-                                    as="p"
-                                    className="text-xs font-medium text-gray-900"
-                                  >
-                                    {frame.title}
-                                  </RadioGroup.Label>
-                                  {frame.options && frame.options.length > 0 && (
-                                    <RadioGroup.Description
-                                      as="p"
-                                      className="mt-1 text-xs text-gray-500"
-                                    >
-                                      {`+${frame?.options[0]?.price} ${frame?.options[0]?.currency}`}
-                                    </RadioGroup.Description>
-                                  )}
-                                </div>
-                                <div
-                                  className={classNames(
-                                    'border-2',
-                                    checked ? 'border-indigo-500' : 'border-gray-500',
-                                    'pointer-events-none absolute inset-px rounded-lg'
-                                  )}
-                                  aria-hidden="true"
-                                />
-                              </>
-                            )}
-                          </RadioGroup.Option>
-                        ))}
-                    </div>
-                  </RadioGroup>
-                  <div className="sm:flex-col1 mt-10 flex">
-                    <Button
-                      onClick={addToCartMutation}
-                      type="submit"
-                      className="cursor-pointer flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
-                    >
-                      {t(TRX.PRODUCT_DETAILS.ADD_TO_CART)}
-                    </Button>
-                  </div>
-                  {/* {product?.product_id && selectedOption?.price && (
-                    <FrameWidget
-                      priceId={selectedOption?.price_id}
-                      productPrice={selectedOption.price!}
-                      productTitle={translatedProduct.title}
-                      productOptionIds={optionIds}
-                      activeProductOptionId={activeProductOptionId}
-                      productId={product.product_id}
-                      productImageUrl={product.default_image_url || PRODUCT_IMAGE_PLACEHOLDER}
-                      shipping_cost={selectedOption.shipping_cost}
-                      currency={selectedOption.currency}
-                      frame={frame}
-                      setFrame={setFrame}
-                    />
-                  )} */}
-                  {/* {product !== undefined && selectedOption !== undefined && posterCartProduct && <AddToCartButton
-                    productTitle={translatedProduct?.title}
-                    priceId={selectedOption?.price_id}
-                    productId={product.product_id!}
-                    productImageUrl={product.default_image_url || PRODUCT_IMAGE_PLACEHOLDER}
-                    productPrice={selectedOption.price!}
-                    productOptionId={activeProductOptionId!}
-                    frameId={selectedFrameOption.product_id!}
-                    frameTitle={selectedFrame.title!}
-                    framePrice={selectedFrameOption.price}
-                    frameImageUrl={selectedFrame.default_image_url || FRAME_IMAGE_PLACEHOLDER}
-                    text={t(TRX.PRODUCT_DETAILS.ADD_TO_CART)}
-                    shipping_cost={selectedOption?.shipping_cost}
-                    currency={selectedOption.shipping_cost}
-                    frameCartProduct={frameCartProduct}
-                    posterCartProduct={posterCartProduct}
-                  />} */}
-                </div>
-              </form>
-
-              <section aria-labelledby="details-heading" className="mt-12">
-                <h2 id="details-heading" className="sr-only">
-                  {t(TRX.PRODUCT_DETAILS.ADDITIONAL_DETAILS)}
-                </h2>
-              </section>
+          {/** Add to Cart **/}
+          <div className="mt-8 w-full">
+            <Button className="w-full" onClick={addToCartMutation}>
+              <BodyL>Add To Cart</BodyL>
+            </Button>
+            <div className="mt-2 flex justify-end">
+              <ErrorText error={err} />
             </div>
           </div>
         </div>
       </div>
-    </Container>
+    </SectionContainer>
   );
 };

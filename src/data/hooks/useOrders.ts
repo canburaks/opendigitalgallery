@@ -11,7 +11,7 @@ export async function getOrders(token: string | undefined) {
 export function useOrders(token: string | undefined, enabled?: boolean) {
   const { data, isLoading } = useQuery(
     [queryKeys.ordersByToken, token],
-    () => getOrders(atob(token || '')),
+    () => getOrders(token || ''),
     {
       enabled: enabled !== false && token ? true : enabled,
     }

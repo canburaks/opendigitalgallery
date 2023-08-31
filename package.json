@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "doppler run -p storefront -c development -- next dev",
-    "build": "next build",
+    "build": "doppler run -p storefront -c staging -- next build",
     "start": "next start",
     "lint": "next lint",
     "ts": "tsc --noemit",

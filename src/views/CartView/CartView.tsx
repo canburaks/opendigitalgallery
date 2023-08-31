@@ -18,6 +18,8 @@ import { useMediaQuery } from '@mui/material';
 export const CartView = () => {
   const store = useCartStore((state) => state.store);
   const isCartEmpty = store && store.length === 0;
+  console.log('isCartEmpty', isCartEmpty);
+  console.log('store', store);
   const productIDs = store && store.map((item) => +item.productId);
   const break800 = useMediaQuery('(max-width:800px)');
 
@@ -30,11 +32,11 @@ export const CartView = () => {
   );
 
   const productPrices = useProductPricesByIDs(productIDs || [], Boolean(productIDs));
-
   const sumPrice =
     store &&
     store.reduce((acc, item) => {
       const priceData = productPrices.data?.find((price) => price.price_id === item.priceId);
+      console.log('priceData', priceData?.price);
       return acc + (priceData?.price || 0) * item.quantity;
     }, 0);
 

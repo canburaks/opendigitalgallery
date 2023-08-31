@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Body, BodyL } from '../Atoms/Typographies';
+import { Body } from '../Atoms/Typographies';
 import { LinkComponent } from '../Atoms/LinkComponent';
 import { Price, Product } from '@/types';
 import { getLocaleValues } from '@/constants';
@@ -42,12 +42,12 @@ export const ProductCard: FC<ProductCard> = ({
         </div>
 
         {/* Price and Name */}
-        <BodyL className="mt-2 border-1 border-white group-hover:border-black border-solid border-t-0 border-x-0 ">
+        <Body className="mt-2 border-1 border-white group-hover:border-black border-solid border-t-0 border-x-0 ">
           {title}
-        </BodyL>
+        </Body>
         {minPrice && (
           <Body className="mt-1">
-            Başlangıç Fiyatı: {minPrice} {currency}
+            {minPrice} {currency}
           </Body>
         )}
       </>

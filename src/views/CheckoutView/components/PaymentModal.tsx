@@ -59,7 +59,6 @@ export function PaymentModal() {
             }
           })
           .catch((e) => {
-            console.log('e', e);
             console.error('Payment modal error:', e);
             setPayload((prev) => ({ ...prev, response: e, success: false }));
           })

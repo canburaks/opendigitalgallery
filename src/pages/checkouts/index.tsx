@@ -1,10 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
 import { CheckoutView } from '@/views';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from '@/../next-i18next.config';
-import { LocaleType } from '@/types';
-// import { I18N, LOCALES_LIST } from '@/constants';
 
 export default function Checkout() {
   return (
@@ -22,14 +18,3 @@ export default function Checkout() {
     </>
   );
 }
-
-export const getStaticProps = async ({ locale }: { locale: LocaleType }) => {
-  // const localeValues = locale === LOCALES_LIST[0] ? I18N[LOCALES_LIST[0]] : I18N[LOCALES_LIST[1]];
-
-  // const productData = product?.data?.length ? product.data[0] : {};
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-    },
-  };
-};

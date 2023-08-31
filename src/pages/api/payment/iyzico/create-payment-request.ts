@@ -5,20 +5,20 @@ import {
   FormInitializeResponse,
   PaymentGroup,
   OrderStatusEnum,
-  Database,
   CartProduct,
   CART_STATUSES,
+  DeliveryOrganization,
 } from '@/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import requestIp from 'request-ip';
 import { isString } from 'lodash';
 import { iyzipay } from '@/data/clients/iyzicoServer';
 import { serialize, CookieSerializeOptions } from 'cookie';
-// import { loggerServer as logger } from '@/utils/logger/server';
 import { v5 as uuidv5 } from 'uuid';
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { generatePassword } from '@/utils';
 import { CheckoutFormValues } from '@/views/CheckoutView/sections/CheckoutSection';
+import { supabaseServer } from '@/data/clients/supabaseServer';
+import { PaymentCollector } from '@/types';
 
 export default async function handler(
   req: NextApiRequest,
@@ -28,17 +28,18 @@ export default async function handler(
   const requestData = bodyData.requestData;
   const hiddenAuthUser = bodyData.hiddenAuthUser as CheckoutFormValues;
   const cartProducts = bodyData.cartProducts as CartProduct[];
-  const supabase = createServerSupabaseClient<Database>({ req, res });
+
   let currentUserId: null | string = null;
   let cardId: null | number = null;
+  let addressId: null | number = null;
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabaseServer.auth.getUser();
 
   if (user) {
     currentUserId = user.id;
-    const cartIDRes = await supabase
+    const cartIDRes = await supabaseServer
       .from('carts')
       .select('*')
       .eq('uid', user.id)
@@ -49,13 +50,21 @@ export default async function handler(
         message: cartIDRes.error.message,
       });
     }
+    const addressRes = await supabaseServer.from('addresses').select('*').eq('uid', user.id);
 
+    if (addressRes.error) {
+      return res.status(500).json({
+        message: addressRes.error.message,
+      });
+    }
+
+    addressId = addressRes.data[0].address_id;
     cardId = cartIDRes.data[0].cart_id;
   }
 
   // Case: If there is hidden auth user, start save here (coming from payment flow without login)
   if (!user && hiddenAuthUser) {
-    const emailCheckRes = await supabase
+    const emailCheckRes = await supabaseServer
       .from('users')
       .select('*', { count: 'exact' })
       .eq('email', hiddenAuthUser.email);
@@ -67,7 +76,7 @@ export default async function handler(
     }
     // not registered
     if (emailCheckRes.count === 0) {
-      const signUpRes = await supabase.auth.signUp({
+      const signUpRes = await supabaseServer.auth.signUp({
         email: hiddenAuthUser.email || '',
         password: generatePassword(),
       });
@@ -82,7 +91,7 @@ export default async function handler(
         });
       }
 
-      const userRes = await supabase
+      const userRes = await supabaseServer
         .from('users')
         .insert({
           uid: signUpRes.data.user?.id,
@@ -98,7 +107,7 @@ export default async function handler(
         });
       }
 
-      const createCartRes = await supabase
+      const createCartRes = await supabaseServer
         .from('carts')
         .insert([{ uid: userRes.data[0].uid, cart_status_id: 1 }])
         .select();
@@ -112,7 +121,7 @@ export default async function handler(
       cardId = createCartRes.data[0].cart_id;
 
       cartProducts.forEach(async (cartProduct) => {
-        const query = await supabase.from('cart_details').insert({
+        const query = await supabaseServer.from('cart_details').insert({
           cart_id: createCartRes.data[0].cart_id,
           price_id: cartProduct.priceId,
           quantity: cartProduct.quantity,
@@ -124,15 +133,24 @@ export default async function handler(
           });
         }
       });
-      console.log('hiddenAuthUser', hiddenAuthUser);
-      await supabase.from('addresses').insert({
-        address_detail: hiddenAuthUser.address_detail || '',
-        uid: signUpRes.data.user.id || '',
-        city: hiddenAuthUser.city || '',
-        zip: hiddenAuthUser.zip || '',
-        country_id: parseInt(hiddenAuthUser.country_id || '0'),
-      });
+      const addressRes = await supabaseServer
+        .from('addresses')
+        .insert({
+          address_detail: hiddenAuthUser.address_detail || '',
+          uid: signUpRes.data.user.id || '',
+          city: hiddenAuthUser.city || '',
+          zip: hiddenAuthUser.zip || '',
+          country_id: parseInt(hiddenAuthUser.country_id || '0'),
+        })
+        .select();
 
+      if (addressRes.error) {
+        return res.status(500).json({
+          message: addressRes.error.message,
+        });
+      }
+
+      addressId = addressRes.data[0].address_id;
       currentUserId = signUpRes.data.user.id;
     } else {
       currentUserId = emailCheckRes.data[0].uid;
@@ -176,16 +194,21 @@ export default async function handler(
           maxAge: 3600,
         });
         // console.log("status", OrderStatusEnum.PaymentAwaiting)
-        const orderSetResponse = supabase
+        const orderSetResponse = supabaseServer
           .from('orders')
           .insert({
-            uid: currentUserId,
-            cart_id: cardId,
+            uid: currentUserId || '',
+            cart_id: cardId || 0,
             order_status_id: OrderStatusEnum.PaymentAwaiting,
             payment_provider_response: JSON.stringify(result),
             payment_provider_token: result.token,
             total_price: typeof data.price === 'string' ? parseFloat(data.price) : data.price || 0,
+            address_id: addressId || -1,
+            payment_collector_id: PaymentCollector.IYZICO,
+            delivery_organization_id: DeliveryOrganization.DHL,
+            total_tax: 0,
           })
+
           .select('*');
         // console.log('order set response1: ', orderSetResponse);
         orderSetResponse.then((orderSetRes) => {
@@ -223,62 +246,3 @@ export const setCookie = (
 
   res.setHeader('Set-Cookie', serialize(name, stringValue, options));
 };
-
-// const demoData = {
-//   locale: LocaleEnum.TR, // eslint-disable-line
-//   conversationId: '123456789',
-//   price: '0.8',
-//   paidPrice: '1',
-//   currency: iyzico.CURRENCY.TRY, // eslint-disable-line
-//   basketId: 'B67832',
-//   paymentGroup: iyzico.PAYMENT_GROUP.LISTING, // eslint-disable-line
-//   callbackUrl: process.env.IYZICO_CALLBACK_URL,
-//   enabledInstallments: [2, 3, 6, 9],
-//   buyer: {
-//     id: 'BY789',
-//     name: 'John',
-//     surname: 'Doe',
-//     gsmNumber: '+905350000000',
-//     email: 'email@email.com',
-//     identityNumber: '74300864791',
-//     lastLoginDate: '2015-10-05 12:43:35',
-//     registrationDate: '2013-04-21 15:12:09',
-//     registrationAddress: 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
-//     ip: '85.34.78.112',
-//     city: 'Istanbul',
-//     country: 'Turkey',
-//     zipCode: '34732',
-//   },
-//   shippingAddress: {
-//     contactName: 'Jane Doe',
-//     city: 'Istanbul',
-//     country: 'Turkey',
-//     address: 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
-//     zipCode: '34742',
-//   },
-//   billingAddress: {
-//     contactName: 'Jane Doe',
-//     city: 'Istanbul',
-//     country: 'Turkey',
-//     address: 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
-//     zipCode: '34742',
-//   },
-//   basketItems: [
-//     {
-//       id: 'BI101',
-//       name: 'Binocular',
-//       category1: 'Collectibles',
-//       category2: 'Accessories',
-//       itemType: iyzico.BASKET_ITEM_TYPE.PHYSICAL, // eslint-disable-line
-//       price: '0.3',
-//     },
-//     {
-//       id: 'BI102',
-//       name: 'Game code',
-//       category1: 'Game',
-//       category2: 'Online Game Items',
-//       itemType: require('iyzipay').BASKET_ITEM_TYPE.VIRTUAL, // eslint-disable-line
-//       price: '0.5',
-//     },
-//   ],
-// };

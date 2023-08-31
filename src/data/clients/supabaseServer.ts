@@ -1,9 +1,14 @@
 import { Database } from '@/types';
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { createClient } from '@supabase/supabase-js';
 
-export const supabaseServer = (req: NextApiRequest, res: NextApiResponse) =>
-  createServerSupabaseClient<Database>({
-    req,
-    res,
-  });
+export const supabaseServer = createClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+  process.env.SUPABASE_SECRET as string,
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
+  }
+);

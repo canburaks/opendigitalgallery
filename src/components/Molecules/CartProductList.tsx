@@ -27,7 +27,7 @@ export const CartProductList: FC<CartProductListProps> = ({ layout = 'horizontal
   return (
     <div className={cx('flex flex-col gap-8', className)}>
       {cartStore &&
-        cartStore.store.length > 0 &&
+        cartStore?.store?.length > 0 &&
         cartStore.store.map((product) => {
           const storeItem = cartStore.store.find(
             (storeItem) => storeItem.productId === product.productId
@@ -38,8 +38,9 @@ export const CartProductList: FC<CartProductListProps> = ({ layout = 'horizontal
           const option = productOptions.data?.find(
             (optionItem) => optionItem.product_option_id === productPriceOptions?.product_option_id
           );
+
           const priceData = productPrices.data?.find(
-            (price) => price.product_option_id === productPriceOptions?.product_option_id
+            (price) => price.price_id === productPriceOptions?.price_id
           );
           const productItem = products?.data?.find(
             (productI) => productI.product_id === product.productId

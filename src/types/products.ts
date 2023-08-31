@@ -27,14 +27,13 @@ export interface MergedProductOption {
  *
  * */
 
-export type FrameOptionsSelectUnionType = keyof typeof InstaprintFrameOptionsEnum
+export type FrameOptionsSelectUnionType = keyof typeof InstaprintFrameOptionsEnum;
 
 export interface CartProduct {
-  /* NECESSARY INFORMATIONS FOR BACKEND*/
   productId: number;
   priceId: number;
   quantity: number;
-};
+}
 
 /*
  * TRANSLATABLE FIELDS

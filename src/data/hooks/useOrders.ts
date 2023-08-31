@@ -5,7 +5,7 @@ import { ORDER_QUERY } from '../queries/orderQueries';
 
 export async function getOrders(token: string | undefined) {
   const client = getSupabaseBrowserClient();
-  return await client.from('orders').select(ORDER_QUERY).eq('payment_provider_token', token);
+  return await client.from('orders').select(ORDER_QUERY).eq('payment_provider_token', token!);
 }
 
 export function useOrders(token: string | undefined, enabled?: boolean) {

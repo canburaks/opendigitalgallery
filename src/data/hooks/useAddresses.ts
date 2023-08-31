@@ -4,7 +4,7 @@ import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 
 export const getAddress = async (userId?: string) => {
   const client = getSupabaseBrowserClient();
-  return client.from('addresses').select('*').eq('uid', userId);
+  return client.from('addresses').select('*').eq('uid', userId!);
 };
 
 export const useAddresses = (userId?: string, enabled?: boolean) => {

@@ -59,12 +59,10 @@ export const TRX = {
     APP_MODAL_SELECTION_TITLE: 'instaprint.app.modal.selection.title',
     APP_MODAL_SELECTION_DESCRIPTION: 'instaprint.app.selection.description',
     APP_MODAL_SELECTION_VARIATION1_TITLE: 'instaprint.app.selection.variations1.title',
-    APP_MODAL_SELECTION_VARIATION1_DESCRIPTION:
-      'instaprint.app.selection.variations1.description',
+    APP_MODAL_SELECTION_VARIATION1_DESCRIPTION: 'instaprint.app.selection.variations1.description',
     APP_MODAL_SELECTION_VARIATION1_FOOTNOTE: 'instaprint.app.selection.variations1.footnote',
     APP_MODAL_SELECTION_VARIATION2_TITLE: 'instaprint.app.selection.variations2.title',
-    APP_MODAL_SELECTION_VARIATION2_DESCRIPTION:
-      'instaprint.app.selection.variations2.description',
+    APP_MODAL_SELECTION_VARIATION2_DESCRIPTION: 'instaprint.app.selection.variations2.description',
     APP_MODAL_SELECTION_VARIATION2_FOOTNOTE: 'instaprint.app.selection.variations2.footnote',
     APP_MODAL_SIZE: 'instaprint.app.selection.size',
     APP_MODAL_PLACEHOLDER: 'instaprint.app.selection.placeholder',

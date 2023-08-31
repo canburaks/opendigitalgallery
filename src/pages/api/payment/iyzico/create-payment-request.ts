@@ -67,7 +67,7 @@ export default async function handler(
     const emailCheckRes = await supabaseServer
       .from('users')
       .select('*', { count: 'exact' })
-      .eq('email', hiddenAuthUser.email);
+      .eq('email', hiddenAuthUser.email!);
 
     if (emailCheckRes.error) {
       return res.status(500).json({
@@ -90,6 +90,7 @@ export default async function handler(
           message: 'Something went wrong',
         });
       }
+      currentUserId = signUpRes.data.user.id;
 
       const userRes = await supabaseServer
         .from('users')

@@ -13,33 +13,31 @@ import { Instagram } from '@/data/instagramClient';
 // import { getFrames } from '@/data/hooks';
 
 export default function InstaPrintPage(props: any) {
-    const { t } = useTranslation("common");
-    const instagramClient = new Instagram(props.instaprintAppId, props.instaprintRedirectUri);
-    return (
-        <>
-            <Head>
-                <title>{t(TRX.INSTAPRINT.META_TITLE)}</title>
-                <meta name="description" content={t(TRX.INSTAPRINT.META_DESCRIPTION)!}/>
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
-
-
-            </Head>
-            <main>
-                <InstaprintLandingPageView instaprintClient={instagramClient} />
-            </main>
-        </>
-    );
+  const { t } = useTranslation('common');
+  const instagramClient = new Instagram(props.instaprintAppId, props.instaprintRedirectUri);
+  return (
+    <>
+      <Head>
+        <title>{t(TRX.INSTAPRINT.META_TITLE)}</title>
+        <meta name="description" content={t(TRX.INSTAPRINT.META_DESCRIPTION)!} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
+        <InstaprintLandingPageView instaprintClient={instagramClient} />
+      </main>
+    </>
+  );
 }
 
 export const getStaticProps = async ({ locale }: { locale: LocaleType }) => {
-    const appId = process.env.INSTAGRAM_APP_ID!;
-    const redirectUri = process.env.INSTAGRAM_APP_REDIRECT_URI!;
-    return {
-        props: {
-            instaprintAppId: appId,
-            instaprintRedirectUri: redirectUri,
-            ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-        },
-    };
+  const appId = process.env.INSTAGRAM_APP_ID!;
+  const redirectUri = process.env.INSTAGRAM_APP_REDIRECT_URI!;
+  return {
+    props: {
+      instaprintAppId: appId,
+      instaprintRedirectUri: redirectUri,
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+    },
+  };
 };

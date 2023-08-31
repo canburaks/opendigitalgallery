@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { INSTAPRINT_PRODUCT_QUERY_SELECT } from '../queries/productQueries';
 import {
   INSTAPRINT_PRODUCT_ID,
   INSTAPRINT_PRODUCT_HANDLE,
@@ -7,13 +8,12 @@ import {
 import { useProductsByIDs } from '@/data/hooks';
 import type { Product, ProductDetails } from '@/types';
 import { ProductType, getLocaleValues } from '@/constants';
-import { useRouter } from 'next/router';
-import { INSTAPRINT_PRODUCT_QUERY_SELECT } from '../queries/productQueries';
 import { getSupabaseBrowserClient } from '../clients/supabaseClient';
+import { useRouter } from 'next/router';
 
 export const useInstaprintProducts = () => {
   // Query Instaprint product from database
-  const { data: instaprintProductData } = useProductsByIDs(
+  const { data: instaprintProductData, isLoading } = useProductsByIDs(
     {
       productIDs: [INSTAPRINT_PRODUCT_ID],
       select: INSTAPRINT_PRODUCT_QUERY_SELECT.split(',') as Array<keyof Product>,
@@ -37,7 +37,7 @@ export const useInstaprintProducts = () => {
         prices: [],
         quantity: 1,
       };
-  }, [instaprintProductData]);
+  }, [isLoading, instaprintProductData]);
 
   // const getInstaprintProductOptionIds = useMemo(() => {
   //   if (instaprintProduct && instaprintProduct.prices) {

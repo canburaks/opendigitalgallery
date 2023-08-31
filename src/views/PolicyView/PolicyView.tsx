@@ -22,7 +22,10 @@ export function PolicyView({ policy }: Props) {
               />
             </div>
           </header>
-          <div className="my-8 text-gray-800" dangerouslySetInnerHTML={{ __html: policy.content! }} />
+          <div
+            className="my-8 text-gray-800"
+            dangerouslySetInnerHTML={{ __html: policy.content! }}
+          />
         </article>
       </Container>
     </Container>

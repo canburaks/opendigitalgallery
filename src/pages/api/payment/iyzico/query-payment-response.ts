@@ -49,7 +49,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<OrderQ
         .update({
           cart_status_id: CART_STATUSES.ORDERED,
         })
-        .eq('cart_id', orderUpdateRes.data[0].cart_id);
+        .eq('cart_id', orderUpdateRes.data[0].cart_id!);
     }
   };
 

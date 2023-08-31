@@ -5,7 +5,7 @@ import { getSupabaseBrowserClient } from '../clients/supabaseClient';
 
 export const getUser = async (id?: string | null) => {
   const client = getSupabaseBrowserClient();
-  return client.from('users').select().eq('uid', id);
+  return client.from('users').select().eq('uid', id!);
 };
 
 export const usePublicUser = (id?: string | null, enabled?: boolean) => {

@@ -7,7 +7,7 @@ import {
 
 export function parseOrderFromIyzicoResponse(
   response: OrderQueryApiResponse
-): OrderInsertType | undefined {
+): Partial<OrderInsertType> | undefined {
   if (response.status && response.token) {
     return {
       ...(response.status === OrderResponseStatusEnum.SUCCESS

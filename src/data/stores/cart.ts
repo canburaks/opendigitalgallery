@@ -38,7 +38,7 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
         await client
           .from('cart_details')
           .update({ quantity: existingProduct.quantity + 1 })
-          .eq('cart_id', get().cartID)
+          .eq('cart_id', get().cartID!)
           .eq('price_id', product.priceId);
       }
     } else {
@@ -73,8 +73,8 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
           await client
             .from('cart_details')
             .delete()
-            .eq('cart_id', get().cartID)
-            .eq('price_id', product.priceId);
+            .eq('cart_id', get().cartID!)
+            .eq('price_id', product.priceId!);
         }
       } else {
         const newList = get().store.map((p) => {
@@ -88,8 +88,8 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
           await client
             .from('cart_details')
             .update({ quantity: existProduct.quantity - 1 })
-            .eq('cart_id', get().cartID)
-            .eq('price_id', product.priceId);
+            .eq('cart_id', get().cartID!)
+            .eq('price_id', product.priceId!);
         }
       }
     }
@@ -107,7 +107,7 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
         .from('cart_details')
         .delete()
         .eq('cart_id', get().cartID || -1)
-        .eq('price_id', product.priceId);
+        .eq('price_id', product.priceId!);
     }
 
     localStorage.setItem('cart', JSON.stringify(get().store));

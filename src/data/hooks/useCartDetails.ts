@@ -5,7 +5,7 @@ import { CART_DETAILS_QUERY } from '../queries/cartDetailsQueries';
 
 export const getCartDetails = async (cartId?: number | null) => {
   const client = getSupabaseBrowserClient();
-  return client.from('cart_details').select(CART_DETAILS_QUERY).eq('cart_id', cartId);
+  return client.from('cart_details').select(CART_DETAILS_QUERY).eq('cart_id', cartId!);
 };
 
 export const useCartDetails = (cartId?: number | null, enabled?: boolean) => {

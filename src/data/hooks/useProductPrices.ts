@@ -12,7 +12,7 @@ export const getProductPrices = async (productID?: number) => {
   return client
     .from('prices')
     .select()
-    .eq('product_id', productID)
+    .eq('product_id', productID!)
     .eq('prices.currency', locales.currency)
     .eq('prices.country_id', locales.code);
 };

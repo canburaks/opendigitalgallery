@@ -58,7 +58,7 @@ export default async function handler(
     const emailCheckRes = await supabase
       .from('users')
       .select('*', { count: 'exact' })
-      .eq('email', hiddenAuthUser.email);
+      .eq('email', hiddenAuthUser.email!);
 
     if (emailCheckRes.error) {
       return res.status(500).json({
@@ -81,6 +81,7 @@ export default async function handler(
           message: 'Something went wrong',
         });
       }
+      currentUserId = signUpRes.data.user.id;
 
       const userRes = await supabase
         .from('users')
@@ -179,6 +180,7 @@ export default async function handler(
         const orderSetResponse = supabase
           .from('orders')
           .insert({
+            // @ts-ignore
             uid: currentUserId,
             cart_id: cardId,
             order_status_id: OrderStatusEnum.PaymentAwaiting,

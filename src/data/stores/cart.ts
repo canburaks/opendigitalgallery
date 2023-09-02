@@ -97,7 +97,6 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
   },
 
   removeCartPermanently: async (product: Partial<CartProduct>) => {
-    console.log('cartID remove permamnently', get().cartID);
     const notExistingProducts: CartProduct[] = get().store.filter(
       (p) => p.priceId !== product.priceId
     );
@@ -132,6 +131,13 @@ export interface CartStoreTypes {
 }
 
 export const getInitialCartProducts = async () => {
+  if (
+    typeof window !== 'undefined' &&
+    (window.location.href.includes('checkout') || window.location.href.includes('orders'))
+  ) {
+    return { products: [], cartID: undefined };
+  }
+
   // ATTENTION:  This function is not IDEMPOTENT (it has side effects) and too much request, so be careful for race conditions
 
   const resAuth = await client.auth.getSession().catch((err) => console.log('err', err));
@@ -219,7 +225,6 @@ export const getInitialCartProducts = async () => {
   }
 
   // if there are DB products and local storage, need merge logic
-
   if (
     user &&
     dbProducts &&

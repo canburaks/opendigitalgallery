@@ -24,6 +24,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<OrderQ
     if (err) {
       return res.status(500).json({ message: err.message });
     }
+
+    console.log('result', result);
+
     // Update Order Table
     const orderUpdateRes = await supabase
       .from('orders')

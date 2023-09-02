@@ -33,7 +33,7 @@ export const useProductsByIDs = <F extends keyof Product>(
   enabled?: boolean
 ) => {
   const { data, isLoading } = useQuery([queryKeys.products], () => getProductsByIDs(queries), {
-    enabled: enabled === undefined ? true : enabled,
+    enabled: enabled === undefined ? true : Boolean(enabled),
   });
   return { data: data, isLoading };
 };

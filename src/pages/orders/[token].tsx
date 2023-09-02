@@ -1,9 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from '@/../next-i18next.config';
-import { LocaleType } from '@/types';
-import { NextApiRequest } from 'next';
 import { OrderView } from '@/views';
 
 export default function OrderTokenPage() {
@@ -22,17 +18,3 @@ export default function OrderTokenPage() {
     </>
   );
 }
-
-export const getStaticProps = async ({ locale }: { req: NextApiRequest; locale: LocaleType }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-    },
-  };
-};
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: true,
-  };
-};

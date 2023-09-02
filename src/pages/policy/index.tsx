@@ -28,7 +28,6 @@ export default function PoliciesIndex({ policies: { edges } }: any) {
 }
 
 export const getStaticProps = async ({ locale }: { locale: LocaleType }) => {
-  // console.log('locale', locale);
   let policies = await getAllPoliciesByLanguage(false, locale as LocaleType);
   function modifySlugs(policies: PolicyConnection) {
     return {

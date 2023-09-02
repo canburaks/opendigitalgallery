@@ -1,2 +1,2 @@
 export const FEATURED_PRODUCT_REFETCH_COUNT = 5;
-export const POSTERS_REFETCH_COUNT = 10;
+export const POSTERS_REFETCH_COUNT = 5;

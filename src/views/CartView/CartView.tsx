@@ -18,8 +18,6 @@ import { useMediaQuery } from '@mui/material';
 export const CartView = () => {
   const store = useCartStore((state) => state.store);
   const isCartEmpty = store && store.length === 0;
-  console.log('isCartEmpty', isCartEmpty);
-  console.log('store', store);
   const productIDs = store && store.map((item) => +item.productId);
   const break800 = useMediaQuery('(max-width:800px)');
 

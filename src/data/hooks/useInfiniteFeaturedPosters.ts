@@ -44,7 +44,5 @@ export const useInfiniteFeaturedPosters = (count: number, enabled?: boolean) => 
     }
   );
 
-  console.log('data', data);
-
   return { data: data?.pages || [], isLoading, fetchNextPage, isFetchingNextPage };
 };

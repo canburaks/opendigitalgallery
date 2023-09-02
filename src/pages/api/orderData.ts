@@ -72,9 +72,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const paymentToken = paymentData?.token;
   const price = paymentData?.price;
   const currency = paymentData?.currency;
-  console.log('paymentData', paymentData);
 
   // * Data: Cart Details
+
   const cardID = orderData[0].cart_id;
   const { data: cartData, error: cartError } = await getCartDetails(cardID);
   if (cartError) {

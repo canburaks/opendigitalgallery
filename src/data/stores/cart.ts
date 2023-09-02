@@ -133,7 +133,7 @@ export interface CartStoreTypes {
 export const getInitialCartProducts = async () => {
   if (
     typeof window !== 'undefined' &&
-    (window.location.href.includes('checkout') || window.location.href.includes('orders'))
+    (window.location.href.includes('callback') || window.location.href.includes('orders'))
   ) {
     return { products: [], cartID: undefined };
   }

@@ -375,8 +375,10 @@ export default async function handler(
         const orderSetResponse = supabaseServer
           .from('orders')
           .insert({
-            uid: currentUserId || '',
-            cart_id: cardId || 0,
+            // @ts-ignore
+            uid: currentUserId,
+            cart_id: cardId || -1,
+
             order_status_id: OrderStatusEnum.PaymentAwaiting,
             payment_provider_response: JSON.stringify(result),
             payment_provider_token: result.token,

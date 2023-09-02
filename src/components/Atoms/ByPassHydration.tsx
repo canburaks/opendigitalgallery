@@ -24,7 +24,8 @@ export const ByPassHydration: FC<PropsWithChildren> = ({ children }) => {
     const { data: authListener } = supabaseClient.auth.onAuthStateChange(async (e) => {
       const path = router.asPath;
 
-      if (path.includes('checkout') || path.includes('orders')) {
+      if (path.includes('callback') || path.includes('orders')) {
+
         return;
       }
 

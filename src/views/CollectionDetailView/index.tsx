@@ -28,6 +28,8 @@ export const CollectionDetailView = () => {
     return null;
   }
 
+  const countt = infinitePosters[0].count;
+
   return (
     <SectionContainer>
       {/* Headline */}
@@ -40,7 +42,7 @@ export const CollectionDetailView = () => {
         </BodyL>
       </div>
       <InfiniteScroll
-        loadMore={() => fetchNextPage()}
+        loadMore={() => countt && countt > 0 && fetchNextPage()}
         hasMore={
           products.length < ((infinitePosters[0] && infinitePosters[0].count) || 50) || false
         }

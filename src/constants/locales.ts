@@ -5,8 +5,8 @@ export const CURRENCIES_LIST = ['USD', 'TRY'] as const;
 export const COUNTRY_CODE_LIST = [221, 213] as const;
 
 export const I18N: any = {
-  [LocaleEnum.EN]: { currency: 'USD', locale: 'en', country: 'US', code: 221 },
   [LocaleEnum.TR]: { currency: 'TRY', locale: 'tr', country: 'TR', code: 213 },
+  [LocaleEnum.EN]: { currency: 'USD', locale: 'en', country: 'US', code: 221 },
 };
 // type I18NItemType = {
 //   currency: (typeof CURRENCIES_LIST)[number];
@@ -15,8 +15,8 @@ export const I18N: any = {
 //   code: number;
 // };
 
-export const DEFAULT_LOCALE: LocaleType = LocaleEnum.EN;
-export const DEFAULT_COUNTRY_CODE = COUNTRY_CODE_LIST[0];
+export const DEFAULT_LOCALE: LocaleType = LocaleEnum.TR;
+export const DEFAULT_COUNTRY_CODE = COUNTRY_CODE_LIST[1];
 export const DEFAULT_CURRENCY = I18N[DEFAULT_LOCALE].currency;
 
 export function getLocaleValues(locale?: (typeof LOCALES_LIST)[number] | undefined) {

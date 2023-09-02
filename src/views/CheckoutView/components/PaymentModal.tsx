@@ -28,12 +28,16 @@ export function PaymentModal() {
   const paymentRequestData = usePaymentStore((state) => state.paymentRequestData);
   const [loading, setLoading] = React.useState(false);
   const hiddenAuthUser = usePaymentStore((state) => state.hiddenAuthUser);
+  const formValues = usePaymentStore((state) => state.formValues);
   const [error, setError] = React.useState('');
+  const [sentReq, setSentReq] = React.useState(false);
   const [payload, setPayload] = React.useState({
     response: {} as FormInitializeResponse,
     success: false,
   });
   const cartProducts = useCartStore((state) => state.store);
+
+  console.log('formValues', formValues);
 
   const submitHandler = useCallback(
     (requestData: Partial<FormInitializeRequest> | null) => {
@@ -45,6 +49,7 @@ export function PaymentModal() {
             requestData,
             hiddenAuthUser,
             cartProducts,
+            formValues: formValues,
           }),
         })
           .then((res: Response) => res.json())
@@ -59,12 +64,12 @@ export function PaymentModal() {
             }
           })
           .catch((e) => {
-            console.log('e', e);
             console.error('Payment modal error:', e);
             setPayload((prev) => ({ ...prev, response: e, success: false }));
           })
           .finally(() => {
             setLoading(false);
+            setSentReq(true);
           });
       }
     },
@@ -80,10 +85,10 @@ export function PaymentModal() {
    ########################################################################################
    */
   useEffect(() => {
-    if (paymentModal && paymentRequestData) {
+    if (paymentModal && paymentRequestData && !sentReq) {
       submitHandler(paymentRequestData);
     }
-  }, [paymentModal, paymentRequestData, submitHandler]);
+  }, [paymentModal, paymentRequestData, sentReq, submitHandler]);
 
   /*
   #########################################################################################

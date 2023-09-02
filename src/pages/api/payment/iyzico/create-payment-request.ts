@@ -36,7 +36,6 @@ export default async function handler(
   let cardId: null | number = null;
   let addressId: null | number = null;
 
-  console.log('formValues', formValues);
   const supabase = createServerSupabaseClient<Database>({
     req,
     res,
@@ -58,6 +57,38 @@ export default async function handler(
         message: cartIDRes.error.message,
       });
     }
+
+    if (cartIDRes.data.length === 0) {
+      const createCartRes = await supabaseServer
+        .from('carts')
+        .insert([{ uid: user.id, cart_status_id: 1 }])
+        .select();
+
+      if (createCartRes.error) {
+        return res.status(500).json({
+          message: createCartRes.error.message,
+        });
+      }
+
+      cartProducts.forEach(async (cartProduct) => {
+        const query = await supabaseServer.from('cart_details').insert({
+          cart_id: createCartRes.data[0].cart_id,
+          price_id: cartProduct.priceId,
+          quantity: cartProduct.quantity,
+        });
+
+        if (query.error) {
+          return res.status(500).json({
+            message: query.error.message,
+          });
+        }
+      });
+
+      cardId = createCartRes.data[0].cart_id;
+    } else {
+      cardId = cartIDRes.data[0].cart_id;
+    }
+
     const addressRes = await supabaseServer.from('addresses').select('*').eq('uid', user.id);
 
     if (addressRes.error) {
@@ -65,7 +96,6 @@ export default async function handler(
         message: addressRes.error.message,
       });
     }
-
     if (addressRes.data.length === 0 && formValues && formValues.address_detail) {
       const addressInsertRes = await supabaseServer
         .from('addresses')
@@ -88,8 +118,6 @@ export default async function handler(
     } else {
       addressId = addressRes.data[0].address_id;
     }
-
-    cardId = cartIDRes.data[0].cart_id;
   }
 
   // Case: If there is hidden auth user, start save here (coming from payment flow without login)

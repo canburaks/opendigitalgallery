@@ -182,7 +182,7 @@ export default async function handler(
           .insert({
             // @ts-ignore
             uid: currentUserId,
-            cart_id: cardId,
+            cart_id: cardId || -1,
             order_status_id: OrderStatusEnum.PaymentAwaiting,
             payment_provider_response: JSON.stringify(result),
             payment_provider_token: result.token,

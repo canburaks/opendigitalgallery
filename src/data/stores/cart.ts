@@ -132,6 +132,13 @@ export interface CartStoreTypes {
 }
 
 export const getInitialCartProducts = async () => {
+  if (
+    typeof window !== 'undefined' &&
+    (window.location.href.includes('callback') || window.location.href.includes('orders'))
+  ) {
+    return { products: [], cartID: undefined };
+  }
+
   // ATTENTION:  This function is not IDEMPOTENT (it has side effects) and too much request, so be careful for race conditions
 
   const resAuth = await client.auth.getSession().catch((err) => console.log('err', err));

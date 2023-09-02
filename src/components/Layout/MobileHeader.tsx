@@ -119,7 +119,6 @@ export const MobileHeader: FC<MobileHeaderProps> = ({ className }) => {
                     endAdornment: <SearchOutlinedIcon />,
                     onKeyPress: (e) => {
                       if (e.key === 'Enter') {
-                        console.log('trigger search');
                         setOpenSearchBox(false);
                         router.push('/products?search=' + searchTerm);
                       }

@@ -9,6 +9,7 @@ export const usePaymentStore = create<UsePaymentStore>((set) => ({
    * */
   paymentRequestData: null,
   hiddenAuthUser: null,
+  formValues: null,
 
   /* ---------------------------------------------------------------------------------
    *  STORE MUTATIONS
@@ -21,6 +22,7 @@ export const usePaymentStore = create<UsePaymentStore>((set) => ({
     set({ paymentRequestData }),
 
   setHiddenAuthUser: (hiddenAuthUser: CheckoutFormValues | null) => set({ hiddenAuthUser }),
+  setFormValues: (formValues: CheckoutFormValues | null) => set({ formValues }),
 }));
 
 interface UsePaymentStore {
@@ -28,4 +30,6 @@ interface UsePaymentStore {
   setPaymentRequestData: (data: Partial<FormInitializeRequest>) => void;
   hiddenAuthUser: null | CheckoutFormValues;
   setHiddenAuthUser: (hiddenAuthUser: CheckoutFormValues | null) => void;
+  formValues: null | CheckoutFormValues;
+  setFormValues: (formValues: CheckoutFormValues | null) => void;
 }

@@ -30,11 +30,11 @@ export const CartView = () => {
   );
 
   const productPrices = useProductPricesByIDs(productIDs || [], Boolean(productIDs));
-
   const sumPrice =
     store &&
     store.reduce((acc, item) => {
       const priceData = productPrices.data?.find((price) => price.price_id === item.priceId);
+      console.log('priceData', priceData?.price);
       return acc + (priceData?.price || 0) * item.quantity;
     }, 0);
 

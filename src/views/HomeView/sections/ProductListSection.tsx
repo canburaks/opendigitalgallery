@@ -12,13 +12,13 @@ export const ProductListSection: FC = () => {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteFeaturedPosters(FEATURED_PRODUCT_REFETCH_COUNT);
+
   const products = useMemo(() => {
     return map(infinitePoster, 'data').flat();
   }, [infinitePoster]);
 
   const hasMoreProduct = useMemo(() => {
     const allTableLength = (infinitePoster && infinitePoster[0] && infinitePoster[0].count) || 0;
-
     if (allTableLength <= products.length || products.length > 50) {
       return false;
     } else {

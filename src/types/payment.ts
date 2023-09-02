@@ -21,6 +21,8 @@ export interface FormInitializeRequest {
   shippingAddress: ShippingAddress;
   billingAddress: BillingAddress;
   basketItems: BasketItem[];
+  shippingCost: number;
+  shippingCostCurrency: string;
 }
 
 export type EnabledInstallments = 1 | 2 | 3 | 6 | 9 | 12;
@@ -186,6 +188,7 @@ export type OrderResponsePaymentStatus =
   | 'CALLBACK_THREEDS'
   | 'BKM_POS_SELECTED'
   | 'CALLBACK_PECCO';
+
 export type OrderQueryResponse = {
   token: string;
   callbackUrl: string;
@@ -250,3 +253,11 @@ export type ConvertedPayout = {
   iyziConversationRateAmount: number;
   currency: PaymentCurrency;
 };
+
+export enum PaymentCollector {
+  'IYZICO' = 1,
+}
+
+export enum DeliveryOrganization {
+  'DHL' = 1,
+}

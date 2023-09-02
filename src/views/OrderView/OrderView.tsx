@@ -1,28 +1,15 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
-import { PAGES } from '@/constants';
 import { SectionContainer, Loading } from '@/components';
 import { OrderResponseStatusEnum } from '@/types';
-import { useOrders } from '@/data/hooks';
 import { OrderFail, OrderSuccess, OrderNotFound } from './sections';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useOrderService } from '@/data/hooks/useOrderService';
 
 export function OrderView() {
-  const { asPath } = useRouter();
-  const urlToken = asPath.replace(`${PAGES.ORDERS.path}/`, '');
-
-  const { data, isLoading } = useOrders(urlToken);
-  console.log('data', data);
-  // console.log("data", data)
-  const paymentProviderData = useMemo(() => {
-    if (data && data.data && Array.isArray(data?.data)) {
-      return typeof data.data[0].payment_provider_response === 'string'
-        ? JSON.parse(data?.data[0].payment_provider_response)
-        : data?.data[0].payment_provider_response;
-    }
-  }, [data]);
-  // console.log("paymentProviderData", paymentProviderData)
-  // const isOrderExist = paymentProviderData && paymentProviderData?.status === OrderResponseStatusEnum.SUCCESS;
+  const router = useRouter();
+  const urlToken = router.query.token as string;
+  const { data: orderData, isLoading } = useOrderService(urlToken, Boolean(urlToken));
 
   return (
     <SectionContainer>
@@ -36,32 +23,28 @@ export function OrderView() {
           )}
 
           {/* SUCCESS CASE  */}
-          {isLoading === false &&
-            paymentProviderData &&
-            paymentProviderData?.status === OrderResponseStatusEnum.SUCCESS && (
-              <motion.div
-                initial={{ opacity: 0, y: 200 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 200 }}
-              >
-                <OrderSuccess data={paymentProviderData} orderData={data} />
-              </motion.div>
-            )}
+          {isLoading === false && orderData?.data.status === OrderResponseStatusEnum.SUCCESS && (
+            <motion.div
+              initial={{ opacity: 0, y: 200 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 200 }}
+            >
+              <OrderSuccess orderData={orderData.data} />
+            </motion.div>
+          )}
           {/* PAYMENT FAILURE CASE */}
-          {isLoading === false &&
-            paymentProviderData &&
-            paymentProviderData?.status === OrderResponseStatusEnum.FAILURE && (
-              <motion.div
-                initial={{ opacity: 0, y: 200 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 200 }}
-              >
-                <OrderFail />
-              </motion.div>
-            )}
+          {isLoading === false && orderData?.data?.status === OrderResponseStatusEnum.FAILURE && (
+            <motion.div
+              initial={{ opacity: 0, y: 200 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 200 }}
+            >
+              <OrderFail />
+            </motion.div>
+          )}
 
           {/* ORDER NOT FOUND CASE */}
-          {isLoading === false && paymentProviderData === null && (
+          {isLoading === false && orderData?.data.status === null && (
             <motion.div
               initial={{ opacity: 0, y: 200 }}
               animate={{ opacity: 1, y: 0 }}

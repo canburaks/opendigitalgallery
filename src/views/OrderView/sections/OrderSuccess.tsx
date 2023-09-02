@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Body,
   BodyS,
@@ -11,6 +11,7 @@ import {
 import { useCartStore } from '@/data/stores';
 import { printAddress } from '@/utils';
 import { OrderData } from '@/pages/api/orderData';
+import { useCountries } from '@/data/hooks';
 
 type Props = {
   orderData?: OrderData;
@@ -21,15 +22,29 @@ export const OrderSuccess = ({ orderData }: Props) => {
 
   useEffect(() => {
     setStore([]);
-    localStorage.setItem('cart', 'null');
+    localStorage.setItem('cart', '[]');
   }, [setStore]);
 
   const address = orderData?.address;
   const paymentToken = orderData?.paymentToken;
   const orderDate = orderData?.orderDate && new Date(orderData?.orderDate);
   const user = orderData?.user && orderData?.user[0];
+  const orderDetails =
+    orderData?.orderDetails && Array.isArray(orderData.orderDetails) && orderData.orderDetails[0];
 
-  console.log('orderData', orderData);
+  const sumProduct = useMemo(() => {
+    let sum = 0;
+    orderData?.cartDetails?.forEach((item) => {
+      const priceProductData = orderData.priceProductDetails?.find(
+        (item2) => item2.price_id === item.price_id
+      );
+
+      sum = sum + (priceProductData?.price || 0) * item.quantity;
+    });
+    return sum;
+  }, [orderData?.cartDetails, orderData?.priceProductDetails]);
+
+  const { data: countries } = useCountries({ select: ['country_id', 'name'] });
 
   return (
     <SectionContainer>
@@ -41,7 +56,7 @@ export const OrderSuccess = ({ orderData }: Props) => {
       </div>
 
       {/* Info Box */}
-      <div className="grid grid-cols-6 bg-grayMui-100 p-10 gap-8 mt-10">
+      <div className="grid break800:grid-cols-6 bg-grayMui-100 p-10 gap-8 mt-10">
         <div className="flex flex-col col-span-2 gap-2">
           <BodyS className="">Sipariş numarası</BodyS>
           <BodyS className="font-semibold text-grayMui-800">{paymentToken}</BodyS>
@@ -79,11 +94,11 @@ export const OrderSuccess = ({ orderData }: Props) => {
 
       {/* Order Details */}
       <div>
-        <HeadlineXS className="my-10">Sipariş Detayları</HeadlineXS>
+        <HeadlineXS className="mt-10 mb-5">Sipariş Detayları</HeadlineXS>
         <div className="border-1 border-solid border-grayMui-300 p-5 flex flex-col gap-6 ">
           {orderData?.cartDetails?.map((item) => {
             const priceProductData = orderData.priceProductDetails?.find(
-              (item) => item.product_id === item.product_id
+              (item2) => item2.price_id === item.price_id
             );
 
             const product = priceProductData?.products;
@@ -93,9 +108,9 @@ export const OrderSuccess = ({ orderData }: Props) => {
 
             return (
               <div key={product?.product_id} className="flex justify-between ">
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 max-w-[240px] break650:max-w-[unset]">
                   <div className="flex gap-2">
-                    <BodyS>{product?.title}</BodyS>
+                    <BodyS className="max-w-[170px] break650:max-w-[unset]">{product?.title}</BodyS>
                     <BodyXS className="bg-grayMui-500 w-8 h-5 flex justify-center items-center rounded-full text-white font-semibold">
                       x {item.quantity}
                     </BodyXS>
@@ -116,20 +131,22 @@ export const OrderSuccess = ({ orderData }: Props) => {
           <div className="flex justify-between">
             <Body className="font-medium">ARA TOPLAM</Body>
             <Body>
-              {orderData?.price} {orderData?.currency}
+              {sumProduct} {orderData?.currency}
             </Body>
           </div>
           <div className="flex justify-between">
             <Body className="font-medium">GÖNDERİM</Body>
-            <Body>Henüz data yok {orderData?.currency}</Body>
+            <Body>
+              {(orderDetails && orderDetails.total_shipping_cost) || 0} {orderData?.currency}
+            </Body>
           </div>
           <div className="flex justify-between">
             <Body className="font-medium">ÖDEME YÖNTEMi</Body>
             <Body>Kredi Kartı</Body>
           </div>
         </div>
-        <HeadlineXS className="my-5">Address</HeadlineXS>
-        <Body>{address && printAddress(address[0], true)}</Body>
+        <HeadlineXS className="mt-10 mb-5">Address</HeadlineXS>
+        <Body>{address && printAddress(address[0], true, countries?.data)}</Body>
       </div>
     </SectionContainer>
   );

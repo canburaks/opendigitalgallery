@@ -21,6 +21,8 @@ export interface FormInitializeRequest {
   shippingAddress: ShippingAddress;
   billingAddress: BillingAddress;
   basketItems: BasketItem[];
+  shippingCost: number;
+  shippingCostCurrency: string;
 }
 
 export type EnabledInstallments = 1 | 2 | 3 | 6 | 9 | 12;

@@ -97,7 +97,6 @@ export const useCartStore = create<CartStoreTypes>()((set, get) => ({
   },
 
   removeCartPermanently: async (product: Partial<CartProduct>) => {
-    console.log('cartID remove permamnently', get().cartID);
     const notExistingProducts: CartProduct[] = get().store.filter(
       (p) => p.priceId !== product.priceId
     );
@@ -226,7 +225,6 @@ export const getInitialCartProducts = async () => {
   }
 
   // if there are DB products and local storage, need merge logic
-
   if (
     user &&
     dbProducts &&

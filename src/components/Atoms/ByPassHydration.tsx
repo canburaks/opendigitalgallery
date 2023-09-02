@@ -25,6 +25,7 @@ export const ByPassHydration: FC<PropsWithChildren> = ({ children }) => {
       const path = router.asPath;
 
       if (path.includes('callback') || path.includes('orders')) {
+
         return;
       }
 

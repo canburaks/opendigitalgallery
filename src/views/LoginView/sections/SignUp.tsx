@@ -33,17 +33,18 @@ export const SignUp: FC<SignUpProps> = ({ setView }) => {
   const [error, setError] = useState('');
   const supabaseClient = useSupabaseClient();
   const [openSuccessModal, setSuccessModal] = useState(false);
-  supabaseClient.auth.getSession().then((t) => console.log('t', t));
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     setError('');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const authRes = await supabaseClient.auth.signUp({
-      ...data,
+      email: data.email,
+      password: data.password,
     });
     if (authRes.error) {
+      console.log('authRes.error', authRes.error);
       setLoading(false);
-      console.log('signup');
 
       return setError(authRes.error.message);
     }
@@ -56,6 +57,7 @@ export const SignUp: FC<SignUpProps> = ({ setView }) => {
     });
 
     if (userRes.error) {
+      console.log('userRes.error', userRes.error);
       setLoading(false);
 
       return setError(userRes.error.message);

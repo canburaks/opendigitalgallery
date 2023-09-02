@@ -21,5 +21,5 @@ export const useFrames = (enabled?: boolean) => {
   const { data, isLoading } = useQuery([queryKeys.frames], () => getFrames(locale), {
     enabled: enabled === undefined ? true : enabled,
   });
-  return { data: data, isLoading };
+  return { data: data?.data || [], isLoading };
 };

@@ -26,6 +26,7 @@ export const CheckoutSection = () => {
   const [activeIndex, setActiveIndex] = useState<null | number>(null);
   const [formValues, setFormValues] = useState<CheckoutFormValues | null>(null);
   const setHiddenAuthUser = usePaymentStore((store) => store.setHiddenAuthUser);
+  const setPaymentFormValues = usePaymentStore((store) => store.setFormValues);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -81,6 +82,7 @@ export const CheckoutSection = () => {
         // just get user info anyway if it is not our user, we will register it in create-payment-request api.
         setHiddenAuthUser(formValues);
       }
+      setPaymentFormValues(formValues);
       openModal();
     }
   };

@@ -21,5 +21,5 @@ export const useProductDetailByHandle = (id: string | number, enabled?: boolean)
       enabled: enabled === undefined ? true : enabled,
     }
   );
-  return { data: data, isLoading };
+  return { data: (data && data.data && data?.data[0]) || undefined, isLoading };
 };

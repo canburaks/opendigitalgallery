@@ -17,10 +17,8 @@ export const FramesView = () => {
         </BodyL>
         <div className="grid grid-cols-3 gap-8 pt-10 py-20">
           {frames &&
-            frames.data &&
-            frames.data.map((product: any) => (
-              <ProductCard key={product.product_id} {...product} />
-            ))}
+            frames &&
+            frames.map((product: any) => <ProductCard key={product.product_id} {...product} />)}
         </div>
       </div>
       {isLoading && <Loading />}

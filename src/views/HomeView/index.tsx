@@ -8,10 +8,6 @@ export const HomeView = () => {
       <HeroSection />
       <ProductListSection />
       <CollectionListSection />
-      {/* <NewsletterBanner
-        headline="Yeni çıkan ürünlerden ilk sizin haberiniz olsun."
-        description="Eposta bültenimize katılın, en yeni art print ve posterlerden ilk sizin haberiniz olsun."
-      /> */}
     </>
   );
 };

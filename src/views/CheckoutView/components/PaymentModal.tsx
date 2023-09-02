@@ -37,8 +37,6 @@ export function PaymentModal() {
   });
   const cartProducts = useCartStore((state) => state.store);
 
-  console.log('formValues', formValues);
-
   const submitHandler = useCallback(
     (requestData: Partial<FormInitializeRequest> | null) => {
       if (loading === false && !error) {
@@ -73,7 +71,7 @@ export function PaymentModal() {
           });
       }
     },
-    [cartProducts, error, hiddenAuthUser, loading]
+    [cartProducts, error, formValues, hiddenAuthUser, loading]
   );
 
   /*

@@ -43,7 +43,11 @@ export const getServerSideProps = async ({
     fetch(getUrl() + IYZICO_QUERY_RESPONSE_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify({ token }),
-    }).then((res: Response) => res.json());
+    })
+      .then((res: Response) => res.json())
+      .catch((err) => {
+        console.log('err', err);
+      });
     return {
       props: {
         token: token,

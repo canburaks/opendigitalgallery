@@ -44,6 +44,12 @@ export default async function handler(
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (!user && !hiddenAuthUser) {
+    return res.status(500).json({
+      message: 'User not found',
+    });
+  }
+
   if (user) {
     currentUserId = user.id;
     const cartIDRes = await supabaseServer

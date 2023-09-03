@@ -1,10 +1,10 @@
-type NodeEnv = 'development' | 'staging' | 'production';
+type NodeEnv = 'development' | 'preview' | 'production';
 export function getUrl(): string | undefined {
   const nodeEnv = process.env.NODE_ENV as NodeEnv;
   let url = undefined;
   if (nodeEnv === 'development') {
     url = process.env.DEVELOPMENT_URL;
-  } else if (nodeEnv === 'staging') {
+  } else if (nodeEnv === 'preview') {
     url = process.env.STAGING_URL;
   } else if (nodeEnv === 'production') {
     url = process.env.PRODUCTION_URL;

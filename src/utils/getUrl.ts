@@ -1,6 +1,6 @@
 type NodeEnv = 'development' | 'preview' | 'production';
 export function getUrl(): string | undefined {
-  const nodeEnv = process.env.NODE_ENV as NodeEnv;
+  const nodeEnv = process.env.VERCEL_ENV as NodeEnv;
   let url = undefined;
   if (nodeEnv === 'development') {
     url = process.env.DEVELOPMENT_URL;
